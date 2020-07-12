@@ -89,12 +89,12 @@ module.exports = function validateRegisterInput(data) {
     errors.street = "Street field is required";
   }
 
-  if (!Validator.isLength(data.state, { min: 2, max: 30 })) {
-    errors.state = "State must be between 2 and 30 characters";
+  if (!Validator.isLength(data.states, { min: 2, max: 30 })) {
+    errors.states = "State must be between 2 and 30 characters";
   }
 
-  if (Validator.isEmpty(data.state)) {
-    errors.state = "State field is required";
+  if (Validator.isEmpty(data.states)) {
+    errors.states = "State field is required";
   }
 
   if (Validator.isEmpty(data.pincode)) {

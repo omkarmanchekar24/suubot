@@ -1,0 +1,7 @@
+export const REGISTER_UPDATE = 'REGISTER_UPDATE';
+export const SIGNIN = 'SIGNIN';
+export const SIGNINSUCCESS = 'SIGNINSUCCESS';
+export const SIGNINFAILED = 'SIGNINFAILED';
+export const SET_CURRENT_USER = 'SET_CURRENT_USER';
+export const GET_ERRORS = 'GET_ERRORS';
+export const LOGOUT_USER = 'LOGOUT_USER';
