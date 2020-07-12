@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const admin = require("firebase-admin");
+const uuid = require("uuidv4");
+const jwt = require("jsonwebtoken");
+const keys = require("../../config/keys");
+const passport = require("passport");
 const validateRegisterInput = require("../../validation/register");
 
 const serviceAccount = require("../../nativefirebase-14448-firebase-adminsdk-tm7tl-6698065c1d.json");
@@ -26,31 +30,18 @@ router.post("/", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  var count = {};
+  const id = uuid.uuid();
 
-  db.collection("users")
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach(function (doc) {
-        if (doc.data().email === req.body.email) {
-          count.unshift(doc.data().email);
-        }
-      });
-    });
-
-  console.log(count);
-
-  // const citiesRef = db.collection('users');
-  // const snapshot = await citiesRef.where('email', '==', req.body.email).get();
-  // if (!snapshot.empty) {
-  //     console.log('email exists');
-  //     return;
-  //   }
   const newUser = {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
     username: req.body.username,
+    id: id,
+  };
+
+  const profile = {
+    id: id,
     mobile: req.body.mobile,
     address: req.body.address,
     street: req.body.street,
@@ -63,8 +54,32 @@ router.post("/", (req, res) => {
 
   db.collection("users")
     .add(newUser)
-    .then((user) => res.status(200).json({ msg: "User added successfully" }))
-    .catch((err) => res.json(err));
+    .then((user) => {
+      //Set profile
+
+      db.collection("profiles")
+        .add(profile)
+        .then((profile) => {
+          //Sign token
+          jwt.sign(
+            newUser,
+            keys.secretOrKey,
+            { expiresIn: 3600 },
+            (err, token) => {
+              res.status(200).json({
+                success: true,
+                msg: "User added successfully",
+                token: "Bearer " + token,
+              });
+            }
+          );
+        });
+    })
+    .catch((err) =>
+      res
+        .status(400)
+        .json({ msg: "Register user failed. Please tru again after sometime" })
+    );
 });
 
 module.exports = router;
