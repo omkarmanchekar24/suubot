@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import {Text, View, Picker, ScrollView, TouchableOpacity} from 'react-native';
 import {Actions} from 'react-native-router-flux';
+import {connect} from 'react-redux';
 
 import {widthToDp, heightToDp} from '../Responsive';
 
 import {Header} from '../components';
 import {TextInput} from 'react-native';
 
-export default class Welcome extends Component {
+class Welcome extends Component {
   state = {pickerValue: ''};
   clickme() {
     alert(this.state.pickerValue);
@@ -112,3 +113,11 @@ const styles = {
   inputLabel: {fontSize: widthToDp(5)},
   invite: {color: 'blue'},
 };
+
+const mapStateToProps = (state) => {
+  return {
+    token: state.auth.token,
+  };
+};
+
+export default connect(mapStateToProps, null)(Welcome);

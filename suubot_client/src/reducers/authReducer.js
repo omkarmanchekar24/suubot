@@ -5,26 +5,31 @@ import {
   SIGNINFAILED,
   SET_CURRENT_USER,
   LOGOUT_USER,
+  GENERATE_OTP,
+  GENERATE_OTP_SUCCESS,
+  GENERATE_OTP_FAILED,
 } from '../actions/types';
 
 import isEmpty from '../validation/is-empty';
 
 const INITIAL_STATE = {
-  name: '',
-  email: '',
-  mobile: '',
-  address: '',
-  street: '',
-  town: '',
-  city: '',
-  states: '',
-  pincode: '',
-  country: '',
-  username: '',
-  password: '',
+  id: '',
+  name: 'omkar',
+  email: 'omkar@gmail.com',
+  mobile: '7045564124',
+  address: 'test',
+  street: 'test',
+  town: 'test',
+  city: 'test',
+  states: 'test',
+  pincode: '400012',
+  country: 'test',
+  username: 'test',
+  password: 'test',
   isAuthenticated: false,
   user: {},
   token: '',
+  generating: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -33,6 +38,18 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         [action.payload.prop]: action.payload.value,
+      };
+    }
+    case GENERATE_OTP: {
+      return {
+        ...state,
+        generating: true,
+      };
+    }
+    case GENERATE_OTP_SUCCESS: {
+      return {
+        ...state,
+        generating: false,
       };
     }
     case SET_CURRENT_USER: {

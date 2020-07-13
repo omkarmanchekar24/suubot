@@ -11,7 +11,7 @@ import {registeruser} from '../actions/authActions';
 class Otp extends Component {
   onClick() {
     const {
-      name,
+      id,
       email,
       mobile,
       address,
@@ -25,7 +25,8 @@ class Otp extends Component {
       password,
     } = this.props;
     const userData = {
-      name,
+      otp: this.state.otp,
+      id,
       email,
       mobile,
       address,
@@ -42,13 +43,29 @@ class Otp extends Component {
     this.props.registeruser(userData);
   }
 
+  state = {
+    otp: '',
+  };
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Header />
         <View style={styles.otpContainer}>
           <Text style={styles.title}>Enter Otp :</Text>
-          <TextInput style={styles.input} />
+          <TextInput
+            style={styles.input}
+            value={this.state.otp}
+            onChangeText={(text) => {
+              this.setState({
+                otp: text,
+              });
+            }}
+          />
           <Button
             style={styles.button}
             mode="outlined"
@@ -77,7 +94,7 @@ const styles = {
 
 const mapStateToProps = (state) => {
   const {
-    name,
+    id,
     email,
     mobile,
     address,
@@ -92,7 +109,7 @@ const mapStateToProps = (state) => {
   } = state.auth;
 
   return {
-    name,
+    id,
     email,
     mobile,
     address,
@@ -104,6 +121,7 @@ const mapStateToProps = (state) => {
     country,
     username,
     password,
+    error: state.error,
   };
 };
 

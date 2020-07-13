@@ -25,7 +25,6 @@ export default class Welcome extends Component {
                 selectedValue={this.state.pickerValue}
                 onValueChange={(itemValue, itemIndex) => {
                   this.setState({pickerValue: itemValue});
-                  Actions.select();
                 }}>
                 <Picker.Item label="Select an option" value="" />
                 <Picker.Item label="Groceries" value="groceries" />

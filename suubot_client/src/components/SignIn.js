@@ -5,57 +5,56 @@ import {connect} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
 
 //Components
-import {Header} from '../components';
+import {Header, Spinner} from '../components';
 import {widthToDp, heightToDp} from '../Responsive';
 
 //Actions
-import {registerUpdate, registeruser} from '../actions/authActions';
+import {
+  registerUpdate,
+  registeruser,
+  generateOtp,
+} from '../actions/authActions';
+
+import validateRegisterInput from '../validation/register';
 
 class SignIn extends Component {
-  onClick() {
-    Actions.otp();
-  }
-
   state = {
     errors: {},
   };
 
-  onChange(prop, value) {
-    this.props.registerUpdate({prop: prop, value: value});
+  onClick() {
+    const data = {
+      email: this.props.email,
+      mobile: this.props.mobile,
+      address: this.props.address,
+      street: this.props.street,
+      town: this.props.town,
+      city: this.props.city,
+      states: this.props.states,
+      pincode: this.props.pincode,
+      country: this.props.country,
+      username: this.props.username,
+      password: this.props.password,
+      isAuthenticated: this.props.isAuthenticated,
+    };
+
+    //const {errors, isValid} = validateRegisterInput(data);
+
+    this.props.generateOtp(data.mobile);
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   console.log(nextProps);
-  //   if (nextProps.auth.isAuthenticated) {
-  //   }
-
-  //   if (nextProps.errors) {
-  //     console.log(nextProps.errors);
-  //     this.setState({
-  //       errors: nextProps.errors,
-  //     });
-  //   }
-  // }
+  onChange(prop, value) {
+    this.props.registerUpdate({prop, value});
+  }
 
   render() {
     const {errors} = this.state;
-    //console.log(errors);
     return (
       <View style={styles.container}>
         <Header />
         <View style={styles.form}>
           <ScrollView>
             <Text style={styles.title}>Signin</Text>
-
-            <Text style={styles.label}>*Name</Text>
-            <TextInput
-              value={this.props.name}
-              onChangeText={(text) => {
-                this.onChange('name', text);
-              }}
-              style={styles.input}
-            />
-            {errors.email && <Text>{errors.email}</Text>}
 
             <Text style={styles.label}>*Email</Text>
             <TextInput
@@ -65,15 +64,18 @@ class SignIn extends Component {
               }}
               style={styles.input}
             />
+            {errors.email && <Text style={styles.error}>{errors.email}</Text>}
 
             <Text style={styles.label}>*Mobile</Text>
             <TextInput
+              keyboardType="number-pad"
               value={this.props.mobile}
               onChangeText={(text) => {
                 this.onChange('mobile', text);
               }}
               style={styles.input}
             />
+            {errors.mobile && <Text style={styles.error}>{errors.mobile}</Text>}
 
             <Text style={styles.label}>*Address</Text>
             <TextInput
@@ -83,6 +85,9 @@ class SignIn extends Component {
               }}
               style={styles.input}
             />
+            {errors.address && (
+              <Text style={styles.error}>{errors.address}</Text>
+            )}
 
             <Text style={styles.label}>*Street</Text>
             <TextInput
@@ -92,6 +97,7 @@ class SignIn extends Component {
               }}
               style={styles.input}
             />
+            {errors.street && <Text style={styles.error}>{errors.street}</Text>}
 
             <Text style={styles.label}>*Town/Suburb</Text>
             <TextInput
@@ -101,6 +107,7 @@ class SignIn extends Component {
               }}
               style={styles.input}
             />
+            {errors.town && <Text style={styles.error}>{errors.town}</Text>}
 
             <Text style={styles.label}>*City</Text>
             <TextInput
@@ -110,6 +117,7 @@ class SignIn extends Component {
               }}
               style={styles.input}
             />
+            {errors.city && <Text style={styles.error}>{errors.city}</Text>}
 
             <Text style={styles.label}>*State</Text>
             <TextInput
@@ -119,15 +127,20 @@ class SignIn extends Component {
               }}
               style={styles.input}
             />
+            {errors.states && <Text style={styles.error}>{errors.states}</Text>}
 
             <Text style={styles.label}>*Picode</Text>
             <TextInput
+              keyboardType="number-pad"
               value={this.props.pincode}
               onChangeText={(text) => {
                 this.onChange('pincode', text);
               }}
               style={styles.input}
             />
+            {errors.pincode && (
+              <Text style={styles.error}>{errors.pincode}</Text>
+            )}
 
             <Text style={styles.label}>*Country</Text>
             <TextInput
@@ -137,6 +150,9 @@ class SignIn extends Component {
               }}
               style={styles.input}
             />
+            {errors.country && (
+              <Text style={styles.error}>{errors.country}</Text>
+            )}
 
             <Text style={styles.label}>*Username</Text>
             <TextInput
@@ -146,6 +162,9 @@ class SignIn extends Component {
               }}
               style={styles.input}
             />
+            {errors.username && (
+              <Text style={styles.error}>{errors.username}</Text>
+            )}
 
             <Text style={styles.label}>*Password</Text>
             <TextInput
@@ -155,6 +174,9 @@ class SignIn extends Component {
               }}
               style={styles.input}
             />
+            {errors.password && (
+              <Text style={styles.error}>{errors.password}</Text>
+            )}
             <Button
               style={styles.button}
               mode="outlined"
@@ -182,41 +204,33 @@ const styles = {
     marginRight: widthToDp(4),
   },
   button: {marginTop: heightToDp(4), width: widthToDp(50), alignSelf: 'center'},
+  error: {
+    color: 'tomato',
+    fontSize: widthToDp(4),
+  },
 };
 
 const mapStateToProps = (state) => {
-  const {
-    name,
-    email,
-    mobile,
-    address,
-    street,
-    town,
-    city,
-    states,
-    pincode,
-    country,
-    username,
-    password,
-    isAuthenticated,
-  } = state.auth;
-
   return {
-    name,
-    email,
-    mobile,
-    address,
-    street,
-    town,
-    city,
-    states,
-    pincode,
-    country,
-    username,
-    password,
-    isAuthenticated,
-    errors: state.error,
+    email: state.auth.email,
+    mobile: state.auth.mobile,
+    address: state.auth.address,
+    street: state.auth.street,
+    town: state.auth.town,
+    city: state.auth.city,
+    states: state.auth.states,
+    pincode: state.auth.pincode,
+    country: state.auth.country,
+    username: state.auth.username,
+    password: state.auth.password,
+    isAuthenticated: state.auth.isAuthenticated,
+    generating: state.auth.generating,
+    error: state.error,
   };
 };
 
-export default connect(mapStateToProps, {registerUpdate, registeruser})(SignIn);
+export default connect(mapStateToProps, {
+  registerUpdate,
+  registeruser,
+  generateOtp,
+})(SignIn);
