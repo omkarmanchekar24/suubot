@@ -1,7 +1,5 @@
-/node_modules
+node_modules
 package-lock.json
-package.json
 
-/suubot_client/node_modules
-/suubot_client/package-lock.json
-/suubot_client/package.json
+suubot_client/node_modules
+suubot_client/package-lock.json

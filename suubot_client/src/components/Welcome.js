@@ -18,7 +18,7 @@ export default class Welcome extends Component {
         <Header profile={true} logout={true} />
         <View style={styles.container}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Text style={styles.title}>Welcome {this.props.name}</Text>
+            <Text style={styles.title}>Welcome</Text>
 
             <Text style={styles.label}>How can I help you?</Text>
             <View style={styles.pickerContainer}>
