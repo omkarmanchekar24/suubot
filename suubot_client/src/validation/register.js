@@ -16,10 +16,6 @@ function validateRegisterInput(data) {
   data.pincode = !isEmpty(data.pincode) ? data.pincode : '';
   data.country = !isEmpty(data.country) ? data.country : '';
 
-  if (data.name.length === 0) {
-    errors.name = 'Name field is required';
-  }
-
   if (data.email.length === 0) {
     errors.email = 'Email field is required';
   }

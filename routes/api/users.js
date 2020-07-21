@@ -22,72 +22,80 @@ require("dotenv").config();
 //@route    api/users/test
 //@desc     Tests users route
 //@access   Public
-router.get("/test", (req, res) => res.send({ msg: "Users works!" }));
+router.get("/test", (req, res) => res.json({ msg: "Users works!" }));
 
 //@route    POST api/users/otp
 //@desc     generate otp
 //@access   Public
 router.post("/otp", (req, res) => {
-  console.log("otp");
+  let errors = {};
 
-  //generate otp
+  db.collection("users")
+    .where("email", "==", req.body.email)
+    .get()
+    .then((snapshot) => {
+      const tempDoc = [];
+      snapshot.forEach((doc) => {
+        tempDoc.push({ id: doc.id, ...doc.data() });
+      });
 
-  const otp = Math.floor(100000 + Math.random() * 900000);
+      if (tempDoc.length > 0) {
+        return res.status(400).json({ email: "email is already registered" });
+      }
 
-  //Save to db
+      //generate otp
 
-  db.collection("otp")
-    .doc(req.body.id)
-    .set({
-      otp: otp,
-    })
-    .then((response) => {
-      //Send message
-      fast2sms
-        .sendMessage({
-          authorization: process.env.API_KEY,
-          message: "Your suubot one time password is " + otp,
-          numbers: [req.body.mobile],
+      const otp = Math.floor(100000 + Math.random() * 900000);
+
+      //Save to db
+
+      db.collection("otp")
+        .add({
+          email: req.body.email,
+          mobile: req.body.mobile,
+          otp: otp,
+          date: Date.now(),
         })
-        .then((response) => {
-          res.status(200).json({ msg: "otp sent to user", response });
+        .then((docRef) => {
+          // Send message
+          fast2sms
+            .sendMessage({
+              authorization: process.env.API_KEY,
+              message: "Your suubot one time password is " + otp,
+              numbers: [req.body.mobile],
+            })
+            .then((response) => {
+              res.status(200).json({
+                msg: "otp sent to user",
+                response,
+                id: docRef.id,
+              });
+            })
+            .catch((err) => {
+              res.status(400).json({ otp: "Otp creation failed", err });
+            });
         })
         .catch((err) => {
-          res.status(400).json({ msg: "Otp creation failed", err });
+          res.status(400).json({ otp: "saving otp failed", err });
         });
-    })
-    .catch((err) => res.status(400).json({ msg: "saving otp failed", err }));
+    });
 });
 
 //@route    POST api/users/register
 //@desc     Create user
 //@access   Public
 router.post("/register", (req, res) => {
-  // console.log(req.body);
-  // const cityRef = db.collection("otp").doc(req.body.id);
-
-  // const doc = await cityRef.get();
-  // if (!doc.exists) {
-  //   console.log("No such document!");
-  // } else {
-  //   console.log("Document data:", doc.data());
-  // }
-
+  //Search user by id
   db.collection("otp")
     .doc(req.body.id)
     .get()
     .then((doc) => {
-      //res.json(doc.data().otp.toString() === req.body.otp);
-
-      if (true) {
+      if (doc.data().otp.toString() === req.body.otp) {
         const newUser = {
+          id: req.body.id,
           email: req.body.email,
           password: req.body.password,
           username: req.body.username,
-          id: req.body.id,
-        };
-        const profile = {
-          id: req.body.id,
           mobile: req.body.mobile,
           address: req.body.address,
           street: req.body.street,
@@ -101,46 +109,71 @@ router.post("/register", (req, res) => {
           .doc(req.body.id)
           .set(newUser)
           .then((user) => {
-            //Set profile
-            db.collection("profiles")
-              .doc(req.body.id)
-              .set(profile)
-              .then((profile) => {
-                console.log(profile);
-                //Sign token
-                jwt.sign(
-                  newUser,
-                  keys.secretOrKey,
-                  { expiresIn: 3600 },
-                  (err, token) => {
-                    console.log(token);
-                    res.status(200).json({
-                      success: true,
-                      msg: "User added successfully",
-                      token: "Bearer " + token,
-                    });
-                  }
-                );
-              })
-              .catch((err) =>
-                res
-                  .status(400)
-                  .json({ msg: "Profile creation failed", err: err })
-              );
+            //Sign token
+            jwt.sign(
+              newUser,
+              keys.secretOrKey,
+              { expiresIn: 3600 },
+              (err, token) => {
+                res.status(200).json({
+                  success: true,
+                  msg: "User added successfully",
+                  token: "Bearer " + token,
+                });
+              }
+            );
           })
           .catch((err) =>
             res.status(400).json({
-              msg: "Register user failed. Please try again after sometime",
+              otp: "Register user failed. Please try again after sometime",
               err: err,
             })
           );
       } else {
-        res.status(400).json({ success: false, msg: "wrong otp" });
+        res.status(400).json({ otp: "wrong otp" });
       }
     })
     .catch((err) => {
       res.json({
-        msg: "Something went wrong. Please try again after sometime",
+        otp: "Something went wrong. Please try again after sometime",
+        err,
+      });
+    });
+});
+
+//@route    POST api/users/login
+//@desc     Login user
+//@access   Public
+router.post("/login", (req, res) => {
+  db.collection("users")
+    .where("email", "==", req.body.email)
+    .get()
+    .then((snapshot) => {
+      const tempDoc = [];
+      snapshot.forEach((doc) => {
+        tempDoc.push({ id: doc.id, ...doc.data() });
+      });
+
+      if (tempDoc[0].password === req.body.password) {
+        jwt.sign(
+          tempDoc[0],
+          keys.secretOrKey,
+          { expiresIn: 3600 },
+          (err, token) => {
+            res.status(200).json({
+              success: true,
+              msg: "Logged in successfully",
+              token: "Bearer " + token,
+            });
+          }
+        );
+      } else {
+        return res.status(400).json({ password: "pasword is incorrect" });
+      }
+    })
+    .catch((err) => {
+      res.status(400).json({
+        email: "email is not registered",
       });
     });
 });

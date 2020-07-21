@@ -21,19 +21,12 @@ class Header extends Component {
 
   renderProfile() {
     if (this.props.profile) {
-      return (
-        <IconButton
-          icon="bell"
-          size={20}
-          onPress={() => console.log('Pressed')}
-        />
-      );
+      return <IconButton icon="bell" size={20} onPress={() => {}} />;
     }
   }
-
   render() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.style]}>
         <View
           style={{
             width: widthToDp(15),

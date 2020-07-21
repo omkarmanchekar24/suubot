@@ -1,19 +1,23 @@
 import React, {Component} from 'react';
-import {Text, View, Picker, ScrollView, ToastAndroid} from 'react-native';
+import {Text, View, Picker, ScrollView, Share} from 'react-native';
 import {Button} from 'react-native-paper';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
+import {
+  fetchProductSubTypesByStoreIdTypeId,
+  setValue,
+} from '../actions/storeActions';
 
 import {widthToDp, heightToDp} from '../Responsive';
 
 import {Header, Footer} from '../components';
-import {TextInput} from 'react-native';
+import {ToastAndroid} from 'react-native';
 
-//Action
-import {fetchSProductTypes, setValue} from '../actions/storeActions';
-
-class Select extends Component {
-  state = {pickerValue: '', product_types: []};
+class Products extends Component {
+  state = {
+    pickerValue: '',
+    product_sub_types: [],
+  };
   clickme() {
     alert(this.state.pickerValue);
   }
@@ -25,49 +29,49 @@ class Select extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchSProductTypes();
+    const {selected_store_id, selected_product_type_id} = this.props;
+    this.props.fetchProductSubTypesByStoreIdTypeId({
+      selected_store_id,
+      selected_product_type_id,
+    });
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.product_types) {
+    if (nextProps.product_sub_types) {
       this.setState({
-        product_types: nextProps.product_types,
+        product_sub_types: nextProps.product_sub_types,
       });
     }
   }
 
-  renderPicker() {
-    if (this.state.product_types.length > 0) {
-    }
-  }
-
   render() {
-    const {product_types} = this.state;
-
     return (
       <View style={styles.container}>
         <Header style={styles.header} profile={true} logout={true} />
         <View style={styles.body}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Text style={styles.label}>What would you like to shop?</Text>
+            <Text style={styles.label}>Products</Text>
             <View style={styles.pickerContainer}>
               <Picker
                 style={styles.picker}
                 selectedValue={this.state.pickerValue}
                 onValueChange={(itemValue, itemIndex) => {
                   this.setState({pickerValue: itemValue});
+
                   this.props.setValue({
-                    prop: 'selected_product_type_id',
+                    prop: 'selected_sub_type',
                     value: itemValue,
                   });
-                  if (itemIndex !== 0) {
-                    //ToastAndroid.show(itemValue, ToastAndroid.LONG);
-                    Actions.stores();
-                  }
+                  Actions.product2();
                 }}>
-                <Picker.Item label="Select an option" value="0" />
-                {product_types.length !== 0 ? (
-                  product_types.map((item) => {
+                <Picker.Item
+                  enabled={false}
+                  label="Select an option"
+                  value=""
+                />
+
+                {this.state.product_sub_types.length !== 0 ? (
+                  this.state.product_sub_types.map((item) => {
                     return <Picker.Item label={item.name} value={item.id} />;
                   })
                 ) : (
@@ -125,8 +129,13 @@ const styles = {
 
 const mapStateToProps = (state) => {
   return {
-    product_types: state.store.product_types,
+    product_sub_types: state.store.product_sub_types,
+    selected_store_id: state.store.selected_store_id,
+    selected_product_type_id: state.store.selected_product_type_id,
   };
 };
 
-export default connect(mapStateToProps, {fetchSProductTypes, setValue})(Select);
+export default connect(mapStateToProps, {
+  fetchProductSubTypesByStoreIdTypeId,
+  setValue,
+})(Products);

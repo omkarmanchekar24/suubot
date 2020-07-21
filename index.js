@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 
 const users = require("./routes/api/users");
 const stores = require("./routes/api/stores");
+const products = require("./routes/api/products");
 
 // admin.initializeApp({
 //   credential: admin.credential.applicationDefault(),
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 //Use routes
 app.use("/api/users", users);
 app.use("/api/stores", stores);
+app.use("/api/products", products);
 
 const port = process.env.PORT || 5000;
 

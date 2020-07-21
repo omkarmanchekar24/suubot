@@ -1,6 +1,12 @@
 export {default as SignIn} from './SignIn';
 export {default as Header} from './common/Header';
+export {default as Footer} from './common/Footer';
 export {default as Otp} from './Otp';
 export {default as Welcome} from './Welcome';
 export {default as Select} from './Select';
 export {default as Spinner} from './common/Spinner';
+export {default as Login} from './Login';
+export {default as Stores} from './Stores';
+export {default as Products} from './Products';
+export {default as Product2} from './Product2';
+export {default as Card} from './common/Card';

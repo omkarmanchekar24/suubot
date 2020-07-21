@@ -20,6 +20,7 @@ import validateRegisterInput from '../validation/register';
 class SignIn extends Component {
   state = {
     errors: {},
+    generating: false,
   };
 
   onClick() {
@@ -38,26 +39,63 @@ class SignIn extends Component {
       isAuthenticated: this.props.isAuthenticated,
     };
 
-    //const {errors, isValid} = validateRegisterInput(data);
+    const {errors, isValid} = validateRegisterInput(data);
 
-    this.props.generateOtp(data.mobile);
+    if (isValid) {
+      const {email, mobile} = data;
+      this.props.generateOtp({email, mobile});
+    } else {
+      this.refs._scrollView.scrollTo(0);
+      this.setState({
+        errors,
+      });
+    }
   }
 
   onChange(prop, value) {
     this.props.registerUpdate({prop, value});
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.generating) {
+      this.setState({
+        generating: true,
+      });
+    } else {
+      this.setState({
+        generating: false,
+        errors: nextProps.errors,
+      });
+      this.refs._scrollView.scrollTo(0);
+    }
+  }
+
   render() {
+    let button;
+    if (this.state.generating) {
+      button = <Spinner />;
+    } else {
+      button = (
+        <Button
+          mode="outlined"
+          style={styles.button}
+          onPress={this.onClick.bind(this)}>
+          Signin
+        </Button>
+      );
+    }
+
     const {errors} = this.state;
     return (
       <View style={styles.container}>
         <Header />
         <View style={styles.form}>
-          <ScrollView>
-            <Text style={styles.title}>Signin</Text>
+          <ScrollView ref="_scrollView">
+            <Text style={styles.title}>Sign in</Text>
 
             <Text style={styles.label}>*Email</Text>
             <TextInput
+              editable={!this.state.generating}
               value={this.props.email}
               onChangeText={(text) => {
                 this.onChange('email', text);
@@ -68,6 +106,7 @@ class SignIn extends Component {
 
             <Text style={styles.label}>*Mobile</Text>
             <TextInput
+              editable={!this.state.generating}
               keyboardType="number-pad"
               value={this.props.mobile}
               onChangeText={(text) => {
@@ -79,6 +118,7 @@ class SignIn extends Component {
 
             <Text style={styles.label}>*Address</Text>
             <TextInput
+              editable={!this.state.generating}
               value={this.props.address}
               onChangeText={(text) => {
                 this.onChange('address', text);
@@ -91,6 +131,7 @@ class SignIn extends Component {
 
             <Text style={styles.label}>*Street</Text>
             <TextInput
+              editable={!this.state.generating}
               value={this.props.street}
               onChangeText={(text) => {
                 this.onChange('street', text);
@@ -101,6 +142,7 @@ class SignIn extends Component {
 
             <Text style={styles.label}>*Town/Suburb</Text>
             <TextInput
+              editable={!this.state.generating}
               value={this.props.town}
               onChangeText={(text) => {
                 this.onChange('town', text);
@@ -111,6 +153,7 @@ class SignIn extends Component {
 
             <Text style={styles.label}>*City</Text>
             <TextInput
+              editable={!this.state.generating}
               value={this.props.city}
               onChangeText={(text) => {
                 this.onChange('city', text);
@@ -121,6 +164,7 @@ class SignIn extends Component {
 
             <Text style={styles.label}>*State</Text>
             <TextInput
+              editable={!this.state.generating}
               value={this.props.states}
               onChangeText={(text) => {
                 this.onChange('states', text);
@@ -131,6 +175,7 @@ class SignIn extends Component {
 
             <Text style={styles.label}>*Picode</Text>
             <TextInput
+              editable={!this.state.generating}
               keyboardType="number-pad"
               value={this.props.pincode}
               onChangeText={(text) => {
@@ -144,6 +189,7 @@ class SignIn extends Component {
 
             <Text style={styles.label}>*Country</Text>
             <TextInput
+              editable={!this.state.generating}
               value={this.props.country}
               onChangeText={(text) => {
                 this.onChange('country', text);
@@ -156,6 +202,7 @@ class SignIn extends Component {
 
             <Text style={styles.label}>*Username</Text>
             <TextInput
+              editable={!this.state.generating}
               value={this.props.username}
               onChangeText={(text) => {
                 this.onChange('username', text);
@@ -168,6 +215,7 @@ class SignIn extends Component {
 
             <Text style={styles.label}>*Password</Text>
             <TextInput
+              editable={!this.state.generating}
               value={this.props.password}
               onChangeText={(text) => {
                 this.onChange('password', text);
@@ -177,12 +225,21 @@ class SignIn extends Component {
             {errors.password && (
               <Text style={styles.error}>{errors.password}</Text>
             )}
+
+            {button}
+
+            <Text style={styles.note}>Already Registered?</Text>
             <Button
-              style={styles.button}
               mode="outlined"
-              onPress={this.onClick.bind(this)}>
-              Signin
+              disabled={this.state.logging}
+              style={[
+                styles.button,
+                {marginTop: heightToDp(1), width: widthToDp(60)},
+              ]}
+              onPress={() => Actions.login()}>
+              Click here to Log in
             </Button>
+
             <View style={{height: heightToDp(10)}} />
           </ScrollView>
         </View>
@@ -208,24 +265,29 @@ const styles = {
     color: 'tomato',
     fontSize: widthToDp(4),
   },
+  block: {backgroundColor: 'yellow', height: heightToDp(15), flex: 1},
+  note: {
+    alignSelf: 'center',
+    marginTop: heightToDp(4),
+  },
 };
 
 const mapStateToProps = (state) => {
   return {
-    email: state.auth.email,
-    mobile: state.auth.mobile,
-    address: state.auth.address,
-    street: state.auth.street,
-    town: state.auth.town,
-    city: state.auth.city,
-    states: state.auth.states,
-    pincode: state.auth.pincode,
-    country: state.auth.country,
-    username: state.auth.username,
-    password: state.auth.password,
-    isAuthenticated: state.auth.isAuthenticated,
-    generating: state.auth.generating,
-    error: state.error,
+    email: state.register.email,
+    mobile: state.register.mobile,
+    address: state.register.address,
+    street: state.register.street,
+    town: state.register.town,
+    city: state.register.city,
+    states: state.register.states,
+    pincode: state.register.pincode,
+    country: state.register.country,
+    username: state.register.username,
+    password: state.register.password,
+    isAuthenticated: state.register.isAuthenticated,
+    generating: state.register.generating,
+    errors: state.register.errors,
   };
 };
 

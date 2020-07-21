@@ -3,55 +3,60 @@ import {Text, View, TextInput} from 'react-native';
 import {widthToDp, heightToDp} from '../Responsive';
 import {connect} from 'react-redux';
 import {Button} from 'react-native-paper';
-import {Header} from '../components';
+import {Header, Spinner} from '../components';
 
 //Actions
 import {registeruser} from '../actions/authActions';
 
 class Otp extends Component {
-  onClick() {
-    const {
-      id,
-      email,
-      mobile,
-      address,
-      street,
-      town,
-      city,
-      states,
-      pincode,
-      country,
-      username,
-      password,
-    } = this.props;
-    const userData = {
-      otp: this.state.otp,
-      id,
-      email,
-      mobile,
-      address,
-      street,
-      town,
-      city,
-      states,
-      pincode,
-      country,
-      username,
-      password,
-    };
-
-    this.props.registeruser(userData);
-  }
-
   state = {
     otp: '',
+    errors: {},
+    registering: false,
   };
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
+    if (nextProps.registering) {
+      this.setState({
+        registering: true,
+        errors: {},
+      });
+    } else if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors,
+        registering: false,
+      });
+    }
+  }
+
+  onClick() {
+    if (this.state.otp.length === 0) {
+      this.setState({
+        errors: {otp: 'otp is required'},
+      });
+    } else {
+      const userData = {
+        otp: this.state.otp,
+        id: this.props.id,
+        email: this.props.email,
+        mobile: this.props.mobile,
+        address: this.props.address,
+        street: this.props.street,
+        town: this.props.town,
+        city: this.props.city,
+        states: this.props.states,
+        pincode: this.props.pincode,
+        country: this.props.country,
+        username: this.props.username,
+        password: this.props.password,
+      };
+      this.props.registeruser(userData);
+    }
   }
 
   render() {
+    const {errors} = this.state;
+
     return (
       <View style={styles.container}>
         <Header />
@@ -60,15 +65,18 @@ class Otp extends Component {
           <TextInput
             style={styles.input}
             value={this.state.otp}
+            editable={!this.state.registering}
             onChangeText={(text) => {
               this.setState({
                 otp: text,
               });
             }}
           />
+          {errors.otp && <Text style={styles.error}>{errors.otp}</Text>}
           <Button
             style={styles.button}
             mode="outlined"
+            disabled={this.state.registering}
             onPress={this.onClick.bind(this)}>
             Enter
           </Button>
@@ -90,38 +98,28 @@ const styles = {
     marginTop: heightToDp(5),
     alignSelf: 'center',
   },
+  error: {
+    color: 'tomato',
+    fontSize: widthToDp(4),
+  },
 };
 
 const mapStateToProps = (state) => {
-  const {
-    id,
-    email,
-    mobile,
-    address,
-    street,
-    town,
-    city,
-    states,
-    pincode,
-    country,
-    username,
-    password,
-  } = state.auth;
-
   return {
-    id,
-    email,
-    mobile,
-    address,
-    street,
-    town,
-    city,
-    states,
-    pincode,
-    country,
-    username,
-    password,
-    error: state.error,
+    id: state.register.id,
+    email: state.register.email,
+    mobile: state.register.mobile,
+    address: state.register.address,
+    street: state.register.street,
+    town: state.register.town,
+    city: state.register.city,
+    states: state.register.states,
+    pincode: state.register.pincode,
+    country: state.register.country,
+    username: state.register.username,
+    password: state.register.password,
+    errors: state.register.errors,
+    registering: state.register.registering,
   };
 };
 

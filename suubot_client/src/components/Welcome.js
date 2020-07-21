@@ -1,103 +1,121 @@
 import React, {Component} from 'react';
-import {Text, View, Picker, ScrollView, TouchableOpacity} from 'react-native';
+import {Text, View, Picker, Share} from 'react-native';
+import {Button} from 'react-native-paper';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
 
 import {widthToDp, heightToDp} from '../Responsive';
 
-import {Header} from '../components';
+import {Header, Footer} from '../components';
 import {TextInput} from 'react-native';
 
 class Welcome extends Component {
-  state = {pickerValue: ''};
-  clickme() {
-    alert(this.state.pickerValue);
+  state = {pickerValue: '', stores: {}};
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.stores) {
+      this.setState({
+        stores: nextProps.stores,
+      });
+    }
   }
+
+  invite() {
+    Share.share({
+      message: 'I invite you to sell your products on Suubot',
+    });
+  }
+
   render() {
     return (
-      <View>
-        <Header profile={true} logout={true} />
-        <View style={styles.container}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <Text style={styles.title}>Welcome</Text>
+      <View style={styles.container}>
+        <Header profile={true} style={styles.header} logout={true} />
+        <View style={styles.body}>
+          <Text style={styles.title}>Welcome {this.props.user.username}</Text>
 
-            <Text style={styles.label}>How can I help you?</Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                style={styles.picker}
-                selectedValue={this.state.pickerValue}
-                onValueChange={(itemValue, itemIndex) => {
-                  this.setState({pickerValue: itemValue});
-                  Actions.select();
-                }}>
-                <Picker.Item label="Select an option" value="" />
-                <Picker.Item label="Would you like to shop?" value="shop" />
-                <Picker.Item label="Saloon booking?" value="saloon" />
-                <Picker.Item label="Spa booking?" value="spa" />
-              </Picker>
-            </View>
-
-            <Text style={styles.label}>My List</Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                style={styles.picker}
-                selectedValue={this.state.pickerValue}
-                onValueChange={(itemValue, itemIndex) =>
-                  this.setState({pickerValue: itemValue})
-                }>
-                <Picker.Item label="Select an option" value="" />
-                <Picker.Item label="Raj Store" value="shop" />
-                <Picker.Item label="Dr. Mihir" value="saloon" />
-                <Picker.Item label="V B Saloon" value="spa" />
-                <Picker.Item label="Super Bakery" value="spa" />
-              </Picker>
-            </View>
-
-            <Text style={styles.label}>Statistics</Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                style={styles.picker}
-                selectedValue={this.state.pickerValue}
-                onValueChange={(itemValue, itemIndex) =>
-                  this.setState({pickerValue: itemValue})
-                }>
-                <Picker.Item label="Select an option" value="" />
-                <Picker.Item label="Item wise" value="shop" />
-                <Picker.Item label="Seller wise" value="saloon" />
-              </Picker>
-            </View>
-            <View style={styles.search}>
-              <Text style={styles.inputLabel}>Search</Text>
-              <TextInput style={styles.input} />
-            </View>
-
-            <TouchableOpacity
-              style={{
-                marginTop: heightToDp(3),
+          <Text style={styles.label}>How can I help you?</Text>
+          <View style={styles.pickerContainer}>
+            <Picker
+              style={styles.picker}
+              selectedValue={this.state.pickerValue}
+              onValueChange={(itemValue, itemIndex) => {
+                this.setState({pickerValue: itemValue});
+                if (itemIndex === 1) {
+                  Actions.select({value: itemValue});
+                }
               }}>
-              <Text style={styles.invite}>Invite your seller on suubot</Text>
-            </TouchableOpacity>
+              <Picker.Item label="Select an option" value="" />
+              <Picker.Item
+                label="Would you like to shop?"
+                value="products"
+                id={1}
+              />
+              <Picker.Item label="Saloon booking" value="saloon" id={2} />
+              <Picker.Item label="Spa booking" value="spa" id={3} />
+            </Picker>
+          </View>
 
-            <View style={{height: heightToDp(25)}} />
-          </ScrollView>
+          <Text style={styles.label}>My List</Text>
+          <View style={styles.pickerContainer}>
+            <Picker
+              style={styles.picker}
+              selectedValue={this.state.pickerValue}
+              onValueChange={(itemValue, itemIndex) =>
+                this.setState({pickerValue: itemValue})
+              }>
+              <Picker.Item label="Select an option" value="" />
+              <Picker.Item label="Raj Store" value="shop" />
+              <Picker.Item label="Dr. Mihir" value="saloon" />
+              <Picker.Item label="V B Saloon" value="spa" />
+              <Picker.Item label="Super Bakery" value="spa" />
+            </Picker>
+          </View>
+
+          <Text style={styles.label}>Statistics</Text>
+          <View style={styles.pickerContainer}>
+            <Picker
+              style={styles.picker}
+              selectedValue={this.state.pickerValue}
+              onValueChange={(itemValue, itemIndex) =>
+                this.setState({pickerValue: itemValue})
+              }>
+              <Picker.Item label="Select an option" value="" />
+              <Picker.Item label="Item wise" value="shop" />
+              <Picker.Item label="Seller wise" value="saloon" />
+            </Picker>
+          </View>
+          <View style={styles.search}>
+            <Text style={styles.inputLabel}>Search</Text>
+            <TextInput style={styles.input} />
+          </View>
+
+          <View style={{height: heightToDp(25)}} />
         </View>
+        <Footer style={styles.footer}>
+          <Button style={styles.invite} onPress={this.invite.bind(this)}>
+            Invite your seller on suubot
+          </Button>
+        </Footer>
       </View>
     );
   }
 }
 
 const styles = {
-  container: {padding: widthToDp(10)},
+  container: {flex: 1},
+  header: {flex: 0.13},
+  body: {flex: 0.74, padding: widthToDp(8)},
+  footer: {padding: widthToDp(1), flex: 0.13, justifyContent: 'flex-end'},
   title: {fontSize: widthToDp(5), fontWeight: 'bold'},
   label: {fontSize: widthToDp(5), marginTop: heightToDp(5)},
   pickerContainer: {
     borderWidth: 1,
     borderColor: 'rgb(204, 204, 204)',
-    width: '80%',
+    width: '90%',
     borderRadius: widthToDp(2),
     marginTop: heightToDp(2),
   },
-  picker: {},
+  picker: {height: heightToDp(5)},
   search: {
     flexDirection: 'row',
     marginTop: heightToDp(5),
@@ -111,12 +129,15 @@ const styles = {
     marginLeft: widthToDp(1),
   },
   inputLabel: {fontSize: widthToDp(5)},
-  invite: {color: 'blue'},
+  invite: {alignSelf: 'flex-start'},
 };
 
 const mapStateToProps = (state) => {
   return {
     token: state.auth.token,
+    user: state.auth.user,
+    isAuthenticated: state.auth.isAuthenticated,
+    stores: state.store.stores,
   };
 };
 

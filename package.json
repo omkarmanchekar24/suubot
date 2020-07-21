@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -19,6 +20,7 @@
     "firebase-admin": "^8.13.0",
     "jsonwebtoken": "^8.5.1",
     "messagebird": "^3.5.0",
+    "moment": "^2.27.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "uuidv4": "^6.1.1",
