@@ -10,7 +10,7 @@ const { response } = require("express");
 const db = admin.firestore();
 
 router.get("/test", (req, res) => {
-  console.log("test");
+  
   return res.json({ msg: "working" });
 });
 
@@ -71,7 +71,7 @@ router.post("/product_sub_types", async (req, res) => {
   snap.data().product_sub_type.forEach((item) => {
     sub_types.push(item);
   });
-  console.log(sub_types);
+  
 
   //   var arr = [1, 2, 3, 4],
   //     brr = [2, 4],
