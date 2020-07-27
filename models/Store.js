@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 //Create Schema
-const UserSchema = new Schema({
+const StoreSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -17,10 +17,6 @@ const UserSchema = new Schema({
   },
   address: {
     street: {
-      type: String,
-      required: true,
-    },
-    town: {
       type: String,
       required: true,
     },
@@ -41,10 +37,36 @@ const UserSchema = new Schema({
       required: true,
     },
   },
-  username: {
+  location: {
+    longitude: {
+      type: String,
+    },
+    latitude: {
+      type: String,
+    },
+  },
+  gst: {
+    type: String,
+  },
+  pan: {
+    type: String,
+  },
+  business_name: {
     type: String,
     required: true,
   },
+
+  paytm: {
+    type: String,
+  },
+  pepay: {
+    type: String,
+  },
+  aboutUs: {
+    type: String,
+  },
+  areaOfDelivery: { type: String },
+  minOrderValue: { type: Number },
   password: {
     type: String,
     required: true,
@@ -55,4 +77,4 @@ const UserSchema = new Schema({
   },
 });
 
-module.exports = User = mongoose.model("users", UserSchema);
+module.exports = Store = mongoose.model("stores", StoreSchema);

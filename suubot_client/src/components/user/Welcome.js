@@ -4,9 +4,9 @@ import {Button} from 'react-native-paper';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
 
-import {widthToDp, heightToDp} from '../Responsive';
+import {widthToDp, heightToDp} from '../../Responsive';
 
-import {Header, Footer} from '../components';
+import {Header, Footer} from '../../components';
 import {TextInput} from 'react-native';
 
 class Welcome extends Component {

@@ -10,11 +10,13 @@ class Header extends Component {
   renderLogout() {
     if (this.props.logout) {
       return (
-        <IconButton
-          icon={require('../../assets/switch.png')}
-          size={20}
-          onPress={() => this.props.logoutUser()}
-        />
+        <View>
+          <IconButton
+            icon={require('../../assets/switch.png')}
+            size={20}
+            onPress={() => this.props.logoutUser()}
+          />
+        </View>
       );
     }
   }

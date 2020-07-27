@@ -4,19 +4,18 @@ import {Button} from 'react-native-paper';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
 import {
-  fetchProductSubTypesByStoreIdTypeId,
+  fetchProductSubCategoriesByStoreIdCategoryId,
   setValue,
-} from '../actions/storeActions';
+} from '../../actions/storeActions';
 
-import {widthToDp, heightToDp} from '../Responsive';
+import {widthToDp, heightToDp} from '../../Responsive';
 
-import {Header, Footer} from '../components';
-import {ToastAndroid} from 'react-native';
+import {Header, Footer} from '../../components';
 
 class Products extends Component {
   state = {
     pickerValue: '',
-    product_sub_types: [],
+    product_sub_categories: [],
   };
   clickme() {
     alert(this.state.pickerValue);
@@ -29,17 +28,17 @@ class Products extends Component {
   }
 
   componentWillMount() {
-    const {selected_store_id, selected_product_type_id} = this.props;
-    this.props.fetchProductSubTypesByStoreIdTypeId({
-      selected_store_id,
-      selected_product_type_id,
+    const {selected_store, selected_product_category} = this.props;
+    this.props.fetchProductSubCategoriesByStoreIdCategoryId({
+      selected_store,
+      selected_product_category,
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.product_sub_types) {
+    if (nextProps.product_sub_categories) {
       this.setState({
-        product_sub_types: nextProps.product_sub_types,
+        product_sub_categories: nextProps.product_sub_categories,
       });
     }
   }
@@ -57,22 +56,23 @@ class Products extends Component {
                 selectedValue={this.state.pickerValue}
                 onValueChange={(itemValue, itemIndex) => {
                   this.setState({pickerValue: itemValue});
-
-                  this.props.setValue({
-                    prop: 'selected_sub_type',
-                    value: itemValue,
-                  });
-                  Actions.product2();
+                  if (itemValue !== '0') {
+                    this.props.setValue({
+                      prop: 'selected_sub_category',
+                      value: itemValue,
+                    });
+                    Actions.product2();
+                  }
                 }}>
                 <Picker.Item
                   enabled={false}
                   label="Select an option"
-                  value=""
+                  value="0"
                 />
 
-                {this.state.product_sub_types.length !== 0 ? (
-                  this.state.product_sub_types.map((item) => {
-                    return <Picker.Item label={item.name} value={item.id} />;
+                {this.state.product_sub_categories.length !== 0 ? (
+                  this.state.product_sub_categories.map((item) => {
+                    return <Picker.Item label={item.name} value={item._id} />;
                   })
                 ) : (
                   <Picker.Item label="Loading..." value="0" />
@@ -129,13 +129,13 @@ const styles = {
 
 const mapStateToProps = (state) => {
   return {
-    product_sub_types: state.store.product_sub_types,
-    selected_store_id: state.store.selected_store_id,
-    selected_product_type_id: state.store.selected_product_type_id,
+    product_sub_categories: state.store.product_sub_categories,
+    selected_store: state.store.selected_store,
+    selected_product_category: state.store.selected_product_category,
   };
 };
 
 export default connect(mapStateToProps, {
-  fetchProductSubTypesByStoreIdTypeId,
+  fetchProductSubCategoriesByStoreIdCategoryId,
   setValue,
 })(Products);

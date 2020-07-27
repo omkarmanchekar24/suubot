@@ -1,17 +1,19 @@
 import React, {Component} from 'react';
-import {Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
-import {Button} from 'react-native-paper';
+import {Text, View, Image} from 'react-native';
+
 import NumericInput from 'react-native-numeric-input';
 import {heightToDp, widthToDp} from '../../Responsive';
 
 class Card extends Component {
   state = {
     quantity: '',
-    cart: [],
   };
+  // componentWillMount() {
+  //   console.log(this.props);
+  // }
 
   render() {
-    const {id, name, cost} = this.props.item;
+    const {_id, name, cost, unit} = this.props.item;
     return (
       <View style={styles.container}>
         <View style={styles.box1}>
@@ -21,7 +23,7 @@ class Card extends Component {
               {'\u20B9 '}
               {cost}
             </Text>
-            <Text>Unit</Text>
+            <Text>{`Unit: ${unit}`}</Text>
           </View>
         </View>
         <View style={styles.box2}>
@@ -34,14 +36,12 @@ class Card extends Component {
           <NumericInput
             type="plus-minus"
             rounded
-            onChange={(value) => console.log(value)}
             minValue={0}
             maxValue={99}
             totalHeight={widthToDp(10)}
             value={this.state.quantity}
             onChange={(value) => {
-              this.setState({quantity: value});
-              //this.props.onChange({id, quantity: value});
+              this.props.onQuantityChange({id: _id, quantity: value});
             }}
           />
         </View>

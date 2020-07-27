@@ -12,7 +12,7 @@ import isEmpty from '../validation/is-empty';
 
 const INITIAL_STATE = {
   id: '',
-  name: '',
+  name: 'Omkar Manchekar',
   email: 'omkar@gmail.com',
   mobile: '7045564124',
   address: 'test',

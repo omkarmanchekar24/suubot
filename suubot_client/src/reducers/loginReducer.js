@@ -21,12 +21,14 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         logging: true,
+        errors: {},
       };
     }
     case LOGIN_SUCCESS: {
       return {
         ...state,
         logging: false,
+        errors: {},
       };
     }
     case LOGIN_FAILED: {

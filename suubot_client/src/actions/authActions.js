@@ -54,7 +54,7 @@ export const generateOtp = ({email, mobile}) => {
     };
 
     axios
-      .post(ip + '/api/users/otp', data)
+      .post(ip + '/api/customers/users/otp', data)
       .then((response) => {
         dispatch({
           type: GENERATE_OTP_SUCCESS,
@@ -78,7 +78,7 @@ export const registeruser = (userData) => (dispatch) => {
   });
 
   axios
-    .post(ip + '/api/users/register', userData)
+    .post(ip + '/api/customers/users/register', userData)
     .then((response) => {
       const {token} = response.data;
 
@@ -108,7 +108,7 @@ export const loginUser = ({email, password}) => {
     });
 
     axios
-      .post(ip + '/api/users/login', {email, password})
+      .post(ip + '/api/customers/users/login', {email, password})
       .then((response) => {
         const {token} = response.data;
 
@@ -128,6 +128,7 @@ export const loginUser = ({email, password}) => {
         });
       })
       .catch((err) => {
+        console.log({err});
         dispatch({
           type: LOGIN_FAILED,
           payload: err.response.data,

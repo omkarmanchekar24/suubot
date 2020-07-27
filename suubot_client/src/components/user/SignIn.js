@@ -5,17 +5,17 @@ import {connect} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
 
 //Components
-import {Header, Spinner} from '../components';
-import {widthToDp, heightToDp} from '../Responsive';
+import {Header, Spinner, Input} from '../../components';
+import {widthToDp, heightToDp} from '../../Responsive';
 
 //Actions
 import {
   registerUpdate,
   registeruser,
   generateOtp,
-} from '../actions/authActions';
+} from '../../actions/authActions';
 
-import validateRegisterInput from '../validation/register';
+import validateRegisterInput from '../../validation/register';
 
 class SignIn extends Component {
   state = {
@@ -25,18 +25,18 @@ class SignIn extends Component {
 
   onClick() {
     const data = {
+      name: this.props.name,
       email: this.props.email,
       mobile: this.props.mobile,
       address: this.props.address,
       street: this.props.street,
       town: this.props.town,
       city: this.props.city,
-      states: this.props.states,
+      state: this.props.states,
       pincode: this.props.pincode,
       country: this.props.country,
       username: this.props.username,
       password: this.props.password,
-      isAuthenticated: this.props.isAuthenticated,
     };
 
     const {errors, isValid} = validateRegisterInput(data);
@@ -93,134 +93,108 @@ class SignIn extends Component {
           <ScrollView ref="_scrollView">
             <Text style={styles.title}>Sign in</Text>
 
-            <Text style={styles.label}>*Email</Text>
-            <TextInput
+            <Input
+              label="*Name"
+              name="name"
+              editable={!this.state.generating}
+              value={this.props.name}
+              onChangeText={this.onChange.bind(this)}
+            />
+            {errors.name && <Text style={styles.error}>{errors.name}</Text>}
+
+            <Input
+              label="*Email"
+              name="email"
               editable={!this.state.generating}
               value={this.props.email}
-              onChangeText={(text) => {
-                this.onChange('email', text);
-              }}
-              style={styles.input}
+              onChangeText={this.onChange.bind(this)}
             />
             {errors.email && <Text style={styles.error}>{errors.email}</Text>}
 
-            <Text style={styles.label}>*Mobile</Text>
-            <TextInput
+            <Input
+              label="*Mobile"
+              name="mobile"
               editable={!this.state.generating}
-              keyboardType="number-pad"
               value={this.props.mobile}
-              onChangeText={(text) => {
-                this.onChange('mobile', text);
-              }}
-              style={styles.input}
+              onChangeText={this.onChange.bind(this)}
             />
             {errors.mobile && <Text style={styles.error}>{errors.mobile}</Text>}
 
-            <Text style={styles.label}>*Address</Text>
-            <TextInput
-              editable={!this.state.generating}
-              value={this.props.address}
-              onChangeText={(text) => {
-                this.onChange('address', text);
-              }}
-              style={styles.input}
-            />
-            {errors.address && (
-              <Text style={styles.error}>{errors.address}</Text>
-            )}
-
-            <Text style={styles.label}>*Street</Text>
-            <TextInput
+            <Input
+              label="*Street"
+              name="street"
               editable={!this.state.generating}
               value={this.props.street}
-              onChangeText={(text) => {
-                this.onChange('street', text);
-              }}
-              style={styles.input}
+              onChangeText={this.onChange.bind(this)}
             />
             {errors.street && <Text style={styles.error}>{errors.street}</Text>}
 
-            <Text style={styles.label}>*Town/Suburb</Text>
-            <TextInput
+            <Input
+              label="*Town/Suburb"
+              name="town"
               editable={!this.state.generating}
               value={this.props.town}
-              onChangeText={(text) => {
-                this.onChange('town', text);
-              }}
-              style={styles.input}
+              onChangeText={this.onChange.bind(this)}
             />
             {errors.town && <Text style={styles.error}>{errors.town}</Text>}
 
-            <Text style={styles.label}>*City</Text>
-            <TextInput
+            <Input
+              label="*City"
+              name="city"
               editable={!this.state.generating}
               value={this.props.city}
-              onChangeText={(text) => {
-                this.onChange('city', text);
-              }}
-              style={styles.input}
+              onChangeText={this.onChange.bind(this)}
             />
             {errors.city && <Text style={styles.error}>{errors.city}</Text>}
 
-            <Text style={styles.label}>*State</Text>
-            <TextInput
+            <Input
+              label="*State"
+              name="state"
               editable={!this.state.generating}
-              value={this.props.states}
-              onChangeText={(text) => {
-                this.onChange('states', text);
-              }}
-              style={styles.input}
+              value={this.props.state}
+              onChangeText={this.onChange.bind(this)}
             />
             {errors.states && <Text style={styles.error}>{errors.states}</Text>}
 
-            <Text style={styles.label}>*Picode</Text>
-            <TextInput
+            <Input
+              label="*Pincode"
+              name="pincode"
               editable={!this.state.generating}
-              keyboardType="number-pad"
               value={this.props.pincode}
-              onChangeText={(text) => {
-                this.onChange('pincode', text);
-              }}
-              style={styles.input}
+              onChangeText={this.onChange.bind(this)}
             />
             {errors.pincode && (
               <Text style={styles.error}>{errors.pincode}</Text>
             )}
 
-            <Text style={styles.label}>*Country</Text>
-            <TextInput
+            <Input
+              label="*Country"
+              name="country"
               editable={!this.state.generating}
               value={this.props.country}
-              onChangeText={(text) => {
-                this.onChange('country', text);
-              }}
-              style={styles.input}
+              onChangeText={this.onChange.bind(this)}
             />
             {errors.country && (
               <Text style={styles.error}>{errors.country}</Text>
             )}
 
-            <Text style={styles.label}>*Username</Text>
-            <TextInput
+            <Input
+              label="*Username"
+              name="username"
               editable={!this.state.generating}
               value={this.props.username}
-              onChangeText={(text) => {
-                this.onChange('username', text);
-              }}
-              style={styles.input}
+              onChangeText={this.onChange.bind(this)}
             />
             {errors.username && (
               <Text style={styles.error}>{errors.username}</Text>
             )}
 
-            <Text style={styles.label}>*Password</Text>
-            <TextInput
+            <Input
+              label="*Password"
+              name="password"
               editable={!this.state.generating}
               value={this.props.password}
-              onChangeText={(text) => {
-                this.onChange('password', text);
-              }}
-              style={styles.input}
+              onChangeText={this.onChange.bind(this)}
             />
             {errors.password && (
               <Text style={styles.error}>{errors.password}</Text>
@@ -274,6 +248,7 @@ const styles = {
 
 const mapStateToProps = (state) => {
   return {
+    name: state.register.name,
     email: state.register.email,
     mobile: state.register.mobile,
     address: state.register.address,

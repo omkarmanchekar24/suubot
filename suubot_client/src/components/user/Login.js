@@ -1,22 +1,35 @@
 import React, {Component} from 'react';
-import {Text, View, TextInput} from 'react-native';
+import {Text, View} from 'react-native';
 import {Button} from 'react-native-paper';
 import {connect} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
-import {widthToDp, heightToDp} from '../Responsive';
-import validateLoginInput from '../validation/login';
+
+import validateLoginInput from '../../validation/login';
+
+import {widthToDp, heightToDp} from '../../Responsive';
 
 //Components
-import {Header, Footer} from '../components';
+import {Header, Footer, Input} from '../../components';
 
 //Actions
-import {loginUser, loginUpdate} from '../actions/authActions';
+import {loginUser, loginUpdate} from '../../actions/authActions';
 
 class Login extends Component {
   state = {
     errors: {},
     logging: false,
   };
+
+  // componentDidMount() {
+  //   BackHandler.addEventListener(
+  //     'hardwareBackPress',
+  //     this.handleBackPress.bind(this),
+  //   );
+  // }
+
+  // handleBackPress() {
+  //   BackHandler.exitApp();
+  // }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.logging) {
@@ -57,30 +70,25 @@ class Login extends Component {
         <View style={styles.form}>
           <Text style={styles.title}>Log in</Text>
 
-          <Text style={styles.label}>*Email</Text>
-          <TextInput
+          <Input
+            label="*Email"
+            name="email"
             editable={!this.state.logging}
             value={this.props.email}
-            onChangeText={(text) => {
-              this.onChange('email', text);
-            }}
-            style={styles.input}
+            onChangeText={this.onChange.bind(this)}
           />
           {errors.email && <Text style={styles.error}>{errors.email}</Text>}
 
-          <Text style={styles.label}>*Password</Text>
-          <TextInput
+          <Input
+            label="*Password"
+            name="password"
             editable={!this.state.logging}
             value={this.props.password}
-            onChangeText={(text) => {
-              this.onChange('password', text);
-            }}
-            style={styles.input}
+            onChangeText={this.onChange.bind(this)}
           />
           {errors.password && (
             <Text style={styles.error}>{errors.password}</Text>
           )}
-
           <Button
             mode="outlined"
             disabled={this.state.logging}
@@ -88,7 +96,6 @@ class Login extends Component {
             onPress={this.onClick.bind(this)}>
             Log in
           </Button>
-
           <Text style={styles.note}>Dont have an account?</Text>
           <Button
             mode="outlined"
@@ -142,6 +149,7 @@ const mapStateToProps = (state) => {
     password: state.login.password,
     logging: state.login.logging,
     errors: state.login.errors,
+    token: state.auth.token,
   };
 };
 

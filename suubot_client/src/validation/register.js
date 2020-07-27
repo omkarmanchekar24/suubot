@@ -16,6 +16,10 @@ function validateRegisterInput(data) {
   data.pincode = !isEmpty(data.pincode) ? data.pincode : '';
   data.country = !isEmpty(data.country) ? data.country : '';
 
+  if (data.name.length === 0) {
+    errors.name = 'Name field is required';
+  }
+
   if (data.email.length === 0) {
     errors.email = 'Email field is required';
   }
@@ -48,7 +52,7 @@ function validateRegisterInput(data) {
     errors.street = 'Street field is required';
   }
 
-  if (data.states.length === 0) {
+  if (data.state.length === 0) {
     errors.states = 'State field is required';
   }
 

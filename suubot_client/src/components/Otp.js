@@ -38,13 +38,14 @@ class Otp extends Component {
       const userData = {
         otp: this.state.otp,
         id: this.props.id,
+        name: this.props.name,
         email: this.props.email,
         mobile: this.props.mobile,
         address: this.props.address,
         street: this.props.street,
         town: this.props.town,
         city: this.props.city,
-        states: this.props.states,
+        state: this.props.states,
         pincode: this.props.pincode,
         country: this.props.country,
         username: this.props.username,
@@ -64,6 +65,7 @@ class Otp extends Component {
           <Text style={styles.title}>Enter Otp :</Text>
           <TextInput
             style={styles.input}
+            keyboardType="number-pad"
             value={this.state.otp}
             editable={!this.state.registering}
             onChangeText={(text) => {
@@ -107,6 +109,7 @@ const styles = {
 const mapStateToProps = (state) => {
   return {
     id: state.register.id,
+    name: state.register.name,
     email: state.register.email,
     mobile: state.register.mobile,
     address: state.register.address,
