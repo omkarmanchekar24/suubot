@@ -3,7 +3,7 @@ import {Text, View} from 'react-native';
 import {widthToDp, heightToDp} from '../../Responsive';
 import {IconButton} from 'react-native-paper';
 import {connect} from 'react-redux';
-
+import {Actions} from 'react-native-router-flux';
 import {logoutUser} from '../../actions/authActions';
 
 class Header extends Component {
@@ -23,7 +23,15 @@ class Header extends Component {
 
   renderProfile() {
     if (this.props.profile) {
-      return <IconButton icon="bell" size={20} onPress={() => {}} />;
+      return (
+        <IconButton
+          icon="bell"
+          size={20}
+          onPress={() => {
+            Actions.payment();
+          }}
+        />
+      );
     }
   }
   render() {

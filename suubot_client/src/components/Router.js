@@ -1,5 +1,6 @@
 import React from 'react';
-import {Scene, Router} from 'react-native-router-flux';
+import {ToastAndroid, BackHandler} from 'react-native';
+import {Scene, Router, Actions, ActionConst} from 'react-native-router-flux';
 
 //Components
 import {
@@ -13,6 +14,8 @@ import {
   Product2,
   Payment,
   Splash,
+  SellerWise,
+  SellerWiseOrder,
 } from '../components';
 
 const RouterComponent = () => {
@@ -34,6 +37,8 @@ const RouterComponent = () => {
           <Scene key="products" component={Products} hideNavBar />
           <Scene key="product2" component={Product2} hideNavBar />
           <Scene key="payment" component={Payment} hideNavBar />
+          <Scene key="sellerwise" component={SellerWise} hideNavBar />
+          <Scene key="sellerwiseorder" component={SellerWiseOrder} hideNavBar />
         </Scene>
       </Scene>
     </Router>

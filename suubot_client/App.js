@@ -12,24 +12,24 @@ console.disableYellowBox = true;
 class App extends Component {
   constructor(props) {
     super(props);
-    this.handleBackButton = this.handleBackButton.bind(this);
+    //this.handleBackButton = this.handleBackButton.bind(this);
   }
 
-  componentDidMount() {
-    this.BackHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      this.handleBackButton,
-    );
-  }
-  componentWillUnmount() {
-    // BackHandler.removeEventListener('hardwareBackPress');
-  }
+  // componentDidMount() {
+  //   this.BackHandler = BackHandler.addEventListener(
+  //     'hardwareBackPress',
+  //     this.handleBackButton,
+  //   );
+  // }
+  // componentWillUnmount() {
+  //   // BackHandler.removeEventListener('hardwareBackPress');
+  // }
 
-  handleBackButton() {
-    if (Actions.currentScene === 'welcome') {
-      BackHandler.exitApp();
-    }
-  }
+  // handleBackButton() {
+  //   if (Actions.currentScene === 'welcome') {
+  //     BackHandler.exitApp();
+  //   }
+  // }
 
   render() {
     //const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));

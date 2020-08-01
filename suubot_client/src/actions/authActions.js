@@ -25,6 +25,9 @@ import {
   REGISTER_FAILED,
 } from './types';
 
+//Actions
+import {fetchPurchaseHistory} from './storeActions';
+
 import {ip} from '../config/config';
 
 export const registerUpdate = ({prop, value}) => {

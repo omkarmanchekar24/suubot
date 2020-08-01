@@ -48,7 +48,7 @@ router.post("/createstore", (req, res) => {
   if (req.body.gst) storeFields.gst = req.body.gst;
   if (req.body.pan) storeFields.pan = req.body.pan;
   if (req.body.paytm) storeFields.paytm = req.body.paytm;
-  if (req.body.pepay) storeFields.pepay = req.body.pepay;
+  if (req.body.pepay) storeFields.phonepay = req.body.phonepay;
   if (req.body.aboutUs) storeFields.aboutUs = req.body.aboutUs;
   if (req.body.areaOfDelivery)
     storeFields.areaOfDelivery = req.body.areaOfDelivery;

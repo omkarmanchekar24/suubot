@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, Picker, ScrollView, ToastAndroid} from 'react-native';
+import {Text, View, Picker, ScrollView, BackHandler, Share} from 'react-native';
 import {Button} from 'react-native-paper';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
@@ -13,9 +13,6 @@ import {fetchProductCategories, setValue} from '../../actions/storeActions';
 
 class Select extends Component {
   state = {pickerValue: '', product_categories: []};
-  clickme() {
-    alert(this.state.pickerValue);
-  }
 
   invite() {
     Share.share({
@@ -55,12 +52,20 @@ class Select extends Component {
                 selectedValue={this.state.pickerValue}
                 onValueChange={(itemValue, itemIndex) => {
                   this.setState({pickerValue: itemValue});
-                  this.props.setValue({
-                    prop: 'selected_product_category',
-                    value: itemValue,
-                  });
-                  if (itemIndex !== 0) {
-                    Actions.stores();
+                  if (itemValue !== '0') {
+                    let category = this.state.product_categories.filter(
+                      (item) => {
+                        return item._id === itemValue;
+                      },
+                    );
+
+                    this.props.setValue({
+                      prop: 'selected_product_category',
+                      value: category[0],
+                    });
+                    if (itemIndex !== 0) {
+                      Actions.stores();
+                    }
                   }
                 }}>
                 <Picker.Item label="Select an option" value="0" />

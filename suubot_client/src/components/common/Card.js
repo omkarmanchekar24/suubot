@@ -8,12 +8,9 @@ class Card extends Component {
   state = {
     quantity: '',
   };
-  // componentWillMount() {
-  //   console.log(this.props);
-  // }
 
   render() {
-    const {_id, name, cost, unit} = this.props.item;
+    const {_id, name, cost, unit, weight} = this.props.item;
     return (
       <View style={styles.container}>
         <View style={styles.box1}>
@@ -41,7 +38,14 @@ class Card extends Component {
             totalHeight={widthToDp(10)}
             value={this.state.quantity}
             onChange={(value) => {
-              this.props.onQuantityChange({id: _id, quantity: value});
+              this.props.onQuantityChange({
+                id: _id,
+                quantity: value,
+                name: name,
+                cost: cost,
+                unit: unit,
+                weight: weight,
+              });
             }}
           />
         </View>

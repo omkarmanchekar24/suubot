@@ -5,6 +5,7 @@ const passport = require("passport");
 const cors = require("cors");
 const router = express.Router();
 const logger = require("./config/logger");
+const engines = require("consolidate");
 
 //Logger
 const winston = require("winston"),
@@ -14,12 +15,18 @@ const winston = require("winston"),
 const users = require("./routes/api/customers/users");
 const products = require("./routes/api/customers/products");
 const stores_customer = require("./routes/api/customers/stores");
+const paytm = require("./routes/api/customers/paytm");
 
 const stores = require("./routes/api/seller/stores");
 
 const app = express();
 
+app.engine("ejs", engines.ejs);
+app.set("views", "./views");
+app.set("view engine", "ejs");
+
 app.use(cors({ origin: true, credentials: true }));
+app.use(express.static("public"));
 
 //Logger middleware
 app.use((req, res, next) => {
@@ -46,15 +53,15 @@ app.use(passport.initialize());
 //Passport Config
 require("./config/passport")(passport);
 
-app.use((req, res, next) => {
-  console.log(req.body);
-  let oldSend = res.send;
-  res.send = function (data) {
-    console.log(JSON.parse(data));
-    oldSend.apply(res, arguments);
-  };
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log(req.body);
+//   let oldSend = res.send;
+//   res.send = function (data) {
+//     console.log(JSON.parse(data));
+//     oldSend.apply(res, arguments);
+//   };
+//   next();
+// });
 
 //Use routes
 
@@ -65,6 +72,7 @@ app.use((req, res, next) => {
 app.use("/api/customers/users", users);
 app.use("/api/customers/products", products);
 app.use("/api/customers/stores", stores_customer);
+app.use("/api/customers/paytm", paytm);
 
 //seller
 app.use("/api/seller/stores", stores);

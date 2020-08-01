@@ -2,12 +2,8 @@ import {combineReducers} from 'redux';
 import registerReducer from './registerReducer';
 import authReducer from './authReducer';
 import loginReducer from './loginReducer';
-import errorReducer from './authReducer';
 import storeReducer from './storeReducer';
 import cartReducer from './cartReducer';
-
-import {persistReducer} from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 
 import {LOGOUT_USER} from '../actions/types';
 

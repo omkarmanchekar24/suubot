@@ -32,10 +32,10 @@ class Product2 extends Component {
   componentWillMount() {
     const {selected_store, selected_sub_category} = this.props;
 
-    this.props.fetchProductsByStoreIdSubCategoryId({
-      selected_store,
-      selected_sub_category,
-    });
+    this.props.fetchProductsByStoreIdSubCategoryId(
+      selected_store._id,
+      selected_sub_category._id,
+    );
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -50,10 +50,13 @@ class Product2 extends Component {
     return (
       <Card
         item={item}
-        onQuantityChange={({id, quantity}) => {
+        onQuantityChange={({id, quantity, name, cost, unit, weight}) => {
           if (this.state.cart.length === 0) {
             this.setState({
-              cart: [...this.state.cart, {id, quantity}],
+              cart: [
+                ...this.state.cart,
+                {id, quantity, name, cost, unit, weight},
+              ],
             });
           } else {
             const found = this.state.cart.some((el) => el.id === id);
@@ -61,6 +64,7 @@ class Product2 extends Component {
               let arr = [...this.state.cart];
               let index = this.state.cart.findIndex((obj) => obj.id === id);
               let itemm = {...arr[index]};
+
               itemm.quantity = quantity;
               arr[index] = itemm;
 
@@ -69,7 +73,10 @@ class Product2 extends Component {
               });
             } else {
               this.setState({
-                cart: [...this.state.cart, {id, quantity}],
+                cart: [
+                  ...this.state.cart,
+                  {id, quantity, name, cost, unit, weight},
+                ],
               });
             }
           }
@@ -113,12 +120,13 @@ class Product2 extends Component {
   }
 
   render() {
+    const {selected_sub_category} = this.props;
     return (
       <View style={styles.container}>
         <Header style={styles.header} profile={true} logout={true} />
         <View style={styles.body}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Text style={styles.label}>Products</Text>
+            <Text style={styles.label}>{selected_sub_category.name}</Text>
             <FlatList
               data={this.state.products}
               renderItem={this.renderItem.bind(this)}
@@ -133,11 +141,19 @@ class Product2 extends Component {
             onPress={this.onAddPress.bind(this)}>
             Add to cart
           </Button>
-
           <Button
             mode="outlined"
             style={styles.payment}
             onPress={() => {
+              this.props.resetCart();
+            }}>
+            Reset Cart
+          </Button>
+          <Button
+            mode="outlined"
+            style={styles.payment}
+            onPress={() => {
+              //this.props.resetCart();
               Actions.payment();
             }}>
             Make payment

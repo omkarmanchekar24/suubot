@@ -13,6 +13,12 @@ import {
   FETCH_PROD_SUB_CATEGORIES_STORE_ID_PROD_ID,
   FETCH_PROD_SUB_CATEGORIES_STORE_ID_PROD_ID_FAILED,
   FETCH_PROD_SUB_CATEGORIES_STORE_ID_PROD_ID_SUCCESS,
+  FETCH_PURCHASE_HISTORY_SELLER_WISE,
+  FETCH_PURCHASE_HISTORY_SELLER_WISE_SUCCESS,
+  FETCH_PURCHASE_HISTORY_SELLER_WISE_FAILED,
+  FETCH_PURCHASE_HISTORY,
+  FETCH_PURCHASE_HISTORY_SUCCESS,
+  FETCH_PURCHASE_HISTORY_FAILED,
 } from '../actions/types';
 
 import axios from 'axios';
@@ -85,10 +91,10 @@ export const fetchStoresByProductCategory = (type_id) => {
   };
 };
 
-export const fetchProductsByStoreIdSubCategoryId = ({
+export const fetchProductsByStoreIdSubCategoryId = (
   selected_store,
   selected_sub_category,
-}) => {
+) => {
   return (dispatch) => {
     dispatch({
       type: FETCH_PRODUCTS_BY_STORE_ID_SUB_CATEGORY_ID,
@@ -114,10 +120,10 @@ export const fetchProductsByStoreIdSubCategoryId = ({
   };
 };
 
-export const fetchProductSubCategoriesByStoreIdCategoryId = ({
+export const fetchProductSubCategoriesByStoreIdCategoryId = (
   selected_store,
   selected_product_category,
-}) => {
+) => {
   return (dispatch) => {
     dispatch({
       type: FETCH_PROD_SUB_CATEGORIES_STORE_ID_PROD_ID,
@@ -138,6 +144,56 @@ export const fetchProductSubCategoriesByStoreIdCategoryId = ({
         console.log(err);
         dispatch({
           type: FETCH_PROD_SUB_CATEGORIES_STORE_ID_PROD_ID_FAILED,
+          payload: err.response.data,
+        });
+      });
+  };
+};
+
+export const fetchPurchaseHistorySellerWise = (user_id) => {
+  return (dispatch) => {
+    dispatch({
+      type: FETCH_PURCHASE_HISTORY_SELLER_WISE,
+    });
+    dispatch(fetchPurchaseHistory(user_id));
+    axios
+      .post(ip + '/api/customers/products/fetch_orders_sellerwise', {
+        user_id: user_id,
+      })
+      .then((response) => {
+        dispatch({
+          type: FETCH_PURCHASE_HISTORY_SELLER_WISE_SUCCESS,
+          payload: response.data,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: FETCH_PURCHASE_HISTORY_SELLER_WISE_FAILED,
+          payload: err.response.data,
+        });
+      });
+  };
+};
+
+export const fetchPurchaseHistory = (user_id) => {
+  return (dispatch) => {
+    dispatch({
+      type: FETCH_PURCHASE_HISTORY,
+    });
+
+    axios
+      .post(ip + '/api/customers/products/fetch_orders', {
+        user_id: user_id,
+      })
+      .then((response) => {
+        dispatch({
+          type: FETCH_PURCHASE_HISTORY_SUCCESS,
+          payload: response.data,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: FETCH_PURCHASE_HISTORY_FAILED,
           payload: err.response.data,
         });
       });

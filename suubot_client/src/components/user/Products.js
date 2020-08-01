@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {Text, View, Picker, ScrollView, Share} from 'react-native';
+import {
+  Text,
+  View,
+  Picker,
+  ScrollView,
+  Share,
+  ToastAndroid,
+} from 'react-native';
 import {Button} from 'react-native-paper';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
@@ -29,10 +36,10 @@ class Products extends Component {
 
   componentWillMount() {
     const {selected_store, selected_product_category} = this.props;
-    this.props.fetchProductSubCategoriesByStoreIdCategoryId({
-      selected_store,
-      selected_product_category,
-    });
+    this.props.fetchProductSubCategoriesByStoreIdCategoryId(
+      selected_store._id,
+      selected_product_category._id,
+    );
   }
 
   componentWillReceiveProps(nextProps) {
@@ -44,22 +51,31 @@ class Products extends Component {
   }
 
   render() {
+    const {selected_product_category} = this.props;
     return (
       <View style={styles.container}>
         <Header style={styles.header} profile={true} logout={true} />
         <View style={styles.body}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Text style={styles.label}>Products</Text>
+            <Text style={styles.label}>
+              {selected_product_category.category}
+            </Text>
             <View style={styles.pickerContainer}>
               <Picker
                 style={styles.picker}
                 selectedValue={this.state.pickerValue}
                 onValueChange={(itemValue, itemIndex) => {
+                  let sub_category = this.state.product_sub_categories.filter(
+                    (item) => {
+                      return item._id === itemValue;
+                    },
+                  );
+
                   this.setState({pickerValue: itemValue});
                   if (itemValue !== '0') {
                     this.props.setValue({
                       prop: 'selected_sub_category',
-                      value: itemValue,
+                      value: sub_category[0],
                     });
                     Actions.product2();
                   }

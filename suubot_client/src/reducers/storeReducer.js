@@ -13,6 +13,12 @@ import {
   FETCH_PROD_SUB_CATEGORIES_STORE_ID_PROD_ID,
   FETCH_PROD_SUB_CATEGORIES_STORE_ID_PROD_ID_FAILED,
   FETCH_PROD_SUB_CATEGORIES_STORE_ID_PROD_ID_SUCCESS,
+  FETCH_PURCHASE_HISTORY_SELLER_WISE,
+  FETCH_PURCHASE_HISTORY_SELLER_WISE_FAILED,
+  FETCH_PURCHASE_HISTORY_SELLER_WISE_SUCCESS,
+  FETCH_PURCHASE_HISTORY,
+  FETCH_PURCHASE_HISTORY_FAILED,
+  FETCH_PURCHASE_HISTORY_SUCCESS,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -20,11 +26,13 @@ const INITIAL_STATE = {
   product_categories: [],
   product_sub_categories: [],
   products: [],
-  selected_product_category: '',
-  selected_store: '',
-  selected_sub_category: '',
+  selected_product_category: {},
+  selected_store: {},
+  selected_sub_category: {},
   fetching: false,
   errors: {},
+  purchaseHistorySellerWise: [],
+  purchaseHistory: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -118,6 +126,44 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         fetching: false,
         errors: action.payload,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY_SELLER_WISE: {
+      return {
+        ...state,
+        fetching: true,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY_SELLER_WISE_SUCCESS: {
+      return {
+        ...state,
+        fetching: false,
+        purchaseHistorySellerWise: action.payload,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY_SELLER_WISE_FAILED: {
+      return {
+        ...state,
+        fetching: false,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY: {
+      return {
+        ...state,
+        fetching: true,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY_SUCCESS: {
+      return {
+        ...state,
+        fetching: false,
+        purchaseHistory: action.payload,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY_FAILED: {
+      return {
+        ...state,
+        fetching: false,
       };
     }
     default: {

@@ -29,7 +29,7 @@ class Stores extends Component {
 
   componentWillMount() {
     const {selected_product_category} = this.props;
-    this.props.fetchStoresByProductCategory(selected_product_category);
+    this.props.fetchStoresByProductCategory(selected_product_category._id);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -41,22 +41,29 @@ class Stores extends Component {
   }
 
   render() {
+    const {selected_product_category} = this.props;
     return (
       <View style={styles.container}>
         <Header style={styles.header} profile={true} logout={true} />
         <View style={styles.body}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Text style={styles.label}>Stores</Text>
+            <Text style={styles.label}>
+              Stores Selling {selected_product_category.category}
+            </Text>
             <View style={styles.pickerContainer}>
               <Picker
                 style={styles.picker}
                 selectedValue={this.state.pickerValue}
                 onValueChange={(itemValue, itemIndex) => {
+                  let store = this.state.stores.filter((item) => {
+                    return item._id === itemValue;
+                  });
+
                   this.setState({pickerValue: itemValue});
                   if (itemIndex !== 0) {
                     this.props.setValue({
                       prop: 'selected_store',
-                      value: itemValue,
+                      value: store[0],
                     });
                     Actions.products();
                   }

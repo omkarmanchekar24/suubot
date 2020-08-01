@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// const category = new Schema({
+//   _id: Schema.Types.ObjectId,
+//   name:
+// });
+
 //Create Schema
 const StoreSchema = new Schema({
   name: {
@@ -15,6 +20,13 @@ const StoreSchema = new Schema({
     type: String,
     required: true,
   },
+  categories: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "productcategory",
+    },
+    { _id: false },
+  ],
   address: {
     street: {
       type: String,

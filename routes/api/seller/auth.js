@@ -9,8 +9,6 @@ const fast2sms = require("fast-two-sms");
 const User = require("../../../models/User");
 const Otp = require("../../../models/Otp");
 
-const validateRegisterInput = require("../../../validation/register");
-
 require("dotenv").config();
 
 //@route    api/users/test

@@ -76,12 +76,15 @@ class Welcome extends Component {
             <Picker
               style={styles.picker}
               selectedValue={this.state.pickerValue}
-              onValueChange={(itemValue, itemIndex) =>
-                this.setState({pickerValue: itemValue})
-              }>
-              <Picker.Item label="Select an option" value="" />
-              <Picker.Item label="Item wise" value="shop" />
-              <Picker.Item label="Seller wise" value="saloon" />
+              onValueChange={(itemValue, itemIndex) => {
+                {
+                  this.setState({pickerValue: itemValue});
+                  if (itemValue === '2') Actions.sellerwise();
+                }
+              }}>
+              <Picker.Item label="Select an option" value="0" />
+              <Picker.Item label="Item wise" value="1" />
+              <Picker.Item label="Seller wise" value="2" />
             </Picker>
           </View>
           <View style={styles.search}>
