@@ -16,6 +16,15 @@ import {
   Splash,
   SellerWise,
   SellerWiseOrder,
+  SwitchAccount,
+  SellerWelcome,
+  AddItems,
+  RemoveItems,
+  PendingOrders,
+  Reviews,
+  Message,
+  EditProfile,
+  SelectRole,
 } from '../components';
 
 const RouterComponent = () => {
@@ -28,6 +37,7 @@ const RouterComponent = () => {
         <Scene key="auth">
           <Scene key="login" component={Login} hideNavBar initial />
           <Scene key="signin" component={SignIn} hideNavBar />
+          <Scene key="selectrole" component={SelectRole} hideNavBar />
           <Scene key="otp" component={Otp} hideNavBar />
         </Scene>
         <Scene key="main">
@@ -39,6 +49,18 @@ const RouterComponent = () => {
           <Scene key="payment" component={Payment} hideNavBar />
           <Scene key="sellerwise" component={SellerWise} hideNavBar />
           <Scene key="sellerwiseorder" component={SellerWiseOrder} hideNavBar />
+        </Scene>
+        <Scene key="seller">
+          <Scene key="sellerwelcome" component={SellerWelcome} hideNavBar />
+          <Scene key="additems" component={AddItems} hideNavBar />
+          <Scene key="removeitems" component={RemoveItems} hideNavBar />
+          <Scene key="pendingOrders" component={PendingOrders} hideNavBar />
+          <Scene key="message" component={Message} hideNavBar />
+          <Scene key="reviews" component={Reviews} hideNavBar />
+          <Scene key="editProfile" component={EditProfile} hideNavBar />
+        </Scene>
+        <Scene key="switchPage">
+          <Scene key="switchAccount" component={SwitchAccount} hideNavBar />
         </Scene>
       </Scene>
     </Router>

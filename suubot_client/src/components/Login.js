@@ -4,21 +4,27 @@ import {Button} from 'react-native-paper';
 import {connect} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
 
-import validateLoginInput from '../../validation/login';
+import validateLoginInput from '../validation/login';
 
-import {widthToDp, heightToDp} from '../../Responsive';
+import {widthToDp, heightToDp} from '../Responsive';
 
 //Components
-import {Header, Footer, Input} from '../../components';
+import {Header, Footer, Input, SelectRole} from '../components';
 
 //Actions
-import {loginUser, loginUpdate} from '../../actions/authActions';
+import {loginUser, loginUpdate} from '../actions/authActions';
 
 class Login extends Component {
   state = {
     errors: {},
     logging: false,
   };
+
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      Actions.main();
+    }
+  }
 
   // componentDidMount() {
   //   BackHandler.addEventListener(
@@ -150,6 +156,7 @@ const mapStateToProps = (state) => {
     logging: state.login.logging,
     errors: state.login.errors,
     token: state.auth.token,
+    isAuthenticated: state.auth.isAuthenticated,
   };
 };
 

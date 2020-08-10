@@ -6,8 +6,8 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE = {
-  email: 'omkar@gmail.com',
-  password: '444444',
+  email: 'akshay@gmail.com',
+  password: '111111',
   logging: false,
   errors: {},
 };
@@ -25,11 +25,7 @@ export default (state = INITIAL_STATE, action) => {
       };
     }
     case LOGIN_SUCCESS: {
-      return {
-        ...state,
-        logging: false,
-        errors: {},
-      };
+      return INITIAL_STATE;
     }
     case LOGIN_FAILED: {
       return {

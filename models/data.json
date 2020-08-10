@@ -1,0 +1,118 @@
+{
+  
+  "name": "Saurabh Shinde",
+  "email": "saurabh@gmail.com",
+  "mobile": "7045564124",
+  "username": "saurabh",
+  "password": "222222",
+  "address": {
+    "street": "rg road",
+    "town": "matunga",
+    "city": "mumbai",
+    "state": "maharashtra",
+    "pincode": "400020",
+    "country": "india"
+  },
+  "professional": [
+    {
+    "name": "Dr. Saurabh",
+    "email": "saurabh@gmail.com",
+    "username": "saurabh",
+    "mobile": "7045564124",
+    "gst": 15,
+    "pan": "123456",
+    "paytm": "7045564124",
+    "phonepay": "7045564124",
+    "aboutUs": "Health Clinic",
+    
+    "appointments":[
+      {
+        "name":"clinic",
+        "days":["Monday","Wednesday", "Friday"],
+        "start_time":"DATE ISO", // 12pm
+        "end_time":"DATE ISO",   // 3pm
+        "price":"String",
+        "app_time":"Minutes",    //30
+        "slots":[
+          {
+            "start":"DATE", //12PM
+            "end": "DATE",  //12:30PM
+            "isBooked": "true/false",
+            "user_id":"Ref(users)",
+          },{},{},{}],
+          "address": {
+            "street": "rg road",
+            "town": "matunga",
+            "city": "mumbai",
+            "state": "maharashtra",
+            "pincode": "400020",
+            "country": "india"
+          }
+      },
+      {
+        "name":"online",
+        "days":["Tuesday","Thursday", "Saturday"],
+        "start_time":"DATE ISO", // 4:30pm
+        "end_time":"DATE ISO",   // 9:30pm
+        "price":"String",
+        "app_time":"Minutes",    //15 
+        "slots":[
+          {
+            "start":"DATE", //4:30PM
+            "end": "DATE",  //4:45PM
+            "isBooked": "boolean", //true/false
+            "user_id":"Ref(users)",
+          },{},{},{}],
+      }
+    ],
+    
+  }]
+}
+
+
+
+{
+    "otp": "545895",
+    "name": "Brad Traversy",
+    "email": "brad@gmail.com",
+    "mobile": "7045564124",
+    "username": "brad",
+    "password": "333333",
+    "address": {
+      "street": "md road",
+      "town": "sion",
+      "city": "mumbai",
+      "state": "maharashtra",
+      "pincode": "400025",
+      "country": "india"
+    },
+    "seller": {
+      "name": "Janta Super Market",
+      "email": "brad@gmail.com",
+      "username": "brad",
+      "mobile": "7045564124",
+      "categories":[{
+          "_id": "5f251d2c578bab1f68398ab8",
+          "category":"Groceries"
+      },
+      {
+          "_id":"5f251e19348ab21f98524cfb",
+          "category":"Ice Cream"
+      }
+      ],
+      "gst": 18,
+      "pan": "123456",
+      "paytm": "7045564124",
+      "phonepay": "7045564124",
+      "aboutUs": "Local Market",
+      "address": {
+        "street": "md road",
+        "town": "matunga",
+        "city": "mumbai",
+        "state": "maharashtra",
+        "pincode": "400025",
+        "country": "india"
+      }
+    }
+  }
+  

@@ -8,26 +8,33 @@ const Schema = mongoose.Schema;
 
 //Create Schema
 const StoreSchema = new Schema({
-  name: {
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "users",
+  },
+
+  business_email: {
     type: String,
     required: true,
   },
-  email: {
-    type: String,
-    required: true,
-  },
-  mobile: {
+  business_mobile: {
     type: String,
     required: true,
   },
   categories: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "productcategory",
+      _id: {
+        type: Schema.Types.ObjectId,
+        ref: "productcategory",
+      },
+      category: {
+        type: String,
+      },
     },
     { _id: false },
+    ,
   ],
-  address: {
+  business_address: {
     street: {
       type: String,
       required: true,
@@ -63,11 +70,6 @@ const StoreSchema = new Schema({
   pan: {
     type: String,
   },
-  business_name: {
-    type: String,
-    required: true,
-  },
-
   paytm: {
     type: String,
   },
@@ -77,8 +79,8 @@ const StoreSchema = new Schema({
   aboutUs: {
     type: String,
   },
-  areaOfDelivery: { type: String },
-  minOrderValue: { type: Number },
+  areaOfDelivery: { type: String, required: true },
+  minOrderValue: { type: Number, default: 0 },
   password: {
     type: String,
     required: true,

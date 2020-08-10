@@ -31,7 +31,18 @@ class Welcome extends Component {
       <View style={styles.container}>
         <Header profile={true} style={styles.header} logout={true} />
         <View style={styles.body}>
-          <Text style={styles.title}>Welcome {this.props.user.username}</Text>
+          <View style={styles.switch}>
+            <Text style={styles.title}>Welcome {this.props.user.username}</Text>
+            <Button
+              mode="outlined"
+              onPress={() => {
+                Actions.switchPage();
+              }}
+              contentStyle={{height: heightToDp(3)}}
+              style={styles.switchButton}>
+              Work
+            </Button>
+          </View>
 
           <Text style={styles.label}>How can I help you?</Text>
           <View style={styles.pickerContainer}>
@@ -133,14 +144,13 @@ const styles = {
   },
   inputLabel: {fontSize: widthToDp(5)},
   invite: {alignSelf: 'flex-start'},
+  switch: {flexDirection: 'row', justifyContent: 'space-between'},
+  switchButton: {alignSelf: 'center'},
 };
 
 const mapStateToProps = (state) => {
   return {
-    token: state.auth.token,
     user: state.auth.user,
-    isAuthenticated: state.auth.isAuthenticated,
-    stores: state.store.stores,
   };
 };
 

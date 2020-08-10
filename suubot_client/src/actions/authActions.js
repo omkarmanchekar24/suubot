@@ -142,6 +142,7 @@ export const loginUser = ({email, password}) => {
 
 //Set logged in user
 export const setCurrentUser = ({decoded, token}) => {
+  console.log(decoded);
   return {
     type: SET_CURRENT_USER,
     payload: {decoded, token},

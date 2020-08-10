@@ -6,6 +6,8 @@ const INITIAL_STATE = {
   isAuthenticated: false,
   user: {},
   token: '',
+  selected_role: '',
+  work: {},
 };
 
 export default (state = INITIAL_STATE, action) => {

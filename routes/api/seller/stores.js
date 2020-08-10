@@ -102,11 +102,17 @@ router.post("/addproduct", (req, res) => {
   productFields.cost = req.body.cost;
 
   const newProduct = new Product(productFields);
-
   newProduct
     .save()
     .then((product) => res.json(product))
     .catch((err) => res.json(err));
+});
+
+router.post("/getcategories", async (req, res) => {
+  console.log("hit");
+  const categories = await ProductCategory.find();
+  const sub_categories = await ProductSubCategory.find();
+  return res.json({ categories: categories, sub_categories: sub_categories });
 });
 
 module.exports = router;

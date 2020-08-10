@@ -7,21 +7,15 @@ const fast2sms = require("fast-two-sms");
 
 //Load models
 const User = require("../../../models/User");
+const Store = require("../../../models/Store");
 const Otp = require("../../../models/Otp");
 
 require("dotenv").config();
 
-//@route    api/users/test
-//@desc     Tests users route
-//@access   Public
-router.get("/test", (req, res) => res.json({ msg: "Users works!" }));
-
-//@route    POST api/users/otp
+//@route    POST api/seller/otp
 //@desc     generate otp
 //@access   Public
 router.post("/otp", (req, res) => {
-  let errors = {};
-
   User.findOne({
     email: req.body.email,
   }).then((user) => {

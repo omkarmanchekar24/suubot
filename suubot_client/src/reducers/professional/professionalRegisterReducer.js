@@ -1,0 +1,18 @@
+const Initial_State = {
+  name: '',
+  email: '',
+  mobile: '',
+  street: '',
+  city: '',
+  state: '',
+  pincode: '',
+  country: '',
+  gst: '',
+  pan: '',
+  professional_name: '',
+  category: '',
+  paytm: '',
+  phonepay: '',
+  aboutUs: '',
+  areaOfService: '',
+};

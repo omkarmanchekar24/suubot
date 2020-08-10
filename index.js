@@ -16,8 +16,9 @@ const users = require("./routes/api/customers/users");
 const products = require("./routes/api/customers/products");
 const stores_customer = require("./routes/api/customers/stores");
 const paytm = require("./routes/api/customers/paytm");
-
+const admin_activity = require("./routes/api/admin/activity");
 const stores = require("./routes/api/seller/stores");
+const professionals = require("./routes/api/professional/professionals");
 
 const app = express();
 
@@ -76,6 +77,12 @@ app.use("/api/customers/paytm", paytm);
 
 //seller
 app.use("/api/seller/stores", stores);
+
+//professional
+app.use("/api/professional/", professionals);
+
+//Admin
+app.use("/api/admin/activity", admin_activity);
 
 //puchases
 
