@@ -27,3 +27,7 @@ export {default as Message} from './seller/Message';
 export {default as Reviews} from './seller/Reviews';
 export {default as EditProfile} from './seller/EditProfile';
 export {default as SelectRole} from './SelectRole';
+export {default as EditStock} from './seller/EditStock';
+export {default as ProductEdit} from './common/ProductEdit';
+export {default as ProductInput} from './common/ProductInput';
+export {default as ProductUpdate} from './seller/ProductUpdate';

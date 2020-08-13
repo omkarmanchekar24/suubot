@@ -9,7 +9,7 @@ const ProductSchema = new Schema({
   },
   store: {
     type: Schema.Types.ObjectId,
-    ref: "stores",
+    ref: "users.seller",
   },
   category: {
     type: Schema.Types.ObjectId,

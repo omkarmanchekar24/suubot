@@ -42,7 +42,7 @@ class Select extends Component {
 
     return (
       <View style={styles.container}>
-        <Header style={styles.header} profile={true} logout={true} />
+        <Header bell={true} onBack={() => Actions.welcome()} />
         <View style={styles.body}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.label}>What would you like to shop?</Text>
@@ -69,6 +69,7 @@ class Select extends Component {
                   }
                 }}>
                 <Picker.Item label="Select an option" value="0" />
+
                 {product_categories.length !== 0 ? (
                   product_categories.map((item) => {
                     return (
@@ -98,10 +99,9 @@ const styles = {
     height: '100%',
     flex: 1,
   },
-  header: {flex: 0.13},
-  body: {flex: 0.74, padding: widthToDp(8)},
-  footer: {padding: widthToDp(1), flex: 0.13, justifyContent: 'flex-end'},
 
+  body: {flex: 0.87, padding: widthToDp(8)},
+  footer: {padding: widthToDp(1), flex: 0.13, justifyContent: 'flex-end'},
   title: {fontSize: widthToDp(5), fontWeight: 'bold'},
   label: {fontSize: widthToDp(5), marginTop: heightToDp(5)},
   pickerContainer: {

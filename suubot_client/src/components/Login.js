@@ -26,17 +26,6 @@ class Login extends Component {
     }
   }
 
-  // componentDidMount() {
-  //   BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     this.handleBackPress.bind(this),
-  //   );
-  // }
-
-  // handleBackPress() {
-  //   BackHandler.exitApp();
-  // }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.logging) {
       this.setState({
@@ -72,7 +61,6 @@ class Login extends Component {
     const {errors} = this.state;
     return (
       <View style={styles.container}>
-        <Header style={styles.header} />
         <View style={styles.form}>
           <Text style={styles.title}>Log in</Text>
 

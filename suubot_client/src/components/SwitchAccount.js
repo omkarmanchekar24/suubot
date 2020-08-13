@@ -9,6 +9,9 @@ import {widthToDp, heightToDp} from '../Responsive';
 import {Header, Footer} from '../components';
 import {Actions} from 'react-native-router-flux';
 
+//Actions
+import {setAccount} from '../actions/authActions';
+
 class SwitchAccount extends Component {
   invite() {
     Share.share({
@@ -18,7 +21,12 @@ class SwitchAccount extends Component {
 
   renderSeller({item}) {
     return (
-      <TouchableOpacity style={styles.element} onPress={() => Actions.seller()}>
+      <TouchableOpacity
+        style={styles.element}
+        onPress={() => {
+          this.props.setAccount({name: 'selected_store', item});
+          Actions.seller({item});
+        }}>
         <Text>{item.name}</Text>
       </TouchableOpacity>
     );
@@ -28,7 +36,10 @@ class SwitchAccount extends Component {
     return (
       <TouchableOpacity
         style={styles.element}
-        onPress={() => Actions.professional()}>
+        onPress={() => {
+          this.props.setAccount({name: 'selected_profession', item});
+          Actions.professional();
+        }}>
         <Text>{item.name}</Text>
       </TouchableOpacity>
     );
@@ -113,4 +124,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(SwitchAccount);
+export default connect(mapStateToProps, {setAccount})(SwitchAccount);

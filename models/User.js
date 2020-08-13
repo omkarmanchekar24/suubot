@@ -144,9 +144,6 @@ const UserSchema = new Schema({
       mobile: {
         type: String,
       },
-
-      
-      
       gst: {
         type: Number,
       },

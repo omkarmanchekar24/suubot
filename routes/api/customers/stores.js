@@ -7,7 +7,7 @@ const Promise = require("bluebird");
 const { response } = require("express");
 
 //Load Models
-const Store = require("../../../models/Store");
+const User = require("../../../models/User");
 const Product = require("../../../models/Product");
 
 //@route    GET api/stores/test
@@ -16,7 +16,6 @@ const Product = require("../../../models/Product");
 router.get("/test", (req, res) => {
   return res.json({ msg: "Stores working" });
 });
-
 
 //@route    GET api/stores/
 //@desc     Get stores by product category id
@@ -28,10 +27,13 @@ router.post("/", async (req, res) => {
     });
 
     let stores = [];
-    stores = await Promise.map(products, async (item) => {
-      let temp = Store.findById(item);
-      return temp;
-    });
+
+    // stores = await User.distinct('seller')8
+
+    // stores = await Promise.map(products, async (item) => {
+    //   let temp = Store.findById(item);
+    //   return temp;
+    // });
 
     res.json(stores);
   } catch (error) {

@@ -1,4 +1,4 @@
-import {SET_CURRENT_USER} from '../actions/types';
+import {SET_CURRENT_USER, SET_ACCOUNT} from '../actions/types';
 
 import isEmpty from '../validation/is-empty';
 
@@ -6,8 +6,8 @@ const INITIAL_STATE = {
   isAuthenticated: false,
   user: {},
   token: '',
-  selected_role: '',
-  work: {},
+  selected_store: {},
+  selected_profession: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -18,6 +18,12 @@ export default (state = INITIAL_STATE, action) => {
         isAuthenticated: !isEmpty(action.payload.decoded),
         token: action.payload.token,
         user: action.payload.decoded,
+      };
+    }
+    case SET_ACCOUNT: {
+      return {
+        ...state,
+        [action.payload.name]: action.payload.item,
       };
     }
 

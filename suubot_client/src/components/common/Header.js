@@ -7,22 +7,18 @@ import {Actions} from 'react-native-router-flux';
 import {logoutUser} from '../../actions/authActions';
 
 class Header extends Component {
-  renderLogout() {
-    if (this.props.logout) {
+  renderBackButton() {
+    if (this.props.onBack) {
       return (
         <View>
-          <IconButton
-            icon={require('../../assets/switch.png')}
-            size={20}
-            onPress={() => this.props.logoutUser()}
-          />
+          <IconButton icon="arrow-left" size={20} onPress={this.props.onBack} />
         </View>
       );
     }
   }
 
-  renderProfile() {
-    if (this.props.profile) {
+  renderBell() {
+    if (this.props.bell) {
       return (
         <IconButton
           icon="bell"
@@ -43,7 +39,7 @@ class Header extends Component {
             justifyContent: 'center',
             height: '100%',
           }}>
-          {this.renderLogout()}
+          {this.renderBackButton()}
         </View>
 
         <Text style={styles.title}>Suubot</Text>
@@ -53,7 +49,7 @@ class Header extends Component {
             justifyContent: 'center',
             height: '100%',
           }}>
-          {this.renderProfile()}
+          {this.renderBell()}
         </View>
       </View>
     );

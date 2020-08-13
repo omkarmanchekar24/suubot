@@ -44,7 +44,7 @@ class Stores extends Component {
     const {selected_product_category} = this.props;
     return (
       <View style={styles.container}>
-        <Header style={styles.header} profile={true} logout={true} />
+        <Header bell={true} onBack={() => Actions.select()} />
         <View style={styles.body}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.label}>
@@ -71,12 +71,7 @@ class Stores extends Component {
                 <Picker.Item label="Select an option" value="0" />
                 {this.state.stores.length !== 0 ? (
                   this.state.stores.map((item) => {
-                    return (
-                      <Picker.Item
-                        label={item.business_name}
-                        value={item._id}
-                      />
-                    );
+                    return <Picker.Item label={item.name} value={item._id} />;
                   })
                 ) : (
                   <Picker.Item label="Loading..." value="0" />

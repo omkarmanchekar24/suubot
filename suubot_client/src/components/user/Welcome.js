@@ -29,19 +29,24 @@ class Welcome extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Header profile={true} style={styles.header} logout={true} />
+        <Header style={styles.header} bell={true} />
+
         <View style={styles.body}>
           <View style={styles.switch}>
             <Text style={styles.title}>Welcome {this.props.user.username}</Text>
-            <Button
-              mode="outlined"
-              onPress={() => {
-                Actions.switchPage();
-              }}
-              contentStyle={{height: heightToDp(3)}}
-              style={styles.switchButton}>
-              Work
-            </Button>
+
+            {(this.props.user.seller.length > 0 ||
+              this.props.user.professional.length > 0) && (
+              <Button
+                mode="outlined"
+                onPress={() => {
+                  Actions.switchPage();
+                }}
+                contentStyle={{height: heightToDp(3)}}
+                style={styles.switchButton}>
+                Work
+              </Button>
+            )}
           </View>
 
           <Text style={styles.label}>How can I help you?</Text>
@@ -102,9 +107,8 @@ class Welcome extends Component {
             <Text style={styles.inputLabel}>Search</Text>
             <TextInput style={styles.input} />
           </View>
-
-          <View style={{height: heightToDp(25)}} />
         </View>
+
         <Footer style={styles.footer}>
           <Button style={styles.invite} onPress={this.invite.bind(this)}>
             Invite your seller on suubot

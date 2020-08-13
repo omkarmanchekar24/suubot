@@ -78,7 +78,16 @@ router.post("/", async (req, res) => {
   const sub_category_id = req.body.sub_category_id;
 
   try {
-    const products = await Product.find({
+    let products;
+
+    if (sub_category_id === undefined) {
+      products = await Product.find({
+        store: store_id,
+      });
+      return res.status(200).json(products);
+    }
+
+    products = await Product.find({
       store: store_id,
       sub_category: sub_category_id,
     });

@@ -7,6 +7,7 @@ const ProductCategory = require("../../../models/ProductCategory");
 const ProductSubCategory = require("../../../models/ProductSubCategory");
 const Store = require("../../../models/Store");
 const Product = require("../../../models/Product");
+const { response } = require("../controller/paytm/paytm.controller");
 
 //@route    POST api/seller/createcategory
 //@desc     Create category
@@ -109,10 +110,51 @@ router.post("/addproduct", (req, res) => {
 });
 
 router.post("/getcategories", async (req, res) => {
-  console.log("hit");
   const categories = await ProductCategory.find();
   const sub_categories = await ProductSubCategory.find();
   return res.json({ categories: categories, sub_categories: sub_categories });
+});
+
+router.post("/editproduct", async (req, res) => {
+  const { _id, name, weight, quantity, cost, unit } = req.body;
+  console.log("hit");
+  Product.findByIdAndUpdate(
+    { _id },
+    {
+      $set: {
+        name,
+        weight,
+        quantity,
+        cost,
+        unit,
+      },
+    }
+  )
+    .then((product) => {
+      res.json(product);
+    })
+    .catch((err) => res.status(400).json({ error: "Something went wrong" }));
+});
+
+router.delete("/deleteproduct", (req, res) => {
+  const { _id } = req.body;
+  console.log("id:" + _id);
+
+  Product.deleteOne({ _id })
+    .then((response) => {
+      return res.status(200).json({ success: true });
+    })
+    .catch((err) => res.status(400).json({ msg: "Something went wrong!" }));
+});
+
+router.post("/getproducts", async (req, res) => {
+  const { _id } = req.body;
+  console.log(_id);
+  const categories = await ProductCategory.find();
+  const sub_categories = await ProductSubCategory.find();
+  const products = await Product.find({ store: _id });
+
+  return res.json({ categories, sub_categories, products });
 });
 
 module.exports = router;

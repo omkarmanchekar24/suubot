@@ -23,6 +23,7 @@ import {
   REGISTER,
   REGISTER_SUCCESS,
   REGISTER_FAILED,
+  SET_ACCOUNT,
 } from './types';
 
 //Actions
@@ -155,5 +156,12 @@ export const logoutUser = () => {
       type: LOGOUT_USER,
     });
     Actions.auth();
+  };
+};
+
+export const setAccount = ({name, item}) => {
+  return {
+    type: SET_ACCOUNT,
+    payload: {name, item},
   };
 };

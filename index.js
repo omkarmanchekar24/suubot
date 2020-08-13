@@ -19,6 +19,7 @@ const paytm = require("./routes/api/customers/paytm");
 const admin_activity = require("./routes/api/admin/activity");
 const stores = require("./routes/api/seller/stores");
 const professionals = require("./routes/api/professional/professionals");
+const profiles = require("./routes/api/seller/profiles");
 
 const app = express();
 
@@ -77,6 +78,7 @@ app.use("/api/customers/paytm", paytm);
 
 //seller
 app.use("/api/seller/stores", stores);
+app.use("/api/seller/profiles", profiles);
 
 //professional
 app.use("/api/professional/", professionals);

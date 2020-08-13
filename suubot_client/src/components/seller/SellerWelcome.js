@@ -6,7 +6,10 @@ import {connect} from 'react-redux';
 
 import {widthToDp, heightToDp} from '../../Responsive';
 
-import {Header, Footer} from '../../components';
+import {Header, Footer, SwitchAccount} from '../../components';
+
+//Actions
+import {setAccount} from '../../actions/authActions';
 
 class SellerWelcome extends Component {
   state = {pickerValue: ''};
@@ -18,21 +21,38 @@ class SellerWelcome extends Component {
   }
 
   render() {
+    const {name} = this.props.auth.selected_store;
     return (
       <View style={styles.container}>
-        <Header profile={true} style={styles.header} logout={true} />
+        <Header bell={true} style={styles.header} />
         <View style={styles.body}>
           <View style={styles.switch}>
-            <Text style={styles.title}>Welcome Seller</Text>
-            <Button
-              mode="outlined"
-              onPress={() => {
-                Actions.main();
-              }}
-              contentStyle={{height: heightToDp(3)}}
-              style={styles.switchButton}>
-              Personal
-            </Button>
+            <Text style={styles.title}>{name}</Text>
+
+            <View>
+              <Button
+                mode="outlined"
+                onPress={() => {
+                  this.props.setAccount({name: 'selected_store', item: {}});
+                  Actions.main();
+                }}
+                contentStyle={{height: heightToDp(3)}}
+                style={[styles.switchButton, {marginBottom: heightToDp(2)}]}>
+                Personal
+              </Button>
+
+              {this.props.auth.user.seller.length > 1 && (
+                <Button
+                  mode="outlined"
+                  onPress={() => {
+                    Actions.switchPage();
+                  }}
+                  contentStyle={{height: heightToDp(3)}}
+                  style={styles.switchButton}>
+                  Work
+                </Button>
+              )}
+            </View>
           </View>
 
           <View style={[styles.switch, {marginTop: heightToDp(5)}]}>
@@ -48,9 +68,9 @@ class SellerWelcome extends Component {
               mode="outlined"
               color="#546"
               onPress={() => {
-                Actions.removeitems();
+                Actions.editstock();
               }}>
-              Remove Items
+              Edit Stock
             </Button>
           </View>
 
@@ -124,7 +144,6 @@ const styles = {
   footer: {padding: widthToDp(1), flex: 0.13, justifyContent: 'flex-end'},
   title: {fontSize: widthToDp(5), fontWeight: 'bold'},
   label: {fontSize: widthToDp(5), marginTop: heightToDp(5)},
-
   invite: {alignSelf: 'flex-start'},
   switch: {flexDirection: 'row', justifyContent: 'space-between'},
   switchButton: {alignSelf: 'center', maxWidth: widthToDp(50)},
@@ -132,8 +151,8 @@ const styles = {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.auth.user,
+    auth: state.auth,
   };
 };
 
-export default connect(mapStateToProps, null)(SellerWelcome);
+export default connect(mapStateToProps, {setAccount})(SellerWelcome);

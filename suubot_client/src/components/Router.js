@@ -1,5 +1,5 @@
 import React from 'react';
-import {ToastAndroid, BackHandler} from 'react-native';
+import {ToastAndroid, BackHandler, Text} from 'react-native';
 import {Scene, Router, Actions, ActionConst} from 'react-native-router-flux';
 
 //Components
@@ -25,11 +25,13 @@ import {
   Message,
   EditProfile,
   SelectRole,
+  EditStock,
+  ProductUpdate,
 } from '../components';
 
 const RouterComponent = () => {
   return (
-    <Router>
+    <Router navigationBarStyle={{backgroundColor: '#546'}}>
       <Scene key="root" hideNavBar initial>
         <Scene key="splashScreen" hideNavBar initial>
           <Scene key="splash" component={Splash} hideNavBar initial />
@@ -41,7 +43,7 @@ const RouterComponent = () => {
           <Scene key="otp" component={Otp} hideNavBar />
         </Scene>
         <Scene key="main">
-          <Scene key="welcome" component={Welcome} hideNavBar initial />
+          <Scene key="welcome" component={Welcome} initial hideNavBar />
           <Scene key="select" component={Select} hideNavBar />
           <Scene key="stores" component={Stores} hideNavBar />
           <Scene key="products" component={Products} hideNavBar />
@@ -58,6 +60,8 @@ const RouterComponent = () => {
           <Scene key="message" component={Message} hideNavBar />
           <Scene key="reviews" component={Reviews} hideNavBar />
           <Scene key="editProfile" component={EditProfile} hideNavBar />
+          <Scene key="editstock" component={EditStock} hideNavBar />
+          <Scene key="productUpdate" component={ProductUpdate} hideNavBar />
         </Scene>
         <Scene key="switchPage">
           <Scene key="switchAccount" component={SwitchAccount} hideNavBar />

@@ -88,7 +88,6 @@ class SignIn extends Component {
     const {errors} = this.state;
     return (
       <View style={styles.container}>
-        <Header />
         <View style={styles.form}>
           <ScrollView ref="_scrollView">
             <Text style={styles.title}>Sign in</Text>
