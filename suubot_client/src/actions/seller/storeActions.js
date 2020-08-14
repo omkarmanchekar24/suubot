@@ -17,6 +17,9 @@ import {
   REMOVE_PRODUCT,
   REMOVE_PRODUCT_SUCCESS,
   REMOVE_PRODUCT_FAILED,
+  EDIT_PROFILE,
+  EDIT_PROFILE_SUCCESS,
+  EDIT_PROFILE_FAILED,
 } from '../types';
 
 import axios from 'axios';
@@ -164,6 +167,33 @@ export const removeProduct = ({_id}) => {
       .catch((err) => {
         console.log('error');
         console.log(err.response.data);
+      });
+  };
+};
+
+export const editProfile = (data) => {
+  return (dispatch) => {
+    dispatch({
+      type: EDIT_PROFILE,
+    });
+
+    axios
+      .post(ip + '/api/seller/profiles/editprofile', data)
+      .then((response) => {
+        ToastAndroid.show('Profile Updated!', ToastAndroid.LONG);
+        dispatch({
+          type: EDIT_PROFILE_SUCCESS,
+        });
+      })
+      .catch((err) => {
+        ToastAndroid.show(
+          'Something went wrong! Please try again later ',
+          ToastAndroid.SHORT,
+        );
+        dispatch({
+          type: EDIT_PROFILE_FAILED,
+          payload: err.response.data,
+        });
       });
   };
 };

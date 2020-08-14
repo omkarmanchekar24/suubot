@@ -14,6 +14,8 @@ router.post("/editprofile", (req, res) => {
     username,
     gst,
     pan,
+    paytm,
+    phonepay,
     street,
     town,
     city,
@@ -31,6 +33,8 @@ router.post("/editprofile", (req, res) => {
       seller["username"] = username;
       seller["gst"] = gst;
       seller["pan"] = pan;
+      seller["paytm"] = paytm;
+      seller["phonepay"] = phonepay;
       seller["address"]["street"] = street;
       seller["address"]["town"] = town;
       seller["address"]["city"] = city;
@@ -41,11 +45,11 @@ router.post("/editprofile", (req, res) => {
       doc
         .save()
         .then((seller) => res.status(200).json(seller))
-        .catch((err) => res.status(400).json(err));
+        .catch((err) => res.status(400).json({ msg: "Something went wrong" }));
       //return res.json(doc);
     })
     .catch((err) => {
-      res.status(400).json(err);
+      res.status(400).json({ msg: "User not found" });
     });
 });
 

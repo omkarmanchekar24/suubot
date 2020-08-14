@@ -1,12 +1,6 @@
 import React, {Component} from 'react';
-import {
-  Text,
-  View,
-  Picker,
-  ScrollView,
-  Share,
-  ToastAndroid,
-} from 'react-native';
+import {Text, View, Share} from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 import {Button} from 'react-native-paper';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
@@ -52,50 +46,47 @@ class Products extends Component {
 
   render() {
     const {selected_product_category} = this.props;
+    const {product_sub_categories} = this.state;
+    let data = product_sub_categories.map((item) => {
+      return {label: item.name, value: item._id};
+    });
     return (
       <View style={styles.container}>
-        <Header style={styles.header} profile={true} logout={true} />
+        <Header
+          style={styles.header}
+          bell={true}
+          onBack={() => Actions.stores()}
+        />
         <View style={styles.body}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.labelDrop}>
             <Text style={styles.label}>
               {selected_product_category.category}
             </Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                style={styles.picker}
-                selectedValue={this.state.pickerValue}
-                onValueChange={(itemValue, itemIndex) => {
-                  let sub_category = this.state.product_sub_categories.filter(
-                    (item) => {
-                      return item._id === itemValue;
-                    },
-                  );
 
-                  this.setState({pickerValue: itemValue});
-                  if (itemValue !== '0') {
-                    this.props.setValue({
-                      prop: 'selected_sub_category',
-                      value: sub_category[0],
-                    });
-                    Actions.product2();
-                  }
-                }}>
-                <Picker.Item
-                  enabled={false}
-                  label="Select an option"
-                  value="0"
-                />
-
-                {this.state.product_sub_categories.length !== 0 ? (
-                  this.state.product_sub_categories.map((item) => {
-                    return <Picker.Item label={item.name} value={item._id} />;
-                  })
-                ) : (
-                  <Picker.Item label="Loading..." value="0" />
-                )}
-              </Picker>
-            </View>
-          </ScrollView>
+            <DropDownPicker
+              placeholder="Select an option"
+              items={data}
+              containerStyle={{height: 40}}
+              style={styles.dropdown}
+              itemStyle={{
+                justifyContent: 'flex-start',
+              }}
+              dropDownStyle={{backgroundColor: '#fafafa'}}
+              onChangeItem={(item) => {
+                let sub_category = product_sub_categories.filter((sub) => {
+                  return sub._id === item.value;
+                });
+                this.props.setValue({
+                  prop: 'selected_sub_category',
+                  value: sub_category[0],
+                });
+                Actions.product2();
+              }}
+              searchableError={() => {
+                return <Text>Loading...</Text>;
+              }}
+            />
+          </View>
         </View>
         <Footer style={styles.footer}>
           <Button style={styles.invite} onPress={this.invite.bind(this)}>
@@ -114,19 +105,16 @@ const styles = {
     flex: 1,
   },
   header: {flex: 0.13},
-  body: {flex: 0.74, padding: widthToDp(8)},
-  footer: {padding: widthToDp(1), flex: 0.13, justifyContent: 'flex-end'},
-
+  body: {flex: 0.8, padding: widthToDp(8)},
+  footer: {padding: widthToDp(1), flex: 0.07, justifyContent: 'flex-end'},
   title: {fontSize: widthToDp(5), fontWeight: 'bold'},
-  label: {fontSize: widthToDp(5), marginTop: heightToDp(5)},
-  pickerContainer: {
-    borderWidth: 1,
-    borderColor: 'rgb(204, 204, 204)',
-    width: '80%',
-    borderRadius: widthToDp(2),
-    marginTop: heightToDp(2),
+  label: {fontSize: widthToDp(5)},
+  dropdown: {backgroundColor: '#fafafa'},
+  labelDrop: {
+    height: 80,
+    justifyContent: 'space-between',
+    marginTop: heightToDp(1),
   },
-  picker: {},
   search: {
     flexDirection: 'row',
     marginTop: heightToDp(5),

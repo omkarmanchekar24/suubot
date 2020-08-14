@@ -9,8 +9,13 @@ import {widthToDp, heightToDp} from '../../Responsive';
 
 import {Header, Footer, Input} from '../../components';
 
+//Actions
+import {editProfile} from '../../actions/seller/storeActions';
+
 class EditProfile extends Component {
   state = {
+    _id: this.props.user.id,
+    seller_id: this.props.selected_store._id,
     name: this.props.selected_store.name,
     email: this.props.selected_store.email,
     username: this.props.selected_store.username,
@@ -25,6 +30,7 @@ class EditProfile extends Component {
     paytm: this.props.selected_store.paytm,
     phonepay: this.props.selected_store.phonepay,
     aboutUs: this.props.selected_store.aboutUs,
+    editable: true,
   };
 
   invite() {
@@ -40,7 +46,19 @@ class EditProfile extends Component {
   }
 
   onSubmit() {
-    console.log(this.state);
+    this.props.editProfile(this.state);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.seller.loading === true) {
+      this.setState({
+        editable: false,
+      });
+    } else {
+      this.setState({
+        editable: true,
+      });
+    }
   }
 
   render() {
@@ -60,6 +78,7 @@ class EditProfile extends Component {
       paytm,
       phonepay,
       aboutUs,
+      editable,
     } = this.state;
 
     return (
@@ -67,7 +86,6 @@ class EditProfile extends Component {
         <Header
           profile={true}
           style={styles.header}
-          logout={true}
           onBack={() => Actions.sellerwelcome()}
           bell={true}
         />
@@ -76,96 +94,111 @@ class EditProfile extends Component {
             <View style={{height: screenHeight, flex: 1}}>
               <Input
                 label="Name"
-                editable={true}
+                editable={editable}
                 value={name}
                 onChangeText={this.onChangeText.bind(this)}
                 name="name"
               />
               <Input
                 label="Email"
-                editable={true}
+                editable={editable}
                 value={email}
                 onChangeText={this.onChangeText.bind(this)}
                 name="email"
               />
               <Input
                 label="Username"
-                editable={true}
+                editable={editable}
                 value={username}
                 onChangeText={this.onChangeText.bind(this)}
                 name="username"
               />
               <Input
                 label="Gst"
-                editable={true}
+                editable={editable}
                 value={gst.toString()}
                 onChangeText={this.onChangeText.bind(this)}
                 name="gst"
               />
               <Input
                 label="Pan"
-                editable={true}
+                editable={editable}
                 value={pan}
                 onChangeText={this.onChangeText.bind(this)}
                 name="pan"
               />
               <Input
+                label="Paytm"
+                editable={editable}
+                value={paytm}
+                onChangeText={this.onChangeText.bind(this)}
+                name="paytm"
+              />
+              <Input
+                label="Phonepay"
+                editable={editable}
+                value={phonepay}
+                onChangeText={this.onChangeText.bind(this)}
+                name="phonepay"
+              />
+              <Input
                 label="Street"
-                editable={true}
+                editable={editable}
                 value={street}
                 onChangeText={this.onChangeText.bind(this)}
                 name="street"
               />
               <Input
                 label="Town"
-                editable={true}
+                editable={editable}
                 value={town}
                 onChangeText={this.onChangeText.bind(this)}
                 name="town"
               />
               <Input
                 label="City"
-                editable={true}
+                editable={editable}
                 value={city}
                 onChangeText={this.onChangeText.bind(this)}
                 name="city"
               />
               <Input
                 label="State"
-                editable={true}
+                editable={editable}
                 value={state}
                 onChangeText={this.onChangeText.bind(this)}
                 name="state"
               />
               <Input
                 label="Pincode"
-                editable={true}
+                editable={editable}
                 value={pincode}
                 onChangeText={this.onChangeText.bind(this)}
                 name="pincode"
               />
               <Input
                 label="Country"
-                editable={true}
+                editable={editable}
                 value={country}
                 onChangeText={this.onChangeText.bind(this)}
                 name="country"
               />
               <Input
                 label="About us"
-                editable={true}
+                editable={editable}
                 value={aboutUs}
                 onChangeText={this.onChangeText.bind(this)}
                 name="aboutUs"
               />
               <Button
+                editable={editable}
                 style={styles.button}
                 mode="outlined"
                 onPress={this.onSubmit.bind(this)}>
                 Save
               </Button>
             </View>
-            <View style={{height: heightToDp(80)}}></View>
+            <View style={{height: heightToDp(110)}}></View>
           </KeyboardAwareScrollView>
         </View>
         <Footer style={styles.footer}>
@@ -195,7 +228,8 @@ const mapStateToProps = (state) => {
   return {
     user: state.auth.user,
     selected_store: state.auth.selected_store,
+    seller: state.seller,
   };
 };
 
-export default connect(mapStateToProps, null)(EditProfile);
+export default connect(mapStateToProps, {editProfile})(EditProfile);

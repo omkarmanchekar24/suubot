@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, Picker, Share} from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 import {Button} from 'react-native-paper';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
@@ -49,59 +50,70 @@ class Welcome extends Component {
             )}
           </View>
 
-          <Text style={styles.label}>How can I help you?</Text>
-          <View style={styles.pickerContainer}>
-            <Picker
-              style={styles.picker}
-              selectedValue={this.state.pickerValue}
-              onValueChange={(itemValue, itemIndex) => {
-                this.setState({pickerValue: itemValue});
-                if (itemIndex === 1) {
-                  Actions.select({value: itemValue});
-                }
-              }}>
-              <Picker.Item label="Select an option" value="" />
-              <Picker.Item
-                label="Would you like to shop?"
-                value="products"
-                id={1}
-              />
-              <Picker.Item label="Saloon booking" value="saloon" id={2} />
-              <Picker.Item label="Spa booking" value="spa" id={3} />
-            </Picker>
+          <View style={styles.labelDrop}>
+            <Text style={styles.label}>How can I help you?</Text>
+
+            <DropDownPicker
+              placeholder="Select an option"
+              items={[
+                {label: 'Would you like to shop?', value: '0'},
+                {label: 'Saloon Booking', value: '1'},
+                {label: 'Spa Booking', value: '2'},
+              ]}
+              containerStyle={{height: 40}}
+              style={styles.dropdown}
+              itemStyle={{
+                justifyContent: 'flex-start',
+              }}
+              dropDownStyle={{backgroundColor: '#fafafa'}}
+              onChangeItem={(item) => {
+                if (item.value === '0') Actions.select();
+              }}
+              searchableError={() => {
+                return <Text>Loading...</Text>;
+              }}
+            />
           </View>
 
-          <Text style={styles.label}>My List</Text>
-          <View style={styles.pickerContainer}>
-            <Picker
-              style={styles.picker}
-              selectedValue={this.state.pickerValue}
-              onValueChange={(itemValue, itemIndex) =>
-                this.setState({pickerValue: itemValue})
-              }>
-              <Picker.Item label="Select an option" value="" />
-              <Picker.Item label="Raj Store" value="shop" />
-              <Picker.Item label="Dr. Mihir" value="saloon" />
-              <Picker.Item label="V B Saloon" value="spa" />
-              <Picker.Item label="Super Bakery" value="spa" />
-            </Picker>
-          </View>
+          <View style={styles.labelDrop}>
+            <Text style={styles.label}>My List</Text>
 
-          <Text style={styles.label}>Statistics</Text>
-          <View style={styles.pickerContainer}>
-            <Picker
-              style={styles.picker}
-              selectedValue={this.state.pickerValue}
-              onValueChange={(itemValue, itemIndex) => {
-                {
-                  this.setState({pickerValue: itemValue});
-                  if (itemValue === '2') Actions.sellerwise();
-                }
-              }}>
-              <Picker.Item label="Select an option" value="0" />
-              <Picker.Item label="Item wise" value="1" />
-              <Picker.Item label="Seller wise" value="2" />
-            </Picker>
+            <DropDownPicker
+              placeholder="Select an option"
+              items={[
+                {label: 'Milan Store'},
+                {label: 'Apna Super Market'},
+                {label: 'Dr. Arun Jain'},
+              ]}
+              containerStyle={{height: 40}}
+              style={styles.dropdown}
+              itemStyle={{
+                justifyContent: 'flex-start',
+              }}
+              dropDownStyle={{backgroundColor: '#fafafa'}}
+              onChangeItem={(item) => {}}
+              searchableError={() => {
+                return <Text>Loading...</Text>;
+              }}
+            />
+          </View>
+          <View style={styles.labelDrop}>
+            <Text style={styles.label}>Statistics</Text>
+
+            <DropDownPicker
+              placeholder="Select an option"
+              items={[{label: 'Item wise'}, {label: 'Seller wise'}]}
+              containerStyle={{height: 40}}
+              style={styles.dropdown}
+              itemStyle={{
+                justifyContent: 'flex-start',
+              }}
+              dropDownStyle={{backgroundColor: '#fafafa'}}
+              onChangeItem={(item) => {}}
+              searchableError={() => {
+                return <Text>Loading...</Text>;
+              }}
+            />
           </View>
           <View style={styles.search}>
             <Text style={styles.inputLabel}>Search</Text>
@@ -125,15 +137,13 @@ const styles = {
   body: {flex: 0.74, padding: widthToDp(8)},
   footer: {padding: widthToDp(1), flex: 0.13, justifyContent: 'flex-end'},
   title: {fontSize: widthToDp(5), fontWeight: 'bold'},
-  label: {fontSize: widthToDp(5), marginTop: heightToDp(5)},
-  pickerContainer: {
-    borderWidth: 1,
-    borderColor: 'rgb(204, 204, 204)',
-    width: '90%',
-    borderRadius: widthToDp(2),
-    marginTop: heightToDp(2),
+  label: {fontSize: widthToDp(5)},
+  dropdown: {backgroundColor: '#fafafa'},
+  labelDrop: {
+    height: 80,
+    justifyContent: 'space-between',
+    marginTop: heightToDp(4),
   },
-  picker: {height: heightToDp(5)},
   search: {
     flexDirection: 'row',
     marginTop: heightToDp(5),

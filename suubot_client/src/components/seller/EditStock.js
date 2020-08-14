@@ -165,9 +165,7 @@ const styles = {
     padding: widthToDp(4),
   },
   footer: {padding: widthToDp(1), flex: 0.05, justifyContent: 'flex-end'},
-
   invite: {alignSelf: 'flex-start'},
-
   container1: {flex: 0.2, justifyContent: 'space-between'},
   container2: {
     flex: 0.8,
@@ -179,17 +177,6 @@ const styles = {
     justifyContent: 'space-between',
   },
   btnSubmit: {alignSelf: 'center'},
-  modal: {
-    backgroundColor: 'white',
-    flex: 1,
-    marginTop: heightToDp(15),
-    marginBottom: heightToDp(15),
-    marginLeft: widthToDp(10),
-    marginRight: widthToDp(10),
-    borderRadius: widthToDp(4),
-    padding: widthToDp(4),
-    justifyContent: 'space-between',
-  },
 };
 
 const mapStateToProps = (state) => {

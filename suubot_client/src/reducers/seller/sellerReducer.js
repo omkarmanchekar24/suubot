@@ -9,6 +9,9 @@ import {
   FETCH_PRODUCTS,
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_FAILED,
+  EDIT_PROFILE,
+  EDIT_PROFILE_SUCCESS,
+  EDIT_PROFILE_FAILED,
 } from '../../actions/types';
 
 const INITIAL_STATE = {
@@ -101,6 +104,24 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         loading: false,
         error: action.payload,
+      };
+    }
+    case EDIT_PROFILE: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case EDIT_PROFILE_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+    case EDIT_PROFILE_FAILED: {
+      return {
+        ...state,
+        loading: false,
       };
     }
     default: {

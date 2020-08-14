@@ -123,7 +123,13 @@ class Product2 extends Component {
     const {selected_sub_category} = this.props;
     return (
       <View style={styles.container}>
-        <Header style={styles.header} profile={true} logout={true} />
+        <Header
+          style={styles.header}
+          bell={true}
+          onBack={() => {
+            Actions.products();
+          }}
+        />
         <View style={styles.body}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.label}>{selected_sub_category.name}</Text>

@@ -9,6 +9,7 @@ const { response } = require("express");
 //Load Models
 const User = require("../../../models/User");
 const Product = require("../../../models/Product");
+const { child } = require("../../../config/logger");
 
 //@route    GET api/stores/test
 //@desc     Tests stores route
@@ -21,23 +22,28 @@ router.get("/test", (req, res) => {
 //@desc     Get stores by product category id
 //@access   Public
 router.post("/", async (req, res) => {
+  const category = req.body.category_id;
+
   try {
-    const products = await Product.distinct("store", {
-      category: req.body.category_id,
+    const users = await User.find({
+      "seller.categories._id": category,
     });
 
-    let stores = [];
+    if (users) {
+      let stores = [];
 
-    // stores = await User.distinct('seller')8
+      users.forEach((item) => {
+        item.seller.forEach((item) => {
+          stores.push(item);
+        });
+      });
 
-    // stores = await Promise.map(products, async (item) => {
-    //   let temp = Store.findById(item);
-    //   return temp;
-    // });
-
-    res.json(stores);
+      res.status(200).json(stores);
+    } else {
+      res.status(404).json({ msg: "stores not found" });
+    }
   } catch (error) {
-    console.log(err);
+    res.json(error);
   }
 });
 

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Text, View, Picker, ScrollView, BackHandler, Share} from 'react-native';
+import {Text, View, ScrollView, Share} from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 import {Button} from 'react-native-paper';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
@@ -12,7 +13,7 @@ import {Header, Footer} from '../../components';
 import {fetchProductCategories, setValue} from '../../actions/storeActions';
 
 class Select extends Component {
-  state = {pickerValue: '', product_categories: []};
+  state = {product_categories: []};
 
   invite() {
     Share.share({
@@ -40,48 +41,45 @@ class Select extends Component {
   render() {
     const {product_categories} = this.state;
 
+    let temp = product_categories.map((item) => {
+      return {label: item.category, value: item._id};
+    });
+
     return (
       <View style={styles.container}>
-        <Header bell={true} onBack={() => Actions.welcome()} />
+        <Header
+          style={styles.header}
+          bell={true}
+          onBack={() => Actions.welcome()}
+        />
         <View style={styles.body}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.labelDrop}>
             <Text style={styles.label}>What would you like to shop?</Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                style={styles.picker}
-                selectedValue={this.state.pickerValue}
-                onValueChange={(itemValue, itemIndex) => {
-                  this.setState({pickerValue: itemValue});
-                  if (itemValue !== '0') {
-                    let category = this.state.product_categories.filter(
-                      (item) => {
-                        return item._id === itemValue;
-                      },
-                    );
 
-                    this.props.setValue({
-                      prop: 'selected_product_category',
-                      value: category[0],
-                    });
-                    if (itemIndex !== 0) {
-                      Actions.stores();
-                    }
-                  }
-                }}>
-                <Picker.Item label="Select an option" value="0" />
-
-                {product_categories.length !== 0 ? (
-                  product_categories.map((item) => {
-                    return (
-                      <Picker.Item label={item.category} value={item._id} />
-                    );
-                  })
-                ) : (
-                  <Picker.Item label="Loading..." value="0" />
-                )}
-              </Picker>
-            </View>
-          </ScrollView>
+            <DropDownPicker
+              placeholder="Select an option"
+              items={temp}
+              containerStyle={{height: 40}}
+              style={styles.dropdown}
+              itemStyle={{
+                justifyContent: 'flex-start',
+              }}
+              dropDownStyle={{backgroundColor: '#fafafa'}}
+              onChangeItem={(item) => {
+                let category = product_categories.filter((product) => {
+                  return product._id === item.value;
+                });
+                this.props.setValue({
+                  prop: 'selected_product_category',
+                  value: category[0],
+                });
+                Actions.stores();
+              }}
+              searchableError={() => {
+                return <Text>Loading...</Text>;
+              }}
+            />
+          </View>
         </View>
         <Footer style={styles.footer}>
           <Button style={styles.invite} onPress={this.invite.bind(this)}>
@@ -99,19 +97,17 @@ const styles = {
     height: '100%',
     flex: 1,
   },
-
-  body: {flex: 0.87, padding: widthToDp(8)},
-  footer: {padding: widthToDp(1), flex: 0.13, justifyContent: 'flex-end'},
+  header: {flex: 0.13},
+  body: {flex: 0.8, padding: widthToDp(8)},
+  footer: {padding: widthToDp(1), flex: 0.07, justifyContent: 'flex-end'},
   title: {fontSize: widthToDp(5), fontWeight: 'bold'},
-  label: {fontSize: widthToDp(5), marginTop: heightToDp(5)},
-  pickerContainer: {
-    borderWidth: 1,
-    borderColor: 'rgb(204, 204, 204)',
-    width: '80%',
-    borderRadius: widthToDp(2),
-    marginTop: heightToDp(2),
+  label: {fontSize: widthToDp(5)},
+  dropdown: {backgroundColor: '#fafafa'},
+  labelDrop: {
+    height: 80,
+    justifyContent: 'space-between',
+    marginTop: heightToDp(1),
   },
-  picker: {},
   search: {
     flexDirection: 'row',
     marginTop: heightToDp(5),

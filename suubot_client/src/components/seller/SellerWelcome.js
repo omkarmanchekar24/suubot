@@ -89,12 +89,6 @@ class SellerWelcome extends Component {
           </View>
 
           <View style={[styles.switch, {marginTop: heightToDp(3)}]}>
-            <Button mode="outlined" color="#546" onPress={() => {}}>
-              View Items In Stock
-            </Button>
-          </View>
-
-          <View style={[styles.switch, {marginTop: heightToDp(3)}]}>
             <Button
               mode="outlined"
               color="#546"
