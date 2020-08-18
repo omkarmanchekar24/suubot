@@ -1,6 +1,82 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const sellerSchema = new Schema({
+  name: {
+    type: String,
+  },
+  email: {
+    type: String,
+  },
+  username: {
+    type: String,
+  },
+  mobile: {
+    type: String,
+  },
+  categories: [
+    {
+      _id: {
+        type: Schema.Types.ObjectId,
+        ref: "productcategories",
+      },
+      category: {
+        type: String,
+      },
+    },
+    { _id: false },
+  ],
+  gst: {
+    type: Number,
+  },
+  pan: {
+    type: String,
+  },
+  paytm: {
+    type: String,
+  },
+  phonepay: {
+    type: String,
+  },
+  aboutUs: {
+    type: String,
+  },
+  areaOfDelivery: {
+    type: String,
+  },
+  minOrderValue: {
+    type: Number,
+  },
+  address: {
+    street: {
+      type: String,
+    },
+    town: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    pincode: {
+      type: String,
+    },
+    country: {
+      type: String,
+    },
+  },
+  geoLocation: {
+    latitude: {
+      type: String,
+    },
+    longitude: {
+      type: String,
+    },
+  },
+});
+
 //Create Schema
 const UserSchema = new Schema({
   name: {
@@ -53,83 +129,7 @@ const UserSchema = new Schema({
       type: String,
     },
   },
-  seller: [
-    {
-      name: {
-        type: String,
-      },
-      email: {
-        type: String,
-      },
-      username: {
-        type: String,
-      },
-      mobile: {
-        type: String,
-      },
-      categories: [
-        {
-          _id: {
-            type: Schema.Types.ObjectId,
-            ref: "productcategories",
-          },
-          category: {
-            type: String,
-          },
-        },
-        { _id: false },
-      ],
-      gst: {
-        type: Number,
-      },
-      pan: {
-        type: String,
-      },
-      paytm: {
-        type: String,
-      },
-      phonepay: {
-        type: String,
-      },
-      aboutUs: {
-        type: String,
-      },
-      areaOfDelivery: {
-        type: String,
-      },
-      minOrderValue: {
-        type: Number,
-      },
-      address: {
-        street: {
-          type: String,
-        },
-        town: {
-          type: String,
-        },
-        city: {
-          type: String,
-        },
-        state: {
-          type: String,
-        },
-        pincode: {
-          type: String,
-        },
-        country: {
-          type: String,
-        },
-      },
-      geoLocation: {
-        latitude: {
-          type: String,
-        },
-        longitude: {
-          type: String,
-        },
-      },
-    },
-  ],
+  seller: [sellerSchema],
   professional: [
     {
       name: {

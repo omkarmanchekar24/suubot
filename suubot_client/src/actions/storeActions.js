@@ -19,6 +19,9 @@ import {
   FETCH_PURCHASE_HISTORY,
   FETCH_PURCHASE_HISTORY_SUCCESS,
   FETCH_PURCHASE_HISTORY_FAILED,
+  FETCH_PURCHASE_HISTORY_PRODUCT_WISE,
+  FETCH_PURCHASE_HISTORY_PRODUCT_WISE_SUCCESS,
+  FETCH_PURCHASE_HISTORY_PRODUCT_WISE_FAILED,
 } from '../actions/types';
 import {ToastAndroid} from 'react-native';
 import axios from 'axios';
@@ -197,5 +200,29 @@ export const fetchPurchaseHistory = (user_id) => {
           payload: err.response.data,
         });
       });
+  };
+};
+
+export const fetchOrdersProductWise = (user_id) => {
+  console.log(user_id);
+  return (dispatch) => {
+    dispatch({
+      type: FETCH_PURCHASE_HISTORY_PRODUCT_WISE,
+    });
+
+    axios
+      .post(ip + '/api/customers/products/fetch_orders_productwise', {user_id})
+      .then((response) =>
+        dispatch({
+          type: FETCH_PURCHASE_HISTORY_PRODUCT_WISE_SUCCESS,
+          payload: response.data,
+        }),
+      )
+      .catch((err) =>
+        dispatch({
+          type: FETCH_PURCHASE_HISTORY_PRODUCT_WISE_FAILED,
+          payload: err.response.data,
+        }),
+      );
   };
 };

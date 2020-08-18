@@ -10,12 +10,12 @@ class Card extends Component {
   };
 
   render() {
-    const {_id, name, cost, unit, weight} = this.props.item;
+    const {_id, name, cost, unit, weight, quantity} = this.props.item;
     return (
       <View style={styles.container}>
         <View style={styles.box1}>
           <View>
-            <Text>{name}</Text>
+            <Text style={styles.name}>{name}</Text>
             <Text>
               {'\u20B9 '}
               {cost}
@@ -32,9 +32,10 @@ class Card extends Component {
         <View style={styles.box3}>
           <NumericInput
             type="plus-minus"
+            editable={false}
             rounded
             minValue={0}
-            maxValue={99}
+            maxValue={1000}
             totalHeight={widthToDp(10)}
             value={this.state.quantity}
             onChange={(value) => {
@@ -57,7 +58,7 @@ class Card extends Component {
 const styles = {
   container: {
     flexDirection: 'row',
-    height: heightToDp(15),
+    height: 'auto',
     marginTop: heightToDp(2),
     alignItems: 'center',
     borderRadius: widthToDp(3),
@@ -68,7 +69,7 @@ const styles = {
   },
   box1: {flex: 0.4},
   box2: {flex: 0.3},
-  box3: {flex: 0.3, flexDirection: 'row', justifyContent: 'space-between'},
+  box3: {flex: 0.3, flexDirection: 'row', justifyContent: 'center'},
   image: {
     width: widthToDp(20),
     height: heightToDp(8),
@@ -84,6 +85,10 @@ const styles = {
     borderRadius: widthToDp(1),
   },
   buttinText: {fontSize: widthToDp(7), color: 'white'},
+  name: {
+    fontSize: widthToDp(5),
+    fontWeight: 'bold',
+  },
 };
 
 export default Card;

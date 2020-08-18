@@ -113,16 +113,21 @@ class AddItems extends Component {
     let data = [];
     let sub = [];
 
-    data = categories.map((item) => {
-      return {label: item.category, value: item._id};
-    });
-    sub = sub_categories
-      .filter((item) => {
-        return item.category_id === category;
-      })
-      .map((item) => {
-        return {label: item.name, value: item._id};
+    if (categories.length > 0) {
+      data = categories.map((item) => {
+        return {label: item.category, value: item._id};
       });
+    }
+
+    if (sub_categories.length > 0) {
+      sub = sub_categories
+        .filter((item) => {
+          return item.category_id === category;
+        })
+        .map((item) => {
+          return {label: item.name, value: item._id};
+        });
+    }
 
     return (
       <View style={styles.container}>
@@ -130,7 +135,6 @@ class AddItems extends Component {
           bell={true}
           onBack={() => Actions.pop()}
           style={styles.header}
-          logout={true}
         />
 
         <View style={styles.body}>

@@ -31,3 +31,5 @@ export {default as EditStock} from './seller/EditStock';
 export {default as ProductEdit} from './common/ProductEdit';
 export {default as ProductInput} from './common/ProductInput';
 export {default as ProductUpdate} from './seller/ProductUpdate';
+export {default as ItemWise} from './user/ItemWise';
+export {default as ItemWiseItem} from './common/ItemWiseItem';

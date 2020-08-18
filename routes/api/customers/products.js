@@ -14,6 +14,8 @@ const ProductSubCategory = require("../../../models/ProductSubCategory");
 const Purchase = require("../../../models/Purchase");
 const { reset } = require("nodemon");
 const { isValidObjectId } = require("mongoose");
+const User = require("../../../models/User");
+const Seller = User.seller;
 
 router.get("/test", (req, res) => {
   return res.json({ msg: "working" });
@@ -101,29 +103,42 @@ router.post("/", async (req, res) => {
 router.post("/fetch_orders_sellerwise", async (req, res) => {
   const user_id = req.body.user_id;
 
-  Purchase.aggregate([
-    { $match: { user: ObjectId(user_id), status: "success" } },
+  try {
+    let result = await Purchase.aggregate([
+      { $match: { user: ObjectId(user_id), status: "success" } },
 
-    {
-      $group: {
-        _id: "$store",
+      {
+        $group: {
+          _id: "$store",
+          total_amt: { $sum: "$txn_amount" },
+        },
+      },
+    ]);
 
-        // name: { $addToSet: "$store.business_name" },
-        total_amt: { $sum: "$txn_amount" },
-      },
-    },
-    {
-      $lookup: {
-        from: "stores",
-        localField: "_id",
-        foreignField: "_id",
-        as: "store",
-      },
-    },
-  ]).exec((err, result) => {
-    if (err) return res.json(err);
-    return res.json(result);
-  });
+    let stores = (await User.find())
+      .filter((item) => {
+        return item.seller.length > 0;
+      })
+      .map((item) => {
+        let store = item.seller.map((item) => {
+          return item;
+        });
+        return store[0];
+      });
+
+    let final = [];
+    final = result.map((item) => {
+      let store = [];
+      store = stores.filter((i) => {
+        return i._id.toString() === item._id.toString();
+      });
+
+      return { store: store[0], ...item };
+    });
+    res.status(200).json(final);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 router.post("/fetch_orders", (req, res) => {
@@ -131,17 +146,36 @@ router.post("/fetch_orders", (req, res) => {
 
   Purchase.aggregate([
     { $match: { user: ObjectId(user_id), status: "success" } },
-    {
-      $lookup: {
-        from: "stores",
-        localField: "store",
-        foreignField: "_id",
-        as: "store",
-      },
-    },
   ]).exec((err, result) => {
     if (err) return res.json(err);
     return res.json(result);
+  });
+});
+
+router.post("/fetch_orders_productwise", (req, res) => {
+  const user_id = req.body.user_id;
+
+  Purchase.aggregate([
+    { $match: { user: ObjectId(user_id), status: "success" } },
+    { $project: { _id: 0, products: 1 } },
+    { $unwind: "$products" },
+    {
+      $group: {
+        _id: "$products.id",
+        total: { $sum: "$products.cost" },
+      },
+    },
+    {
+      $lookup: {
+        from: "products",
+        localField: "_id",
+        foreignField: "_id",
+        as: "product",
+      },
+    },
+  ]).exec((err, result) => {
+    if (err) return res.status(400).json(err);
+    return res.status(200).json(result);
   });
 });
 

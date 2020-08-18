@@ -6,8 +6,8 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE = {
-  email: 'akshay@gmail.com',
-  password: '111111',
+  email: 'brad@gmail.com',
+  password: '333333',
   logging: false,
   errors: {},
 };

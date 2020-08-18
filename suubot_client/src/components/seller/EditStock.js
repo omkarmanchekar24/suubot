@@ -52,15 +52,16 @@ class EditStock extends Component {
 
   render() {
     const {errors} = this.state;
+    const {categories, sub_categories} = this.state;
 
     let data = [];
     let sub = [];
-    if (this.state.categories) {
-      data = this.state.categories.map((item) => {
+    if (categories.length > 0) {
+      data = categories.map((item) => {
         return {label: item.category, value: item._id};
       });
 
-      sub = this.state.sub_categories
+      sub = sub_categories
         .filter((item) => {
           return item.category_id === this.state.category;
         })
@@ -83,7 +84,6 @@ class EditStock extends Component {
           bell={true}
           onBack={() => Actions.sellerwelcome()}
           style={styles.header}
-          logout={true}
         />
 
         <View style={styles.body}>

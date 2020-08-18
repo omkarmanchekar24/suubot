@@ -119,7 +119,37 @@ class Product2 extends Component {
     }
   }
 
+  onPaymentPress() {
+    console.log('payment');
+    let data = this.state.cart.filter((item) => {
+      return item.quantity !== 0;
+    });
+
+    if (data.length === 0) {
+      ToastAndroid.show('Select at least one item', ToastAndroid.SHORT);
+    } else {
+      let arr = this.state.cart.filter((item) => {
+        return item.quantity > 0;
+      });
+
+      //Check if products already present in the main cart
+      let main = [...this.props.cart];
+
+      if (main.length === 0) {
+        this.props.addItemsToCart(arr);
+        Actions.payment();
+      } else {
+        arr.forEach((item) => {
+          this.upsert(main, item);
+        });
+        this.props.addItemsToCart(main);
+        Actions.payment();
+      }
+    }
+  }
+
   render() {
+    console.log(this.state.cart);
     const {selected_sub_category} = this.props;
     return (
       <View style={styles.container}>
@@ -158,10 +188,7 @@ class Product2 extends Component {
           <Button
             mode="outlined"
             style={styles.payment}
-            onPress={() => {
-              //this.props.resetCart();
-              Actions.payment();
-            }}>
+            onPress={this.onPaymentPress.bind(this)}>
             Make payment
           </Button>
         </Footer>
@@ -177,7 +204,7 @@ const styles = {
     flex: 1,
   },
   header: {flex: 0.13},
-  body: {flex: 0.77},
+  body: {flex: 0.77, padding: widthToDp(2)},
   footer: {
     flex: 0.1,
     justifyContent: 'flex-start',

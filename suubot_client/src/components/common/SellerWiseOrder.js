@@ -2,9 +2,11 @@ import React, {Component} from 'react';
 import {View, Share, Text, FlatList, ScrollView} from 'react-native';
 import {Button, Modal} from 'react-native-paper';
 import {connect} from 'react-redux';
+import moment from 'moment';
 import {widthToDp, heightToDp} from '../../Responsive';
 
 import {Header, Footer} from '../../components';
+import {Actions} from 'react-native-router-flux';
 
 class SellerWiseOrder extends Component {
   invite() {
@@ -17,10 +19,16 @@ class SellerWiseOrder extends Component {
     return (
       <View style={styles.order}>
         <View style={styles.head}>
-          <Text style={styles.date}>{item.date}</Text>
-          <Text style={styles.day}>Saturday</Text>
+          <Text style={styles.date}>
+            {moment(item.date).format('DD-MM-YYYY')}
+          </Text>
+          <Text style={styles.day}>{moment(item.date).format('dddd')}</Text>
         </View>
         <View style={styles.orderBody}>
+          <View style={{flexDirection: 'row', flex: 1}}>
+            <Text style={{flex: 0.5, fontWeight: 'bold'}}>Item</Text>
+            <Text style={{flex: 0.5, fontWeight: 'bold'}}>Cost</Text>
+          </View>
           {item.products.map((item, i) => {
             return (
               <View style={{flexDirection: 'row', flex: 1}}>
@@ -40,7 +48,7 @@ class SellerWiseOrder extends Component {
             }}
           />
           <View style={{flexDirection: 'row', flex: 1}}>
-            <Text style={{flex: 0.5, fontWeight: 'bold'}}>Total</Text>
+            <Text style={{flex: 0.5, fontWeight: 'bold'}}>Totals</Text>
             <Text style={{flex: 0.5, fontWeight: 'bold'}}>
               {'\u20B9 '}
               {item.txn_amount}
@@ -53,12 +61,19 @@ class SellerWiseOrder extends Component {
 
   render() {
     let data = this.props.purchaseHistory.filter((item) => {
-      return item.store[0]._id === this.props._id;
+      return item.store.toString() === this.props._id.toString();
     });
-
+    console.log(data);
     return (
       <View style={styles.container}>
-        <Header profile={true} style={styles.header} logout={true} />
+        <Header
+          profile={true}
+          style={styles.header}
+          onBack={() => {
+            Actions.sellerwise();
+          }}
+          bell={true}
+        />
         <View style={styles.body}>
           <ScrollView>
             <FlatList
@@ -93,7 +108,9 @@ const styles = {
   head: {flexDirection: 'row', flex: 1},
   date: {flex: 0.8, fontWeight: 'bold'},
   day: {flex: 0.2, fontWeight: 'bold'},
-  orderBody: {},
+  orderBody: {marginTop: heightToDp(4)},
+  listHead: {flexDirection: 'row', justifyContent: 'space-between'},
+  listLabel: {},
 };
 
 const mapStateToProps = (state) => {

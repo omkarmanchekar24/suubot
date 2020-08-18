@@ -30,6 +30,20 @@ class Header extends Component {
       );
     }
   }
+
+  renderLogout() {
+    if (this.props.logout) {
+      return (
+        <IconButton
+          icon={require('../../assets/switch.png')}
+          onPress={() => {
+            this.props.logoutUser();
+          }}
+        />
+      );
+    }
+  }
+
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
@@ -40,6 +54,7 @@ class Header extends Component {
             height: '100%',
           }}>
           {this.renderBackButton()}
+          {this.renderLogout()}
         </View>
 
         <Text style={styles.title}>Suubot</Text>

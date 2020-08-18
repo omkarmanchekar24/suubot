@@ -180,6 +180,7 @@ export const editProfile = (data) => {
     axios
       .post(ip + '/api/seller/profiles/editprofile', data)
       .then((response) => {
+        console.log(response.data);
         ToastAndroid.show('Profile Updated!', ToastAndroid.LONG);
         dispatch({
           type: EDIT_PROFILE_SUCCESS,

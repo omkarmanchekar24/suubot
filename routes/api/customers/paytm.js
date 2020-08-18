@@ -4,6 +4,7 @@ const paytmController = require("../controller/paytm/paytm.controller");
 
 //Load Models
 const Purchase = require("../../../models/Purchase");
+const Product = require("../../../models/Product");
 
 router.get("/request", paytmController.getRequest);
 router.post("/request", paytmController.request);
@@ -27,13 +28,23 @@ router.post("/save_order", (req, res) => {
     .catch((err) => res.json({ msg: "server down! please try again later" }));
 });
 
-router.post("/update_order_status", (req, res) => {
-  const order_id = req.body.order_id;
-  const status = req.body.status;
+router.post("/update_order_quantity", async (req, res) => {
+  const cart = req.body.cart;
+  console.log(cart);
 
-  Purchase.findByIdAndUpdate(order_id, { status: status }, { new: true })
-    .then((response) => res.json(response))
-    .catch((err) => res.json({ err }));
+  try {
+    let update = cart.map(async (item) => {
+      let data = await Product.findByIdAndUpdate(
+        { _id: item.id },
+        {
+          $inc: { quantity: -1 * item.quantity },
+        }
+      );
+      return data;
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = router;

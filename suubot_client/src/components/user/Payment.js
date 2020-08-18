@@ -1,5 +1,13 @@
 import React, {Component} from 'react';
-import {Text, View, FlatList, ScrollView, Modal} from 'react-native';
+import {
+  Text,
+  View,
+  FlatList,
+  ScrollView,
+  Modal,
+  ToastAndroid,
+} from 'react-native';
+import {Actions} from 'react-native-router-flux';
 import {WebView} from 'react-native-webview';
 import {RadioButton, Button} from 'react-native-paper';
 import {connect} from 'react-redux';
@@ -70,10 +78,11 @@ class Payment extends Component {
     );
   };
 
-  handleResponse(title) {
-    if (title === 'true') {
-      this.props.transactionSuccess();
-    } else if (title === 'false') {
+  handleResponse(data) {
+    console.log(data);
+    if (data.title === 'true') {
+      this.props.transactionSuccess({cart: this.props.cart});
+    } else if (data.title === 'false') {
       this.props.transactionFailed();
     } else {
       return;
@@ -118,7 +127,7 @@ class Payment extends Component {
 
     return (
       <View style={styles.container}>
-        <Header profile={true} logout={true} />
+        <Header profile={true} onBack={() => Actions.product2()} bell={true} />
         <View style={styles.body}>
           <View style={styles.products}>
             <ScrollView>
@@ -137,15 +146,15 @@ class Payment extends Component {
             <View style={styles.radio}>
               <Text style={styles.label}>Payment Option:</Text>
               <RadioButton
-                value="first"
-                status={checked === 'first' ? 'checked' : 'unchecked'}
-                onPress={() => this.setState({checked: 'first'})}
+                value="paytm"
+                status={checked === 'paytm' ? 'checked' : 'unchecked'}
+                onPress={() => this.setState({checked: 'paytm'})}
               />
               <Text>Paytm</Text>
               <RadioButton
-                value="second"
-                status={checked === 'second' ? 'checked' : 'unchecked'}
-                onPress={() => this.setState({checked: 'second'})}
+                value="phonepay"
+                status={checked === 'phonepay' ? 'checked' : 'unchecked'}
+                onPress={() => this.setState({checked: 'phonepay'})}
               />
               <Text>Phone pay</Text>
             </View>
@@ -175,13 +184,23 @@ class Payment extends Component {
           <Button
             mode="outlined"
             onPress={() => {
-              this.props.purchaseItems({
-                user: user.id,
-                txn_amount: total_bill_amount,
-                status: 'pending',
-                store: store._id,
-                products: cart,
-              });
+              {
+                if (this.state.checked === '') {
+                  ToastAndroid.show(
+                    'Please select payment option',
+                    ToastAndroid.SHORT,
+                  );
+                  return;
+                }
+
+                this.props.purchaseItems({
+                  user: user.id,
+                  txn_amount: total_bill_amount,
+                  status: 'pending',
+                  store: store._id,
+                  products: cart,
+                });
+              }
             }}>
             Check out
           </Button>
@@ -195,12 +214,12 @@ class Payment extends Component {
           }}>
           <WebView
             source={{
-              uri: 'http://192.168.0.9:5000/api/customers/paytm/request',
+              uri: 'http://192.168.0.8:5000/api/customers/paytm/request',
             }}
             mixedContentMode={'compatibility'}
             injectedJavaScript={`document.getElementById('ORDER_ID').value = "${order._id}"; document.getElementById('TXN_AMOUNT').value = "1"; document.getElementById('CUST_ID').value = "${order.user}"; document.f1.submit();`}
             onNavigationStateChange={(data) => {
-              this.handleResponse(data.title);
+              this.handleResponse(data);
             }}
           />
         </Modal>

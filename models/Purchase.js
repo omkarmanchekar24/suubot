@@ -48,7 +48,7 @@ const PurchaseSchema = new Schema({
   },
   store: {
     type: Schema.Types.ObjectId,
-    ref: "stores",
+    ref: "users.seller",
   },
   products: [SubSchema],
   date: {

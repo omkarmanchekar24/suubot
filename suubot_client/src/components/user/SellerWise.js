@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {View, Share, Text, FlatList, ScrollView} from 'react-native';
 import {Button, Modal} from 'react-native-paper';
 import {connect} from 'react-redux';
+import {Actions} from 'react-native-router-flux';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 //Actions
 import {fetchPurchaseHistorySellerWise} from '../../actions/storeActions';
@@ -19,7 +21,7 @@ import {ToastAndroid} from 'react-native';
 class SellerWise extends Component {
   state = {
     purchaseHistorySellerWise: [],
-    showModal: false,
+    fetching: false,
   };
 
   componentWillMount() {
@@ -27,9 +29,14 @@ class SellerWise extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.purchaseHistorySellerWise) {
+    if (nextProps.fetching === true) {
+      this.setState({
+        fetching: true,
+      });
+    } else if (nextProps.purchaseHistorySellerWise) {
       this.setState({
         purchaseHistorySellerWise: nextProps.purchaseHistorySellerWise,
+        fetching: false,
       });
     }
   }
@@ -73,10 +80,31 @@ class SellerWise extends Component {
   }
 
   render() {
+    let content;
+
+    content = this.state.fetching ? (
+      <View>
+        <Spinner
+          visible={true}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+      </View>
+    ) : (
+      <View>{this.renderList()}</View>
+    );
+
     return (
       <View style={styles.container}>
-        <Header profile={true} style={styles.header} logout={true} />
-        <View style={styles.body}>{this.renderList()}</View>
+        <Header
+          profile={true}
+          style={styles.header}
+          onBack={() => {
+            Actions.welcome();
+          }}
+          bell={true}
+        />
+        <View style={styles.body}>{content}</View>
         <Footer style={styles.footer}>
           <Button style={styles.invite} onPress={this.invite.bind(this)}>
             Invite your seller on suubot
@@ -100,21 +128,6 @@ const styles = {
     padding: widthToDp(10),
     borderWidth: 0.3,
     borderRadius: widthToDp(5),
-  },
-  modal: {
-    margin: widthToDp(10),
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 35,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    height: heightToDp(70),
   },
 };
 

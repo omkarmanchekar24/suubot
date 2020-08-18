@@ -13,7 +13,7 @@ class SellerWiseItem extends Component {
         }}>
         <View style={styles.container}>
           <View style={styles.box1}>
-            <Text>{store[0].business_name}</Text>
+            <Text>{store.name}</Text>
           </View>
           <View style={styles.box2}>
             <Text>

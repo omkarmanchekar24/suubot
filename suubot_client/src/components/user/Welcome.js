@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Text, View, Picker, Share} from 'react-native';
+import {Text, View, Share} from 'react-native';
+
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Button} from 'react-native-paper';
 import {Actions} from 'react-native-router-flux';
@@ -30,7 +31,7 @@ class Welcome extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Header style={styles.header} bell={true} />
+        <Header style={styles.header} bell={true} logout={true} />
 
         <View style={styles.body}>
           <View style={styles.switch}>
@@ -102,14 +103,23 @@ class Welcome extends Component {
 
             <DropDownPicker
               placeholder="Select an option"
-              items={[{label: 'Item wise'}, {label: 'Seller wise'}]}
+              items={[
+                {label: 'Item wise', value: '0'},
+                {label: 'Seller wise', value: '1'},
+              ]}
               containerStyle={{height: 40}}
               style={styles.dropdown}
               itemStyle={{
                 justifyContent: 'flex-start',
               }}
               dropDownStyle={{backgroundColor: '#fafafa'}}
-              onChangeItem={(item) => {}}
+              onChangeItem={(item) => {
+                if (item.value === '1') {
+                  Actions.sellerwise();
+                } else if (item.value === '0') {
+                  Actions.itemwise();
+                }
+              }}
               searchableError={() => {
                 return <Text>Loading...</Text>;
               }}

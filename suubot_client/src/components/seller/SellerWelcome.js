@@ -3,7 +3,7 @@ import {Text, View, Picker, Share} from 'react-native';
 import {Button} from 'react-native-paper';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
-
+import DropDownPicker from 'react-native-dropdown-picker';
 import {widthToDp, heightToDp} from '../../Responsive';
 
 import {Header, Footer, SwitchAccount} from '../../components';
@@ -24,7 +24,7 @@ class SellerWelcome extends Component {
     const {name} = this.props.auth.selected_store;
     return (
       <View style={styles.container}>
-        <Header bell={true} style={styles.header} />
+        <Header bell={true} style={styles.header} logout={true} />
         <View style={styles.body}>
           <View style={styles.switch}>
             <Text style={styles.title}>{name}</Text>
@@ -83,9 +83,26 @@ class SellerWelcome extends Component {
               }}>
               Pending Orders
             </Button>
-            <Button mode="outlined" color="#546" onPress={() => {}}>
-              Statistics
-            </Button>
+            <DropDownPicker
+              placeholder="STATISTICS"
+              items={[
+                {label: 'Item Wise', value: '0'},
+                {label: 'Client Wise', value: '1'},
+                {label: 'Inventory Wise', value: '2'},
+              ]}
+              containerStyle={{height: 40}}
+              style={styles.dropdown}
+              itemStyle={{
+                justifyContent: 'flex-start',
+              }}
+              dropDownStyle={{backgroundColor: '#fafafa'}}
+              onChangeItem={(item) => {
+                if (item.value === '0') Actions.select();
+              }}
+              searchableError={() => {
+                return <Text>Loading...</Text>;
+              }}
+            />
           </View>
 
           <View style={[styles.switch, {marginTop: heightToDp(3)}]}>
@@ -141,6 +158,7 @@ const styles = {
   invite: {alignSelf: 'flex-start'},
   switch: {flexDirection: 'row', justifyContent: 'space-between'},
   switchButton: {alignSelf: 'center', maxWidth: widthToDp(50)},
+  dropdown: {backgroundColor: 'white', width: widthToDp(35)},
 };
 
 const mapStateToProps = (state) => {

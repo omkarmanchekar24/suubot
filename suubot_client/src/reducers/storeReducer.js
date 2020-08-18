@@ -16,6 +16,9 @@ import {
   FETCH_PURCHASE_HISTORY_SELLER_WISE,
   FETCH_PURCHASE_HISTORY_SELLER_WISE_FAILED,
   FETCH_PURCHASE_HISTORY_SELLER_WISE_SUCCESS,
+  FETCH_PURCHASE_HISTORY_PRODUCT_WISE,
+  FETCH_PURCHASE_HISTORY_PRODUCT_WISE_FAILED,
+  FETCH_PURCHASE_HISTORY_PRODUCT_WISE_SUCCESS,
   FETCH_PURCHASE_HISTORY,
   FETCH_PURCHASE_HISTORY_FAILED,
   FETCH_PURCHASE_HISTORY_SUCCESS,
@@ -32,6 +35,7 @@ const INITIAL_STATE = {
   fetching: false,
   errors: {},
   purchaseHistorySellerWise: [],
+  purchaseHistoryProductWise: [],
   purchaseHistory: [],
 };
 
@@ -164,6 +168,26 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         fetching: false,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY_PRODUCT_WISE: {
+      return {
+        ...state,
+        fetching: true,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY_PRODUCT_WISE_SUCCESS: {
+      return {
+        ...state,
+        fetching: false,
+        purchaseHistoryProductWise: action.payload,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY_PRODUCT_WISE_FAILED: {
+      return {
+        ...state,
+        fetching: false,
+        errors: action.payload,
       };
     }
     default: {

@@ -27,6 +27,7 @@ import {
   SelectRole,
   EditStock,
   ProductUpdate,
+  ItemWise,
 } from '../components';
 
 const RouterComponent = () => {
@@ -51,6 +52,7 @@ const RouterComponent = () => {
           <Scene key="payment" component={Payment} hideNavBar />
           <Scene key="sellerwise" component={SellerWise} hideNavBar />
           <Scene key="sellerwiseorder" component={SellerWiseOrder} hideNavBar />
+          <Scene key="itemwise" component={ItemWise} hideNavBar />
         </Scene>
         <Scene key="seller">
           <Scene key="sellerwelcome" component={SellerWelcome} hideNavBar />

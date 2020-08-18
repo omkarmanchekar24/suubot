@@ -1,13 +1,17 @@
 import React, {Component} from 'react';
 import {Text, View, Share} from 'react-native';
+import AwesomeAlert from 'react-native-awesome-alerts';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Button} from 'react-native-paper';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
+
 import {
   fetchProductSubCategoriesByStoreIdCategoryId,
   setValue,
 } from '../../actions/storeActions';
+
+import {resetCart} from '../../actions/cartActions';
 
 import {widthToDp, heightToDp} from '../../Responsive';
 
@@ -17,6 +21,7 @@ class Products extends Component {
   state = {
     pickerValue: '',
     product_sub_categories: [],
+    showAlert: false,
   };
   clickme() {
     alert(this.state.pickerValue);
@@ -44,6 +49,26 @@ class Products extends Component {
     }
   }
 
+  showAlert = () => {
+    this.setState({
+      showAlert: true,
+    });
+  };
+
+  hideAlert = () => {
+    this.setState({
+      showAlert: false,
+    });
+  };
+
+  onBack() {
+    if (this.props.cart.length > 0) {
+      this.showAlert();
+    } else {
+      Actions.stores();
+    }
+  }
+
   render() {
     const {selected_product_category} = this.props;
     const {product_sub_categories} = this.state;
@@ -55,7 +80,7 @@ class Products extends Component {
         <Header
           style={styles.header}
           bell={true}
-          onBack={() => Actions.stores()}
+          onBack={this.onBack.bind(this)}
         />
         <View style={styles.body}>
           <View style={styles.labelDrop}>
@@ -87,6 +112,27 @@ class Products extends Component {
               }}
             />
           </View>
+          <AwesomeAlert
+            show={this.state.showAlert}
+            showProgress={false}
+            title="Are You Sure?"
+            message="Going back will remove all the items from the cart"
+            closeOnTouchOutside={true}
+            closeOnHardwareBackPress={false}
+            showCancelButton={true}
+            showConfirmButton={true}
+            cancelText="No, cancel"
+            confirmText="Yes, Go Back"
+            confirmButtonColor="#DD6B55"
+            onCancelPressed={() => {
+              this.hideAlert();
+            }}
+            onConfirmPressed={() => {
+              this.props.resetCart();
+              this.hideAlert();
+              Actions.stores();
+            }}
+          />
         </View>
         <Footer style={styles.footer}>
           <Button style={styles.invite} onPress={this.invite.bind(this)}>
@@ -136,10 +182,12 @@ const mapStateToProps = (state) => {
     product_sub_categories: state.store.product_sub_categories,
     selected_store: state.store.selected_store,
     selected_product_category: state.store.selected_product_category,
+    cart: state.cart.cart,
   };
 };
 
 export default connect(mapStateToProps, {
   fetchProductSubCategoriesByStoreIdCategoryId,
   setValue,
+  resetCart,
 })(Products);

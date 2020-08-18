@@ -59,15 +59,13 @@ export const purchaseItems = ({user, txn_amount, status, store, products}) => {
   };
 };
 
-export const transactionSuccess = () => {
+export const transactionSuccess = ({cart}) => {
   return (dispatch) => {
     dispatch({
       type: PURCHASE_SUCCESS,
     });
     axios
-      .post(ip + '/api/customers/paytm/update_order_status', {
-        status: 'success',
-      })
+      .post(ip + '/api/customers/paytm/update_order_quantity', {cart: cart})
       .then((response) => {
         console.log(response.data);
       })
@@ -86,19 +84,19 @@ export const transactionFailed = () => {
       type: PURCHASE_FAILED,
     });
 
-    axios
-      .post(ip + '/api/customers/paytm/update_order_status', {
-        status: 'failed',
-      })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((err) => console.log(err.response.data));
+    // axios
+    //   .post(ip + '/api/customers/paytm/update_order_status', {
+    //     status: 'failed',
+    //   })
+    //   .then((response) => {
+    //     console.log(response.data);
+    //   })
+    //   .catch((err) => console.log(err.response.data));
 
     ToastAndroid.show(
       'Oops! Something went wrong. Please try again later.',
       ToastAndroid.LONG,
     );
-    Actions.products();
+    Actions.product2();
   };
 };
