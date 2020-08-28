@@ -40,7 +40,6 @@ class ProductUpdate extends Component {
         <Header
           profile={true}
           style={styles.header}
-          logout={true}
           onBack={() => Actions.pop()}
         />
         <View style={styles.body}>

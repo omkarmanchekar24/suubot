@@ -97,7 +97,9 @@ class SellerWelcome extends Component {
               }}
               dropDownStyle={{backgroundColor: '#fafafa'}}
               onChangeItem={(item) => {
-                if (item.value === '0') Actions.select();
+                if (item.value === '0') Actions.itemwiseseller();
+                if (item.value === '1') Actions.clientwiseseller();
+                if (item.value === '2') Actions.inventorywiseseller();
               }}
               searchableError={() => {
                 return <Text>Loading...</Text>;

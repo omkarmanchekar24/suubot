@@ -2,20 +2,14 @@ import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 import {widthToDp, heightToDp} from '../../Responsive';
 
-class ItemWiseItem extends Component {
-  render() {
-    const {_id, total, product} = this.props.item;
-
-    return (
-      <View style={styles.container}>
-        <Text style={styles.label}> {product[0].name} </Text>
-        <Text style={styles.label}>
-          {'\u20B9 '} {total}{' '}
-        </Text>
-      </View>
-    );
-  }
-}
+const ItemWiseItem = ({name, value}) => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.label}> {name} </Text>
+      <Text style={styles.label}>{value}</Text>
+    </View>
+  );
+};
 
 const styles = {
   container: {

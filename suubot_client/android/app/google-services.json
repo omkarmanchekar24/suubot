@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "229664342160",
+    "firebase_url": "https://suubot.firebaseio.com",
+    "project_id": "suubot",
+    "storage_bucket": "suubot.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229664342160:android:a90f20b319a5bcd3aa9815",
+        "android_client_info": {
+          "package_name": "com.suubot_client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "229664342160-5075lmcuc44kk0ec53ldvvoevljd4pav.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsM3et-kY6EJwAJH0sjEOo7-iyeaVmQWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "229664342160-5075lmcuc44kk0ec53ldvvoevljd4pav.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

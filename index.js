@@ -6,6 +6,7 @@ const cors = require("cors");
 const router = express.Router();
 const logger = require("./config/logger");
 const engines = require("consolidate");
+import SqsQueueConsumer from "sqs-queue-consumer";
 
 //Logger
 const winston = require("winston"),
@@ -20,6 +21,7 @@ const admin_activity = require("./routes/api/admin/activity");
 const stores = require("./routes/api/seller/stores");
 const professionals = require("./routes/api/professional/professionals");
 const profiles = require("./routes/api/seller/profiles");
+const message = require("./routes/api/seller/message");
 
 const app = express();
 
@@ -79,6 +81,7 @@ app.use("/api/customers/paytm", paytm);
 //seller
 app.use("/api/seller/stores", stores);
 app.use("/api/seller/profiles", profiles);
+app.use("/api/seller/message", message);
 
 //professional
 app.use("/api/professional/", professionals);

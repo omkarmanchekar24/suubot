@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.739.0",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "consolidate": "^0.15.1",
@@ -27,6 +28,9 @@
     "mongoose": "^5.9.25",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
+    "split-array": "^1.0.1",
+    "sqs-bulk-loader": "^2.5.0",
+    "sqs-queue-consumer": "^2.1.0",
     "uuidv4": "^6.1.1",
     "validator": "^13.1.1",
     "winston": "^3.3.3"

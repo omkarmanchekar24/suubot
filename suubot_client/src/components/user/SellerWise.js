@@ -16,7 +16,6 @@ import {
   SellerWiseItem,
   SellerWiseOrder,
 } from '../../components';
-import {ToastAndroid} from 'react-native';
 
 class SellerWise extends Component {
   state = {
@@ -48,7 +47,13 @@ class SellerWise extends Component {
   }
 
   renderItem({item}) {
-    return <SellerWiseItem item={item} />;
+    return (
+      <SellerWiseItem
+        name={item.store.name}
+        value={'\u20B9 ' + item.total_amt}
+        _id={item._id}
+      />
+    );
   }
 
   renderList() {
@@ -61,14 +66,24 @@ class SellerWise extends Component {
     }
 
     return (
-      <View>
-        <ScrollView>
+      <View style={styles.listBody}>
+        <ScrollView style={styles.scroll}>
           <FlatList
-            data={this.state.purchaseHistorySellerWise}
+            data={this.state.purchaseHistorySellerWise.overAll}
             renderItem={this.renderItem.bind(this)}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item._id}
           />
+
+          <View style={{height: heightToDp(10)}}></View>
         </ScrollView>
+        <View style={{flex: 0.1}}></View>
+        <View style={styles.summary}>
+          <Text style={styles.summaryLabel}>This month</Text>
+          <Text style={styles.summaryLabel}>
+            {'\u20B9 ' +
+              this.state.purchaseHistorySellerWise.thisMonth[0].total_amt}
+          </Text>
+        </View>
       </View>
     );
   }
@@ -80,6 +95,7 @@ class SellerWise extends Component {
   }
 
   render() {
+    //console.log(this.state);
     let content;
 
     content = this.state.fetching ? (
@@ -118,8 +134,8 @@ class SellerWise extends Component {
 const styles = {
   container: {flex: 1},
   header: {flex: 0.13},
-  body: {flex: 0.74, padding: widthToDp(8)},
-  footer: {padding: widthToDp(1), flex: 0.13, justifyContent: 'flex-end'},
+  body: {flex: 0.8, padding: widthToDp(8)},
+  footer: {padding: widthToDp(1), flex: 0.07, justifyContent: 'flex-end'},
   invite: {alignSelf: 'flex-start'},
   empty: {
     justifySelf: 'center',
@@ -129,6 +145,18 @@ const styles = {
     borderWidth: 0.3,
     borderRadius: widthToDp(5),
   },
+  listBody: {height: '100%'},
+  scroll: {flex: 0.7},
+  summary: {
+    flex: 0.2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderWidth: 0.5,
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 5,
+  },
+  summaryLabel: {fontWeight: 'bold', fontSize: heightToDp(3), color: '#546'},
 };
 
 const mapStateToProps = (state) => {

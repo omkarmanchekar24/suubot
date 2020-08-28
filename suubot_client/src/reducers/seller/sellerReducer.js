@@ -12,6 +12,15 @@ import {
   EDIT_PROFILE,
   EDIT_PROFILE_SUCCESS,
   EDIT_PROFILE_FAILED,
+  FETCH_PURCHASE_HISTORY_PRODUCT_WISE_SELLER,
+  FETCH_PURCHASE_HISTORY_PRODUCT_WISE_SUCCESS_SELLER,
+  FETCH_PURCHASE_HISTORY_PRODUCT_WISE_FAILED_SELLER,
+  FETCH_PURCHASE_HISTORY_CLIENT_WISE_SELLER,
+  FETCH_PURCHASE_HISTORY_CLIENT_WISE_SUCCESS_SELLER,
+  FETCH_PURCHASE_HISTORY_CLIENT_WISE_FAILED_SELLER,
+  FETCH_PURCHASE_HISTORY_INVENTORY_WISE_FAILED_SELLER,
+  FETCH_PURCHASE_HISTORY_INVENTORY_WISE_SELLER,
+  FETCH_PURCHASE_HISTORY_INVENTORY_WISE_SUCCESS_SELLER,
 } from '../../actions/types';
 
 const INITIAL_STATE = {
@@ -24,6 +33,9 @@ const INITIAL_STATE = {
   quantity: '',
   price: '',
   weight: '',
+  productWise: null,
+  clientWise: null,
+  inventoryWise: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -121,6 +133,66 @@ export default (state = INITIAL_STATE, action) => {
     case EDIT_PROFILE_FAILED: {
       return {
         ...state,
+        loading: false,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY_PRODUCT_WISE_SELLER: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY_PRODUCT_WISE_SUCCESS_SELLER: {
+      return {
+        ...state,
+        productWise: action.payload,
+        loading: false,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY_PRODUCT_WISE_FAILED_SELLER: {
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY_CLIENT_WISE_SELLER: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY_CLIENT_WISE_SUCCESS_SELLER: {
+      return {
+        ...state,
+        clientWise: action.payload,
+        loading: false,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY_CLIENT_WISE_FAILED_SELLER: {
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY_INVENTORY_WISE_SELLER: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY_INVENTORY_WISE_SUCCESS_SELLER: {
+      return {
+        ...state,
+        inventoryWise: action.payload,
+        loading: false,
+      };
+    }
+    case FETCH_PURCHASE_HISTORY_INVENTORY_WISE_FAILED_SELLER: {
+      return {
+        ...state,
+        error: action.payload,
         loading: false,
       };
     }

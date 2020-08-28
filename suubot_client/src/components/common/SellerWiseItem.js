@@ -5,7 +5,7 @@ import {widthToDp, heightToDp} from '../../Responsive';
 
 class SellerWiseItem extends Component {
   render() {
-    const {total_amt, store, _id} = this.props.item;
+    const {name, value, _id} = this.props;
     return (
       <TouchableOpacity
         onPress={() => {
@@ -13,13 +13,10 @@ class SellerWiseItem extends Component {
         }}>
         <View style={styles.container}>
           <View style={styles.box1}>
-            <Text>{store.name}</Text>
+            <Text style={styles.label}>{name}</Text>
           </View>
           <View style={styles.box2}>
-            <Text>
-              {'\u20B9 '}
-              {total_amt}
-            </Text>
+            <Text style={styles.label}>{value}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -30,7 +27,7 @@ class SellerWiseItem extends Component {
 const styles = {
   container: {
     flex: 1,
-    height: heightToDp(10),
+    minHeight: heightToDp(10),
     marginBottom: heightToDp(2),
     borderWidth: 0.5,
     borderRadius: widthToDp(2),
@@ -39,7 +36,8 @@ const styles = {
     padding: widthToDp(2),
   },
   box1: {flex: 0.6},
-  box2: {flex: 0.4},
+  box2: {flex: 0.4, alignItems: 'center'},
+  label: {fontWeight: 'bold'},
 };
 
 export default SellerWiseItem;

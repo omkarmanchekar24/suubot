@@ -33,3 +33,6 @@ export {default as ProductInput} from './common/ProductInput';
 export {default as ProductUpdate} from './seller/ProductUpdate';
 export {default as ItemWise} from './user/ItemWise';
 export {default as ItemWiseItem} from './common/ItemWiseItem';
+export {default as ItemWiseSeller} from './seller/ItemWiseSeller';
+export {default as ClientWiseSeller} from './seller/ClientWiseSeller';
+export {default as InventoryWiseSeller} from './seller/InventoryWiseSeller';

@@ -43,7 +43,12 @@ class ItemWise extends Component {
   }
 
   renderItem({item}) {
-    return <ItemWiseItem item={item} />;
+    return (
+      <ItemWiseItem
+        name={item.product[0].name}
+        value={'\u20B9 ' + item.total}
+      />
+    );
   }
 
   render() {

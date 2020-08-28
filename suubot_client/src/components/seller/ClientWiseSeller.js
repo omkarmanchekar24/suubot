@@ -10,11 +10,11 @@ import {widthToDp, heightToDp} from '../../Responsive';
 import {Header, Footer, ItemWiseItem} from '../../components';
 
 //Actions
-import {fetchOrdersProductWise} from '../../actions/seller/storeActions';
+import {fetchOrdersClientWise} from '../../actions/seller/storeActions';
 
-class ItemWiseSeller extends Component {
+class ClientWiseSeller extends Component {
   state = {
-    productWise: null,
+    clientWise: null,
     loading: false,
   };
 
@@ -25,7 +25,7 @@ class ItemWiseSeller extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchOrdersProductWise({
+    this.props.fetchOrdersClientWise({
       store_id: this.props.selected_store._id,
     });
   }
@@ -35,19 +35,20 @@ class ItemWiseSeller extends Component {
       this.setState({
         loading: nextProps.loading,
       });
-    } else if (nextProps.productWise) {
+    } else if (nextProps.clientWise) {
       this.setState({
         loading: false,
-        productWise: nextProps.productWise,
+        clientWise: nextProps.clientWise,
       });
     }
   }
   renderItem({item}) {
     return (
       <ItemWiseItem
-        name={item.product[0].name}
-        value={'\u20B9 ' + item.total}
+        name={item.client[0].name}
+        value={'\u20B9 ' + item.total_amt}
       />
+      //{'\u20B9 '}
     );
   }
 
@@ -64,20 +65,24 @@ class ItemWiseSeller extends Component {
           />
         </View>
       );
-    } else if (this.state.productWise) {
-      content = (
-        <FlatList
-          data={this.state.productWise}
-          renderItem={this.renderItem.bind(this)}
-          keyExtractor={(item) => item._id}
-        />
-      );
-    } else {
-      content = (
-        <View>
-          <Text>You haven't sell anything yet...</Text>
-        </View>
-      );
+    } else if (this.state.clientWise) {
+      if (this.state.clientWise.length > 0) {
+        content = (
+          <View>
+            <FlatList
+              data={this.state.clientWise}
+              renderItem={this.renderItem.bind(this)}
+              keyExtractor={(item) => item._id}
+            />
+          </View>
+        );
+      } else {
+        content = (
+          <View>
+            <Text>You haven't sell anything yet</Text>
+          </View>
+        );
+      }
     }
 
     return (
@@ -110,17 +115,27 @@ const styles = {
   switchButton: {alignSelf: 'center', maxWidth: widthToDp(50)},
   dropdown: {backgroundColor: 'white', width: widthToDp(35)},
   spinnerTextStyle: {color: '#546'},
+  itemContainer: {
+    flexDirection: 'row',
+    height: 80,
+    borderWidth: 0.5,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 10,
+  },
+  itemLabel: {fontSize: heightToDp(2), fontWeight: 'bold'},
 };
 
 const mapStateToProps = (state) => {
   return {
     selected_store: state.auth.selected_store,
     loading: state.seller.loading,
-    productWise: state.seller.productWise,
+    clientWise: state.seller.clientWise,
     error: state.seller.error,
   };
 };
 
-export default connect(mapStateToProps, {fetchOrdersProductWise})(
-  ItemWiseSeller,
+export default connect(mapStateToProps, {fetchOrdersClientWise})(
+  ClientWiseSeller,
 );

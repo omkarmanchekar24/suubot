@@ -28,6 +28,9 @@ import {
   EditStock,
   ProductUpdate,
   ItemWise,
+  ItemWiseSeller,
+  ClientWiseSeller,
+  InventoryWiseSeller,
 } from '../components';
 
 const RouterComponent = () => {
@@ -64,6 +67,17 @@ const RouterComponent = () => {
           <Scene key="editProfile" component={EditProfile} hideNavBar />
           <Scene key="editstock" component={EditStock} hideNavBar />
           <Scene key="productUpdate" component={ProductUpdate} hideNavBar />
+          <Scene key="itemwiseseller" component={ItemWiseSeller} hideNavBar />
+          <Scene
+            key="inventorywiseseller"
+            component={InventoryWiseSeller}
+            hideNavBar
+          />
+          <Scene
+            key="clientwiseseller"
+            component={ClientWiseSeller}
+            hideNavBar
+          />
         </Scene>
         <Scene key="switchPage">
           <Scene key="switchAccount" component={SwitchAccount} hideNavBar />

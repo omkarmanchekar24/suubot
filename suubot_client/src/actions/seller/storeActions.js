@@ -20,6 +20,18 @@ import {
   EDIT_PROFILE,
   EDIT_PROFILE_SUCCESS,
   EDIT_PROFILE_FAILED,
+  FETCH_PURCHASE_HISTORY_PRODUCT_WISE_SELLER,
+  FETCH_PURCHASE_HISTORY_PRODUCT_WISE_SUCCESS_SELLER,
+  FETCH_PURCHASE_HISTORY_PRODUCT_WISE_FAILED_SELLER,
+  FETCH_PURCHASE_HISTORY_CLIENT_WISE_SELLER,
+  FETCH_PURCHASE_HISTORY_CLIENT_WISE_SUCCESS_SELLER,
+  FETCH_PURCHASE_HISTORY_CLIENT_WISE_FAILED_SELLER,
+  FETCH_PURCHASE_HISTORY_INVENTORY_WISE_FAILED_SELLER,
+  FETCH_PURCHASE_HISTORY_INVENTORY_WISE_SELLER,
+  FETCH_PURCHASE_HISTORY_INVENTORY_WISE_SUCCESS_SELLER,
+  SEND_MESSAGE,
+  SEND_MESSAGE_SUCCESS,
+  SEND_MESSAGE_FAILED,
 } from '../types';
 
 import axios from 'axios';
@@ -195,6 +207,102 @@ export const editProfile = (data) => {
           type: EDIT_PROFILE_FAILED,
           payload: err.response.data,
         });
+      });
+  };
+};
+
+export const fetchOrdersProductWise = ({store_id}) => {
+  console.log(store_id);
+  return (dispatch) => {
+    dispatch({
+      type: FETCH_PURCHASE_HISTORY_PRODUCT_WISE_SELLER,
+    });
+
+    axios
+      .post(ip + '/api/seller/stores/fetch_orders_productwise', {store_id})
+      .then((response) =>
+        dispatch({
+          type: FETCH_PURCHASE_HISTORY_PRODUCT_WISE_SUCCESS_SELLER,
+          payload: response.data,
+        }),
+      )
+      .catch((err) =>
+        dispatch({
+          type: FETCH_PURCHASE_HISTORY_PRODUCT_WISE_FAILED_SELLER,
+          payload: err.response.data,
+        }),
+      );
+  };
+};
+
+export const fetchOrdersClientWise = ({store_id}) => {
+  console.log(store_id);
+  return (dispatch) => {
+    dispatch({
+      type: FETCH_PURCHASE_HISTORY_CLIENT_WISE_SELLER,
+    });
+
+    axios
+      .post(ip + '/api/seller/stores/fetch_orders_clientwise', {store_id})
+      .then((response) =>
+        dispatch({
+          type: FETCH_PURCHASE_HISTORY_CLIENT_WISE_SUCCESS_SELLER,
+          payload: response.data,
+        }),
+      )
+      .catch((err) =>
+        dispatch({
+          type: FETCH_PURCHASE_HISTORY_CLIENT_WISE_FAILED_SELLER,
+          payload: err.response.data,
+        }),
+      );
+  };
+};
+
+export const fetchOrdersInventoryWise = ({store_id}) => {
+  return (dispatch) => {
+    dispatch({
+      type: FETCH_PURCHASE_HISTORY_INVENTORY_WISE_SELLER,
+    });
+
+    axios
+      .post(ip + '/api/seller/stores/fetch_orders_inventorywise', {store_id})
+      .then((response) =>
+        dispatch({
+          type: FETCH_PURCHASE_HISTORY_INVENTORY_WISE_SUCCESS_SELLER,
+          payload: response.data,
+        }),
+      )
+      .catch((err) =>
+        dispatch({
+          type: FETCH_PURCHASE_HISTORY_INVENTORY_WISE_FAILED_SELLER,
+          payload: err.response.data,
+        }),
+      );
+  };
+};
+
+export const sendMessage = (seller, message) => {
+  return (dispatch) => {
+    dispatch({
+      type: SEND_MESSAGE,
+    });
+
+    axios
+      .post(ip + '/api/seller/message', {seller, message})
+      .then((response) => {
+        dispatch({
+          type: SEND_MESSAGE_SUCCESS,
+        });
+        ToastAndroid.show('Message sent successfully!', ToastAndroid.LONG);
+        Actions.sellerwelcome();
+      })
+      .catch((err) => {
+        dispatch({
+          type: SEND_MESSAGE_FAILED,
+          payload: err.response.data,
+        });
+        ToastAndroid.show('Something went wrong! Please try again later.');
       });
   };
 };

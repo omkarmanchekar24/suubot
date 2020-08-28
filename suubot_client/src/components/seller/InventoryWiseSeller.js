@@ -7,14 +7,14 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {widthToDp, heightToDp} from '../../Responsive';
 
-import {Header, Footer, ItemWiseItem} from '../../components';
+import {Header, Footer} from '../../components';
 
 //Actions
-import {fetchOrdersProductWise} from '../../actions/seller/storeActions';
+import {fetchOrdersInventoryWise} from '../../actions/seller/storeActions';
 
-class ItemWiseSeller extends Component {
+class InventoryWiseSeller extends Component {
   state = {
-    productWise: null,
+    inventoryWise: null,
     loading: false,
   };
 
@@ -25,7 +25,7 @@ class ItemWiseSeller extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchOrdersProductWise({
+    this.props.fetchOrdersInventoryWise({
       store_id: this.props.selected_store._id,
     });
   }
@@ -35,21 +35,34 @@ class ItemWiseSeller extends Component {
       this.setState({
         loading: nextProps.loading,
       });
-    } else if (nextProps.productWise) {
+    } else if (nextProps.inventoryWise) {
       this.setState({
         loading: false,
-        productWise: nextProps.productWise,
+        inventoryWise: nextProps.inventoryWise,
       });
     }
   }
   renderItem({item}) {
     return (
-      <ItemWiseItem
-        name={item.product[0].name}
-        value={'\u20B9 ' + item.total}
-      />
+      <View style={styles.itemContainer}>
+        <Text style={[styles.itemLabel, {flex: 0.5}]}>{item.name}</Text>
+        <Text style={[styles.itemLabel, {flex: 0.25}]}>{item.quantity}</Text>
+        <Text style={[styles.itemLabel, {flex: 0.25}]}>
+          {'\u20B9 ' + item.quantity * item.cost}
+        </Text>
+      </View>
     );
   }
+
+  FlatListHeader = () => {
+    return (
+      <View style={styles.listHeader}>
+        <Text style={[styles.listLabel, {flex: 0.5}]}>Item</Text>
+        <Text style={[styles.listLabel, {flex: 0.25}]}>Qty</Text>
+        <Text style={[styles.listLabel, {flex: 0.25}]}>Amount</Text>
+      </View>
+    );
+  };
 
   render() {
     let content;
@@ -64,12 +77,13 @@ class ItemWiseSeller extends Component {
           />
         </View>
       );
-    } else if (this.state.productWise) {
+    } else if (this.state.inventoryWise) {
       content = (
         <FlatList
-          data={this.state.productWise}
+          data={this.state.inventoryWise}
           renderItem={this.renderItem.bind(this)}
           keyExtractor={(item) => item._id}
+          ListHeaderComponent={this.FlatListHeader}
         />
       );
     } else {
@@ -103,24 +117,32 @@ const styles = {
   header: {flex: 0.13},
   body: {flex: 0.74, padding: widthToDp(8)},
   footer: {padding: widthToDp(1), flex: 0.13, justifyContent: 'flex-end'},
-  title: {fontSize: widthToDp(5), fontWeight: 'bold'},
-  label: {fontSize: widthToDp(5), marginTop: heightToDp(5)},
   invite: {alignSelf: 'flex-start'},
-  switch: {flexDirection: 'row', justifyContent: 'space-between'},
-  switchButton: {alignSelf: 'center', maxWidth: widthToDp(50)},
-  dropdown: {backgroundColor: 'white', width: widthToDp(35)},
   spinnerTextStyle: {color: '#546'},
+  itemContainer: {
+    flexDirection: 'row',
+    height: heightToDp(10),
+    borderWidth: 0.5,
+    borderRadius: 5,
+    marginBottom: heightToDp(2),
+    //justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+  },
+  itemLabel: {fontSize: heightToDp(2), fontWeight: 'bold'},
+  listHeader: {flexDirection: 'row', marginBottom: heightToDp(2)},
+  listLabel: {fontSize: heightToDp(2.5), fontWeight: 'bold'},
 };
 
 const mapStateToProps = (state) => {
   return {
     selected_store: state.auth.selected_store,
     loading: state.seller.loading,
-    productWise: state.seller.productWise,
+    inventoryWise: state.seller.inventoryWise,
     error: state.seller.error,
   };
 };
 
-export default connect(mapStateToProps, {fetchOrdersProductWise})(
-  ItemWiseSeller,
+export default connect(mapStateToProps, {fetchOrdersInventoryWise})(
+  InventoryWiseSeller,
 );

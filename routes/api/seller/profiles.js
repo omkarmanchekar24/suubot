@@ -53,4 +53,42 @@ router.post("/editprofile", (req, res) => {
     });
 });
 
+router.post("/addstore", (req, res) => {
+  const user_id = req.body.user_id;
+
+  const sellerData = {
+    name: req.body.name,
+    email: req.body.email,
+    mobile: req.body.mobile,
+    pan: req.body.pan,
+    aboutUs: req.body.aboutUs,
+    areaOfDelivery: req.body.areaOfDelivery,
+    minOrderValue: req.body.minOrderValue,
+  };
+
+  sellerData.address = {};
+  sellerData.address.street = req.body.street;
+  sellerData.address.town = req.body.town;
+  sellerData.address.city = req.body.city;
+  sellerData.address.state = req.body.state;
+  sellerData.address.pincode = parseInt(req.body.pincode);
+  sellerData.address.country = req.body.country;
+
+  sellerData.geoLocation = {};
+  if (req.body.geoLocation) {
+    sellerData.geoLocation.latitude = req.body.geoLocation.latitude;
+    sellerData.geoLocation.longitude = req.body.geoLocation.longitude;
+  }
+  if (req.body.gst) sellerData.gst = req.body.gst;
+  if (req.body.paytm) sellerData.paytm = req.body.paytm;
+  if (req.body.phonepay) sellerData.phonepay = req.body.phonepay;
+
+  User.findByIdAndUpdate(user_id)
+    .then((user) => {
+      user.seller.unshift(sellerData);
+      user.save().then((user) => res.json(user));
+    })
+    .catch((err) => res.status(404).json({ usernotfound: "User not found" }));
+});
+
 module.exports = router;

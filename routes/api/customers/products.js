@@ -135,7 +135,29 @@ router.post("/fetch_orders_sellerwise", async (req, res) => {
 
       return { store: store[0], ...item };
     });
-    res.status(200).json(final);
+
+    var date = new Date();
+    var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+    let monthly = await Purchase.aggregate([
+      {
+        $match: {
+          user: ObjectId(user_id),
+          status: "success",
+          date: { $gte: firstDay, $lte: lastDay },
+        },
+      },
+
+      {
+        $group: {
+          _id: 0,
+          total_amt: { $sum: "$txn_amount" },
+        },
+      },
+    ]);
+
+    res.status(200).json({ overAll: final, thisMonth: monthly });
   } catch (error) {
     console.log(error);
   }

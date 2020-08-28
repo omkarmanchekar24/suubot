@@ -110,7 +110,7 @@ const styles = {
   element: {
     height: heightToDp(8),
     width: '100%',
-
+    marginBottom: 10,
     borderWidth: 0.5,
     borderRadius: widthToDp(2),
     justifyContent: 'center',

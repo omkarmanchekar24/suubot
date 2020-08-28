@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 //Load Models
 const ProductCategory = require("../../../models/ProductCategory");
@@ -155,6 +156,70 @@ router.post("/getproducts", async (req, res) => {
   const products = await Product.find({ store: _id });
 
   return res.json({ categories, sub_categories, products });
+});
+
+router.post("/fetch_orders_productwise", (req, res) => {
+  const store_id = req.body.store_id;
+
+  Purchase.aggregate([
+    { $match: { store: ObjectId(store_id), status: "success" } },
+    { $project: { _id: 0, products: 1 } },
+    { $unwind: "$products" },
+    {
+      $group: {
+        _id: "$products.id",
+        total: { $sum: "$products.cost" },
+      },
+    },
+    {
+      $lookup: {
+        from: "products",
+        localField: "_id",
+        foreignField: "_id",
+        as: "product",
+      },
+    },
+  ]).exec((err, result) => {
+    if (err) return res.status(400).json(err);
+    return res.status(200).json(result);
+  });
+});
+
+router.post("/fetch_orders_clientwise", async (req, res) => {
+  const store_id = req.body.store_id;
+  console.log(store_id);
+  try {
+    let result = await Purchase.aggregate([
+      { $match: { store: ObjectId(store_id), status: "success" } },
+
+      {
+        $group: {
+          _id: "$user",
+          total_amt: { $sum: "$txn_amount" },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "_id",
+          foreignField: "_id",
+          as: "client",
+        },
+      },
+    ]);
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.post("/fetch_orders_inventorywise", (req, res) => {
+  const store_id = req.body.store_id;
+
+  Product.find({ store: store_id })
+    .then((products) => res.status(200).json(products))
+    .catch((err) => res.status(404).json(err));
 });
 
 module.exports = router;
