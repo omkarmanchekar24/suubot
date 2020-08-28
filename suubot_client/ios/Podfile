@@ -10,6 +10,8 @@ target 'suubot_client' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+
   target 'suubot_clientTests' do
     inherit! :complete
     # Pods for testing
