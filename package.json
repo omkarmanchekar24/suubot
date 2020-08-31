@@ -21,8 +21,6 @@
     "express": "^4.17.1",
     "express-winston": "^4.0.5",
     "fast-two-sms": "^2.1.0",
-    "firebase": "^7.19.1",
-    "firebase-admin": "^8.13.0",
     "jsonwebtoken": "^8.5.1",
     "messagebird": "^3.5.0",
     "moment": "^2.27.0",

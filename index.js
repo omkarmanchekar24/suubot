@@ -6,7 +6,6 @@ const cors = require("cors");
 const router = express.Router();
 const logger = require("./config/logger");
 const engines = require("consolidate");
-import SqsQueueConsumer from "sqs-queue-consumer";
 
 //Logger
 const winston = require("winston"),
