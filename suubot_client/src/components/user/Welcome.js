@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, Share} from 'react-native';
-
+import Drawer from 'react-native-drawer';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Button} from 'react-native-paper';
 import {Actions} from 'react-native-router-flux';
