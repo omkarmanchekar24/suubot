@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const ObjectId = mongoose.Types.ObjectId;
 const messageQueue = require("../../../config/keys").messageQueue;
-const admin = require("firebase-admin");
 
 const aws = require("aws-sdk");
 

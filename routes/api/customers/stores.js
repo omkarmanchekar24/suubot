@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const admin = require("firebase-admin");
+
 const uuid = require("uuidv4");
 const Promise = require("bluebird");
 var ObjectId = require("mongodb").ObjectID;
