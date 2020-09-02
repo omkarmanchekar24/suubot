@@ -31,6 +31,7 @@ import {
   ItemWiseSeller,
   ClientWiseSeller,
   InventoryWiseSeller,
+  EditProfileUser,
 } from '../components';
 
 const RouterComponent = () => {
@@ -56,6 +57,7 @@ const RouterComponent = () => {
           <Scene key="sellerwise" component={SellerWise} hideNavBar />
           <Scene key="sellerwiseorder" component={SellerWiseOrder} hideNavBar />
           <Scene key="itemwise" component={ItemWise} hideNavBar />
+          <Scene key="editProfileUser" component={EditProfileUser} hideNavBar />
         </Scene>
         <Scene key="seller">
           <Scene key="sellerwelcome" component={SellerWelcome} hideNavBar />

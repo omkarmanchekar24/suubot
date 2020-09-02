@@ -92,8 +92,12 @@ export const registeruser = (userData) => (dispatch) => {
       //Decode token to get user data
       const decoded = jwt_decode(token);
 
+      //change id key to _id
+      const newKeys = {id: '_id'};
+      const newObj = renameKeys(decoded, newKeys);
+
       //Set current user
-      dispatch(setCurrentUser({decoded, token}));
+      dispatch(setCurrentUser({newObj, token}));
 
       Actions.main();
     })
@@ -122,8 +126,12 @@ export const loginUser = ({email, password}) => {
         //Decode token to get user data
         const decoded = jwt_decode(token);
 
+        //change id key to _id
+        const newKeys = {id: '_id'};
+        const newObj = renameKeys(decoded, newKeys);
+        console.log(newObj);
         //Set current user
-        dispatch(setCurrentUser({decoded, token}));
+        dispatch(setCurrentUser({newObj, token}));
 
         Actions.main();
 
@@ -142,11 +150,10 @@ export const loginUser = ({email, password}) => {
 };
 
 //Set logged in user
-export const setCurrentUser = ({decoded, token}) => {
-  console.log(decoded);
+export const setCurrentUser = ({newObj, token}) => {
   return {
     type: SET_CURRENT_USER,
-    payload: {decoded, token},
+    payload: {newObj, token},
   };
 };
 
@@ -165,3 +172,11 @@ export const setAccount = ({name, item}) => {
     payload: {name, item},
   };
 };
+
+function renameKeys(obj, newKeys) {
+  const keyValues = Object.keys(obj).map((key) => {
+    const newKey = newKeys[key] || key;
+    return {[newKey]: obj[key]};
+  });
+  return Object.assign({}, ...keyValues);
+}

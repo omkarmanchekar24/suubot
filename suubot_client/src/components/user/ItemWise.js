@@ -54,21 +54,49 @@ class ItemWise extends Component {
   render() {
     let content;
 
-    content = this.state.fetching ? (
-      <View>
-        <Spinner
-          visible={true}
-          textContent={'Loading...'}
-          textStyle={styles.spinnerTextStyle}
-        />
-      </View>
-    ) : (
-      <FlatList
-        data={this.state.productWise}
-        renderItem={this.renderItem.bind(this)}
-        keyExtractor={(item) => item._id}
-      />
-    );
+    if (this.state.fetching) {
+      content = (
+        <View>
+          <Spinner
+            visible={true}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+        </View>
+      );
+    } else {
+      if (this.state.productWise.length > 0) {
+        content = (
+          <FlatList
+            data={this.state.productWise}
+            renderItem={this.renderItem.bind(this)}
+            keyExtractor={(item) => item._id}
+          />
+        );
+      } else {
+        content = (
+          <View style={styles.empty}>
+            <Text>You haven't purchased anything yet</Text>
+          </View>
+        );
+      }
+    }
+
+    // content = this.state.fetching ? (
+    //   <View>
+    //     <Spinner
+    //       visible={true}
+    //       textContent={'Loading...'}
+    //       textStyle={styles.spinnerTextStyle}
+    //     />
+    //   </View>
+    // ) : (
+    //   <FlatList
+    //     data={this.state.productWise}
+    //     renderItem={this.renderItem.bind(this)}
+    //     keyExtractor={(item) => item._id}
+    //   />
+    // );
 
     return (
       <View style={styles.container}>
@@ -100,6 +128,14 @@ const styles = {
   footer: {padding: widthToDp(1), flex: 0.13, justifyContent: 'flex-end'},
   spinnerTextStyle: {color: '#546'},
   invite: {alignSelf: 'flex-start'},
+  empty: {
+    justifySelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: widthToDp(10),
+    borderWidth: 0.3,
+    borderRadius: widthToDp(5),
+  },
 };
 
 const mapStateToProps = (state) => {

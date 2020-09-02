@@ -56,38 +56,6 @@ class SellerWise extends Component {
     );
   }
 
-  renderList() {
-    if (this.state.purchaseHistorySellerWise.length === 0) {
-      return (
-        <View style={styles.empty}>
-          <Text>You haven't bought anything yet</Text>
-        </View>
-      );
-    }
-
-    return (
-      <View style={styles.listBody}>
-        <ScrollView style={styles.scroll}>
-          <FlatList
-            data={this.state.purchaseHistorySellerWise.overAll}
-            renderItem={this.renderItem.bind(this)}
-            keyExtractor={(item) => item._id}
-          />
-
-          <View style={{height: heightToDp(10)}}></View>
-        </ScrollView>
-        <View style={{flex: 0.1}}></View>
-        <View style={styles.summary}>
-          <Text style={styles.summaryLabel}>This month</Text>
-          <Text style={styles.summaryLabel}>
-            {'\u20B9 ' +
-              this.state.purchaseHistorySellerWise.thisMonth[0].total_amt}
-          </Text>
-        </View>
-      </View>
-    );
-  }
-
   hideModal() {
     this.setState({
       showModal: !this.state.showModal,
@@ -95,20 +63,49 @@ class SellerWise extends Component {
   }
 
   render() {
-    //console.log(this.state);
     let content;
 
-    content = this.state.fetching ? (
-      <View>
-        <Spinner
-          visible={true}
-          textContent={'Loading...'}
-          textStyle={styles.spinnerTextStyle}
-        />
-      </View>
-    ) : (
-      <View>{this.renderList()}</View>
-    );
+    if (this.state.fetching) {
+      content = (
+        <View>
+          <Spinner
+            visible={true}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+        </View>
+      );
+    } else {
+      if (this.state.purchaseHistorySellerWise.length > 0) {
+        content = (
+          <View style={styles.listBody}>
+            <ScrollView style={styles.scroll}>
+              <FlatList
+                data={this.state.purchaseHistorySellerWise.overAll}
+                renderItem={this.renderItem.bind(this)}
+                keyExtractor={(item) => item._id}
+              />
+
+              <View style={{height: heightToDp(10)}}></View>
+            </ScrollView>
+            <View style={{flex: 0.1}}></View>
+            <View style={styles.summary}>
+              <Text style={styles.summaryLabel}>This month</Text>
+              <Text style={styles.summaryLabel}>
+                {'\u20B9 ' +
+                  this.state.purchaseHistorySellerWise.thisMonth[0].total_amt}
+              </Text>
+            </View>
+          </View>
+        );
+      } else {
+        content = (
+          <View style={styles.empty}>
+            <Text>You haven't purchased anything yet</Text>
+          </View>
+        );
+      }
+    }
 
     return (
       <View style={styles.container}>

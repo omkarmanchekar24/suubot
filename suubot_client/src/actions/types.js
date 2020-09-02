@@ -78,6 +78,10 @@ export const FETCH_PURCHASE_HISTORY_FAILED = 'FETCH_PURCHASE_HISTORY_FAILED';
 
 export const SET_ACCOUNT = 'SET_ACCOUNT';
 
+export const EDIT_PROFILE_USER = 'EDIT_PROFILE_USER';
+export const EDIT_PROFILE_USER_SUCCESS = 'EDIT_PROFILE_USER_SUCCESS';
+export const EDIT_PROFILE_USER_FAILED = 'EDIT_PROFILE_USER_FAILED';
+
 ////////////////////////////////////////////////////////////////
 //Seller
 

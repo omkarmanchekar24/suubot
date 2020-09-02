@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const sellerSchema = new Schema({
   name: {
     type: String,
-    
   },
   email: {
     type: String,
@@ -47,6 +46,64 @@ const sellerSchema = new Schema({
   },
   minOrderValue: {
     type: Number,
+  },
+  address: {
+    street: {
+      type: String,
+    },
+    town: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    pincode: {
+      type: String,
+    },
+    country: {
+      type: String,
+    },
+  },
+  geoLocation: {
+    latitude: {
+      type: String,
+    },
+    longitude: {
+      type: String,
+    },
+  },
+});
+
+const professionalSchema = new Schema({
+  name: {
+    type: String,
+  },
+  email: {
+    type: String,
+  },
+  username: {
+    type: String,
+  },
+  mobile: {
+    type: String,
+  },
+  gst: {
+    type: Number,
+  },
+  pan: {
+    type: String,
+  },
+  paytm: {
+    type: String,
+  },
+  phonepay: {
+    type: String,
+  },
+  aboutUs: {
+    type: String,
   },
   address: {
     street: {
@@ -130,66 +187,6 @@ const UserSchema = new Schema({
       type: String,
     },
   },
-  seller: [sellerSchema],
-  professional: [
-    {
-      name: {
-        type: String,
-      },
-      email: {
-        type: String,
-      },
-      username: {
-        type: String,
-      },
-      mobile: {
-        type: String,
-      },
-      gst: {
-        type: Number,
-      },
-      pan: {
-        type: String,
-      },
-      paytm: {
-        type: String,
-      },
-      phonepay: {
-        type: String,
-      },
-      aboutUs: {
-        type: String,
-      },
-      address: {
-        street: {
-          type: String,
-        },
-        town: {
-          type: String,
-        },
-        city: {
-          type: String,
-        },
-        state: {
-          type: String,
-        },
-        pincode: {
-          type: String,
-        },
-        country: {
-          type: String,
-        },
-      },
-      geoLocation: {
-        latitude: {
-          type: String,
-        },
-        longitude: {
-          type: String,
-        },
-      },
-    },
-  ],
   admin: {
     type: Schema.Types.ObjectId,
     ref: "roles",
@@ -210,6 +207,8 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now(),
   },
+  seller: [sellerSchema],
+  professional: [professionalSchema],
 });
 
 module.exports = User = mongoose.model("users", UserSchema);

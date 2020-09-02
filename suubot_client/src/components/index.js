@@ -36,3 +36,4 @@ export {default as ItemWiseItem} from './common/ItemWiseItem';
 export {default as ItemWiseSeller} from './seller/ItemWiseSeller';
 export {default as ClientWiseSeller} from './seller/ClientWiseSeller';
 export {default as InventoryWiseSeller} from './seller/InventoryWiseSeller';
+export {default as EditProfileUser} from './user/EditProfileUser';

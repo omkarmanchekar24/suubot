@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Text, View, Share} from 'react-native';
-import Drawer from 'react-native-drawer';
+
 import DropDownPicker from 'react-native-dropdown-picker';
-import {Button} from 'react-native-paper';
+import {Button, IconButton} from 'react-native-paper';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
 
@@ -35,8 +35,23 @@ class Welcome extends Component {
 
         <View style={styles.body}>
           <View style={styles.switch}>
-            <Text style={styles.title}>Welcome {this.props.user.username}</Text>
-
+            <View>
+              <Text style={styles.title}>
+                Welcome {this.props.user.username}
+              </Text>
+              <Button
+                mode="outlined"
+                onPress={() => {
+                  Actions.editProfileUser();
+                }}
+                contentStyle={{height: heightToDp(3)}}
+                style={[
+                  styles.switchButton,
+                  {alignSelf: 'flex-start', marginTop: 10},
+                ]}>
+                Edit Profile
+              </Button>
+            </View>
             {(this.props.user.seller.length > 0 ||
               this.props.user.professional.length > 0) && (
               <Button
@@ -45,7 +60,7 @@ class Welcome extends Component {
                   Actions.switchPage();
                 }}
                 contentStyle={{height: heightToDp(3)}}
-                style={styles.switchButton}>
+                style={[styles.switchButton, {alignSelf: 'flex-start'}]}>
                 Work
               </Button>
             )}

@@ -286,4 +286,30 @@ router.post("/login", (req, res) => {
   });
 });
 
+router.post("/editprofile", (req, res) => {
+  console.log(req.body);
+  const _id = req.body._id;
+
+  const profileData = {
+    name: req.body.name,
+    email: req.body.email,
+    username: req.body.username,
+    mobile: req.body.mobile,
+    address: {
+      street: req.body.street,
+      town: req.body.town,
+      city: req.body.city,
+      state: req.body.state,
+      pincode: req.body.pincode,
+      country: req.body.country,
+    },
+  };
+
+  User.findByIdAndUpdate(_id, profileData, { new: true })
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => res.json(err));
+});
+
 module.exports = router;
