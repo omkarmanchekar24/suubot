@@ -24,7 +24,7 @@ class SellerWise extends Component {
   };
 
   componentWillMount() {
-    this.props.fetchPurchaseHistorySellerWise(this.props.user.id);
+    this.props.fetchPurchaseHistorySellerWise(this.props.user._id);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -63,6 +63,7 @@ class SellerWise extends Component {
   }
 
   render() {
+    console.log(this.state);
     let content;
 
     if (this.state.fetching) {
@@ -76,7 +77,7 @@ class SellerWise extends Component {
         </View>
       );
     } else {
-      if (this.state.purchaseHistorySellerWise.length > 0) {
+      if (Object.keys(this.state.purchaseHistorySellerWise).length > 0) {
         content = (
           <View style={styles.listBody}>
             <ScrollView style={styles.scroll}>

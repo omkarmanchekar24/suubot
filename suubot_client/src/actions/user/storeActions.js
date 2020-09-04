@@ -204,7 +204,6 @@ export const fetchPurchaseHistory = (user_id) => {
 };
 
 export const fetchOrdersProductWise = (user_id) => {
-  console.log(user_id);
   return (dispatch) => {
     dispatch({
       type: FETCH_PURCHASE_HISTORY_PRODUCT_WISE,

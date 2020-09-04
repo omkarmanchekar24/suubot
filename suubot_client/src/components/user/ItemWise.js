@@ -25,8 +25,8 @@ class ItemWise extends Component {
   }
 
   componentWillMount() {
-    const {id} = this.props.auth.user;
-    this.props.fetchOrdersProductWise(id);
+    const {_id} = this.props.auth.user;
+    this.props.fetchOrdersProductWise(_id);
   }
 
   componentWillReceiveProps(nextProps) {
