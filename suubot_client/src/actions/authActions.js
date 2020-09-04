@@ -5,7 +5,7 @@ import {Actions} from 'react-native-router-flux';
 import 'react-native-get-random-values';
 import {uuid} from 'uuidv4';
 import jwt_decode from 'jwt-decode';
-import {getStores} from '../actions/storeActions';
+
 import validateLoginInput from '../validation/login';
 
 import {
@@ -25,9 +25,6 @@ import {
   REGISTER_FAILED,
   SET_ACCOUNT,
 } from './types';
-
-//Actions
-import {fetchPurchaseHistory} from './storeActions';
 
 import {ip} from '../config/config';
 

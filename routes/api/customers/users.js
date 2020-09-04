@@ -287,7 +287,6 @@ router.post("/login", (req, res) => {
 });
 
 router.post("/editprofile", (req, res) => {
-  console.log(req.body);
   const _id = req.body._id;
 
   const profileData = {

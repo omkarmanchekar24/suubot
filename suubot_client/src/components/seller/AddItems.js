@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {Text, View, TextInput, Share, ScrollView} from 'react-native';
 import {Button} from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker';
-import Swiper from 'react-native-swiper';
 import {Actions} from 'react-native-router-flux';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import {connect} from 'react-redux';
 
@@ -32,7 +32,6 @@ class AddItems extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     if (nextProps.seller.categories) {
       this.setState({
         categories: nextProps.seller.categories.categories,
@@ -109,40 +108,40 @@ class AddItems extends Component {
 
   render() {
     const {errors, categories, sub_categories, category} = this.state;
+    let content;
 
-    let data = [];
-    let sub = [];
+    if (this.props.seller.loading) {
+      content = (
+        <View>
+          <Spinner
+            visible={true}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+        </View>
+      );
+    } else {
+      if (this.state.categories.length > 0) {
+        let mainCategories = [];
+        let subCategories = [];
 
-    if (categories.length > 0) {
-      data = categories.map((item) => {
-        return {label: item.category, value: item._id};
-      });
-    }
-
-    if (sub_categories.length > 0) {
-      sub = sub_categories
-        .filter((item) => {
-          return item.category_id === category;
-        })
-        .map((item) => {
-          return {label: item.name, value: item._id};
+        mainCategories = categories.map((item) => {
+          return {label: item.category, value: item._id};
         });
-    }
+        subCategories = sub_categories
+          .filter((item) => {
+            return item.category_id === category;
+          })
+          .map((item) => {
+            return {label: item.name, value: item._id};
+          });
 
-    return (
-      <View style={styles.container}>
-        <Header
-          bell={true}
-          onBack={() => Actions.pop()}
-          style={styles.header}
-        />
-
-        <View style={styles.body}>
+        content = (
           <ScrollView contentContainerStyle={{flex: 1}}>
             <View style={styles.container1}>
               <DropDownPicker
                 placeholder="Select Category"
-                items={data}
+                items={mainCategories}
                 defaultValue={this.state.category}
                 containerStyle={{height: 40}}
                 style={styles.dropdown}
@@ -165,7 +164,7 @@ class AddItems extends Component {
 
               <DropDownPicker
                 placeholder="Select Sub-Category"
-                items={sub}
+                items={subCategories}
                 defaultValue={this.state.sub_category}
                 containerStyle={{height: 40}}
                 style={styles.dropdown}
@@ -263,7 +262,25 @@ class AddItems extends Component {
               </Button>
             </View>
           </ScrollView>
-        </View>
+        );
+      } else {
+        content = (
+          <View>
+            <Text>No categories found</Text>
+          </View>
+        );
+      }
+    }
+
+    return (
+      <View style={styles.container}>
+        <Header
+          bell={true}
+          onBack={() => Actions.pop()}
+          style={styles.header}
+        />
+
+        <View style={styles.body}>{content}</View>
 
         <Footer style={styles.footer}>
           <Button style={styles.invite} onPress={this.invite.bind(this)}>

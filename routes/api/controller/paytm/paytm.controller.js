@@ -1,5 +1,5 @@
 var checksum = require("./checksum");
-const ip = require("../../../../config/keys");
+const ip = require("../../../../config/keys").ip;
 
 //Load Model
 const Purchase = require("../../../../models/Purchase");

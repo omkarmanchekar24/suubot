@@ -14,7 +14,7 @@ import {Header, Footer} from '../../components';
 import {
   fetchStoresByProductCategory,
   setValue,
-} from '../../actions/storeActions';
+} from '../../actions/user/storeActions';
 
 class Stores extends Component {
   state = {pickerValue: '', stores: []};

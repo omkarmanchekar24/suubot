@@ -21,7 +21,7 @@ router.get("/test", (req, res) => {
   return res.json({ msg: "working" });
 });
 
-//@route    GET api/customers/products/productcategories
+//@route    GET api/customers/products/categories
 //@desc     Get available product categories
 //@access   Public
 router.get("/categories", async (req, res) => {

@@ -10,7 +10,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import {Header, Footer, ItemWiseItem} from '../../components';
 
 //Actions
-import {fetchOrdersProductWise} from '../../actions/storeActions';
+import {fetchOrdersProductWise} from '../../actions/user/storeActions';
 
 class ItemWise extends Component {
   state = {

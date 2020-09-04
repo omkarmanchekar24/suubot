@@ -22,11 +22,11 @@ import {
   FETCH_PURCHASE_HISTORY_PRODUCT_WISE,
   FETCH_PURCHASE_HISTORY_PRODUCT_WISE_SUCCESS,
   FETCH_PURCHASE_HISTORY_PRODUCT_WISE_FAILED,
-} from '../actions/types';
+} from '../../actions/types';
 import {ToastAndroid} from 'react-native';
 import axios from 'axios';
 
-import {ip} from '../config/config';
+import {ip} from '../../config/config';
 
 export const setValue = ({prop, value}) => {
   return {

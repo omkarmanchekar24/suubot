@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {Button} from 'react-native-paper';
 import {connect} from 'react-redux';
-import {fetchProductsByStoreIdSubCategoryId} from '../../actions/storeActions';
+import {fetchProductsByStoreIdSubCategoryId} from '../../actions/user/storeActions';
 import {addItemsToCart, resetCart} from '../../actions/cartActions';
 import {Actions} from 'react-native-router-flux';
 

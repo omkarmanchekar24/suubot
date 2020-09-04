@@ -11,7 +11,7 @@ router.post("/request", paytmController.request);
 router.post("/response", paytmController.response);
 
 router.post("/save_order", (req, res) => {
-  console.log("hit");
+  console.log("user: " + req.body.user);
   const newOrder = new Purchase({
     user: req.body.user,
     txn_amount: req.body.txn_amount,

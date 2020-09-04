@@ -6,7 +6,7 @@ import {Actions} from 'react-native-router-flux';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 //Actions
-import {fetchPurchaseHistorySellerWise} from '../../actions/storeActions';
+import {fetchPurchaseHistorySellerWise} from '../../actions/user/storeActions';
 
 import {widthToDp, heightToDp} from '../../Responsive';
 

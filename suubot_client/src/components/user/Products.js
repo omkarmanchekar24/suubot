@@ -9,7 +9,7 @@ import {connect} from 'react-redux';
 import {
   fetchProductSubCategoriesByStoreIdCategoryId,
   setValue,
-} from '../../actions/storeActions';
+} from '../../actions/user/storeActions';
 
 import {resetCart} from '../../actions/cartActions';
 

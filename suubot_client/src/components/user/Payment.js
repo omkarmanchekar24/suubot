@@ -11,6 +11,7 @@ import {Actions} from 'react-native-router-flux';
 import {WebView} from 'react-native-webview';
 import {RadioButton, Button} from 'react-native-paper';
 import {connect} from 'react-redux';
+import {ip} from '../../config/config';
 
 //Components
 import {Header, LabelValue, BillItem, Footer} from '../../components';
@@ -194,7 +195,7 @@ class Payment extends Component {
                 }
 
                 this.props.purchaseItems({
-                  user: user.id,
+                  user: user._id,
                   txn_amount: total_bill_amount,
                   status: 'pending',
                   store: store._id,
@@ -214,10 +215,10 @@ class Payment extends Component {
           }}>
           <WebView
             source={{
-              uri: 'http://192.168.0.8:5000/api/customers/paytm/request',
+              uri: `${ip}/api/customers/paytm/request`,
             }}
             mixedContentMode={'compatibility'}
-            injectedJavaScript={`document.getElementById('ORDER_ID').value = "${order._id}"; document.getElementById('TXN_AMOUNT').value = "1"; document.getElementById('CUST_ID').value = "${order.user}"; document.f1.submit();`}
+            injectedJavaScript={`document.getElementById('ORDER_ID').value = "${order._id}"; document.getElementById('TXN_AMOUNT').value = "1"; document.getElementById('CUST_ID').value = "${order.user}"; document.f1.action = "${ip}/api/customers/paytm/request"; document.f1.submit();`}
             onNavigationStateChange={(data) => {
               this.handleResponse(data);
             }}

@@ -10,7 +10,10 @@ import {widthToDp, heightToDp} from '../../Responsive';
 import {Header, Footer} from '../../components';
 
 //Action
-import {fetchProductCategories, setValue} from '../../actions/storeActions';
+import {
+  fetchProductCategories,
+  setValue,
+} from '../../actions/user/storeActions';
 
 class Select extends Component {
   state = {product_categories: []};
