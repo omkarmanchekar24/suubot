@@ -10,7 +10,7 @@ export {default as Stores} from './user/Stores';
 export {default as Products} from './user/Products';
 export {default as Product2} from './user/Product2';
 export {default as Card} from './common/Card';
-export {default as Payment} from './user/Payment';
+export {default as Payment} from './user/payment/Payment';
 export {default as LabelValue} from './common/LabelValue';
 export {default as Splash} from './Splash';
 export {default as Input} from './common/Input';

@@ -26,13 +26,23 @@ export const resetCart = () => {
   };
 };
 
-export const purchaseItems = ({user, txn_amount, status, store, products}) => {
-  //console.log({user, txn_amount, status, store, products});
-
+export const purchaseItems = ({
+  user,
+  mobile,
+  txn_id,
+  txn_amount,
+  status,
+  resp_code,
+  store,
+  products,
+}) => {
   const data = {
     user,
+    mobile,
+    txn_id,
     txn_amount,
     status,
+    resp_code,
     store,
     products,
   };
@@ -56,6 +66,18 @@ export const purchaseItems = ({user, txn_amount, status, store, products}) => {
           payload: err.response.data,
         });
       });
+
+    if (status === 'SUCCESS') {
+      dispatch(transactionSuccess({cart: products}));
+      ToastAndroid.show('Transaction Successfull!', ToastAndroid.LONG);
+      Actions.products();
+    } else {
+      dispatch(transactionFailed());
+      ToastAndroid.show(
+        'Transaction Failed! Please try again',
+        ToastAndroid.LONG,
+      );
+    }
   };
 };
 
@@ -70,11 +92,6 @@ export const transactionSuccess = ({cart}) => {
         console.log(response.data);
       })
       .catch((err) => console.log(err.response.data));
-    ToastAndroid.show(
-      'Your order has been placed successfully!!!',
-      ToastAndroid.LONG,
-    );
-    Actions.welcome();
   };
 };
 
@@ -83,20 +100,5 @@ export const transactionFailed = () => {
     dispatch({
       type: PURCHASE_FAILED,
     });
-
-    // axios
-    //   .post(ip + '/api/customers/paytm/update_order_status', {
-    //     status: 'failed',
-    //   })
-    //   .then((response) => {
-    //     console.log(response.data);
-    //   })
-    //   .catch((err) => console.log(err.response.data));
-
-    ToastAndroid.show(
-      'Oops! Something went wrong. Please try again later.',
-      ToastAndroid.LONG,
-    );
-    Actions.product2();
   };
 };

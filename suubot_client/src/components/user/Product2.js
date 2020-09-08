@@ -149,7 +149,6 @@ class Product2 extends Component {
   }
 
   render() {
-    console.log(this.state.cart);
     const {selected_sub_category} = this.props;
     return (
       <View style={styles.container}>

@@ -10,8 +10,7 @@ import {
 
 const INITIAL_STATE = {
   cart: [],
-  showModal: false,
-  ack: '',
+
   loading: false,
   order: {},
   errors: {},
@@ -33,7 +32,6 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loading: true,
-        ack: '',
       };
     }
     case SAVE_ORDER_SUCCESS: {
@@ -41,7 +39,6 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         loading: false,
         order: action.payload,
-        showModal: true,
       };
     }
     case SAVE_ORDER_FAILED: {
@@ -50,8 +47,6 @@ export default (state = INITIAL_STATE, action) => {
         cart: [],
         loading: false,
         errors: action.payload,
-        showModal: false,
-        ack: 'Server error. Please try again later.',
       };
     }
     case PURCHASE_SUCCESS: {
@@ -60,18 +55,13 @@ export default (state = INITIAL_STATE, action) => {
         cart: [],
         loading: false,
         errors: {},
-        showModal: false,
-        ack: 'Your order has been placed successfully!!!',
       };
     }
     case PURCHASE_FAILED: {
       return {
         ...state,
-        cart: [],
         loading: false,
         errors: {},
-        showModal: false,
-        ack: 'Oops! Something went wrong. Please try again later.',
       };
     }
     default: {

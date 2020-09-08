@@ -39,11 +39,19 @@ const PurchaseSchema = new Schema({
     ref: "users",
     required: true,
   },
+  txn_id: {
+    type: String,
+    required: true,
+  },
   txn_amount: {
     type: Number,
     required: true,
   },
   status: {
+    type: String,
+    required: true,
+  },
+  resp_code: {
     type: String,
     required: true,
   },

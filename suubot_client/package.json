@@ -32,6 +32,7 @@
     "react-native-router-flux": "^4.2.0",
     "react-native-screens": "^2.9.0",
     "react-native-swiper": "^1.6.0",
+    "react-native-upi-payment": "^1.0.2",
     "react-native-vector-icons": "^7.0.0",
     "react-native-webview": "^10.3.2",
     "react-navigation-backhandler": "^2.0.1",
