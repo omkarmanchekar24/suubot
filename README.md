@@ -22,4 +22,7 @@ npm install
 npm run server
 
 #### Run Client Application
+##### Open the client app in android studio
+Open existing project -> [Project Directory] -> suubot_client -> android (open this path in android studio)
+Run android simulator or connect your phone to the laptop using usb cable
 npm run android
