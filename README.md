@@ -14,7 +14,6 @@ Front-End:- React Native Cli
 npm install
 
 #### Install Client dependencies
-cd client <br/>
-npm `install`
-
+cd subbot_client
+npm install
 
