@@ -17,3 +17,9 @@ npm install
 cd subbot_client <br/>
 npm install
 
+### How to run the app
+#### Run Server Application
+npm run server
+
+#### Run Client Application
+npm run android
